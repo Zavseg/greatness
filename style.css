@@ -1791,3 +1791,21 @@ a {
         text-align: center;
     }
 }
+
+/* Home Page Fleet Cards styling */
+.home-car-card {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-car-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-blue) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 10px 25px rgba(0, 119, 255, 0.15);
+}
+
+@media (max-width: 768px) {
+    .home-fleet-grid {
+        grid-template-columns: 1fr !important;
+    }
+}

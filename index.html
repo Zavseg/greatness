@@ -127,63 +127,48 @@
                         </div>
                     </div>
 
-                    <!-- Column 2: Fleet Slider -->
-                    <div class="tc-card tc-fleet">
+                    <!-- Column 2: Fleet -->
+                    <div class="tc-card tc-fleet" style="display: flex; flex-direction: column; justify-content: space-between;">
                         <h3><i class="fa-solid fa-truck"></i> Наш автопарк ТК</h3>
-                        <div class="slider-container">
-                            <div class="fleet-slider" id="fleet-slider">
-                                <div class="slide active">
-                                    <img src="assets/fleet_tk.jpg" alt="Ceterpilort ST680" class="slide-img" style="object-position: 15% 33%;">
-                                    <div class="slide-info">
-                                        <h4>Ceterpilort ST680</h4>
-                                        <p>Швидкість: 135 км/год | Багажник: 7,500 кг</p>
-                                    </div>
+                        <div class="home-fleet-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; flex-grow: 1;">
+                            <!-- Card 1 -->
+                            <div class="home-car-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; height: 100%;">
+                                <div style="height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%;">
+                                    <img src="assets/truck_st680_clean.png" alt="Ceterpilort ST680" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">
                                 </div>
-                                <div class="slide">
-                                    <img src="assets/fleet_tk.jpg" alt="Ceterpilort ST680" class="slide-img" style="object-position: 50% 33%;">
-                                    <div class="slide-info">
-                                        <h4>Ceterpilort ST680</h4>
-                                        <p>Швидкість: 135 км/год | Багажник: 7,500 кг</p>
-                                    </div>
-                                </div>
-                                <div class="slide">
-                                    <img src="assets/fleet_tk.jpg" alt="Fraitliner N2" class="slide-img" style="object-position: 83% 33%;">
-                                    <div class="slide-info">
-                                        <h4>Fraitliner N2</h4>
-                                        <p>Швидкість: 145 км/год | Багажник: 3,500 кг</p>
-                                    </div>
-                                </div>
-                                <div class="slide">
-                                    <img src="assets/fleet_tk.jpg" alt="Ceterpilort ST680" class="slide-img" style="object-position: 15% 70%;">
-                                    <div class="slide-info">
-                                        <h4>Ceterpilort ST680</h4>
-                                        <p>Швидкість: 135 км/год | Багажник: 7,500 кг</p>
-                                    </div>
-                                </div>
-                                <div class="slide">
-                                    <img src="assets/fleet_tk.jpg" alt="Steelbilt 389" class="slide-img" style="object-position: 50% 70%;">
-                                    <div class="slide-info">
-                                        <h4>Steelbilt 389</h4>
-                                        <p>Швидкість: 140 км/год | Багажник: 8,000 кг</p>
-                                    </div>
-                                </div>
-                                <div class="slide">
-                                    <img src="assets/fleet_tk.jpg" alt="Steelbilt 389" class="slide-img" style="object-position: 83% 70%;">
-                                    <div class="slide-info">
-                                        <h4>Steelbilt 389</h4>
-                                        <p>Швидкість: 140 км/год | Багажник: 8,000 кг</p>
-                                    </div>
+                                <div>
+                                    <p style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 4px 0;">Ceterpilort</p>
+                                    <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">ST680</h4>
+                                    <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: rgba(0, 119, 255, 0.1); border: 1px solid rgba(0, 119, 255, 0.2); color: var(--accent-blue);">4 од.</span>
                                 </div>
                             </div>
-                            <div class="slider-controls">
-                                <button class="slider-btn prev" id="slider-prev"><i class="fa-solid fa-chevron-left"></i></button>
-                                <button class="slider-btn next" id="slider-next"><i class="fa-solid fa-chevron-right"></i></button>
+
+                            <!-- Card 2 -->
+                            <div class="home-car-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; height: 100%;">
+                                <div style="height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%;">
+                                    <img src="assets/truck_n2_clean.png" alt="Fraitliner N2" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">
+                                </div>
+                                <div>
+                                    <p style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 4px 0;">Fraitliner</p>
+                                    <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">N2</h4>
+                                    <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: rgba(0, 119, 255, 0.1); border: 1px solid rgba(0, 119, 255, 0.2); color: var(--accent-blue);">1 од.</span>
+                                </div>
                             </div>
-                            <div class="slider-dots" id="slider-dots">
-                                <span class="dot active"></span>
-                                <span class="dot"></span>
-                                <span class="dot"></span>
+
+                            <!-- Card 3 -->
+                            <div class="home-car-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; height: 100%;">
+                                <div style="height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%;">
+                                    <img src="assets/truck_389_clean.png" alt="Steelbilt 389" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">
+                                </div>
+                                <div>
+                                    <p style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 4px 0;">Steelbilt</p>
+                                    <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">389</h4>
+                                    <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: rgba(0, 119, 255, 0.1); border: 1px solid rgba(0, 119, 255, 0.2); color: var(--accent-blue);">2 од.</span>
+                                </div>
                             </div>
+                        </div>
+                        <div style="margin-top: 15px; text-align: right; font-size: 13px; color: var(--text-secondary);">
+                            Всього в автопарку компанії: <strong style="color: var(--accent-yellow); font-size: 15px;">7 вантажівок</strong>
                         </div>
                     </div>
                 </div>

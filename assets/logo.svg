@@ -57,13 +57,13 @@
         text-anchor="middle" 
         letter-spacing="2">GREATNESS</text>
 
-  <!-- Logo Text: FAMILY -->
+  <!-- Logo Text: LOGISTICS -->
   <text x="100" y="165" 
         font-family="'Outfit', 'Cinzel', 'Georgia', serif" 
-        font-size="13" 
+        font-size="10" 
         font-weight="700" 
         fill="url(#gold-grad)" 
         text-anchor="middle" 
-        letter-spacing="4" 
-        opacity="0.9">FAMILY</text>
+        letter-spacing="2" 
+        opacity="0.9">LOGISTICS</text>
 </svg>

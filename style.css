@@ -1804,6 +1804,10 @@ a {
     box-shadow: 0 10px 25px rgba(0, 119, 255, 0.15);
 }
 
+.home-car-card:hover .home-car-img-wrapper img {
+    transform: scale(1.08);
+}
+
 @media (max-width: 768px) {
     .home-fleet-grid {
         grid-template-columns: 1fr !important;

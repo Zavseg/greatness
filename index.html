@@ -22,7 +22,7 @@
     <header class="header">
         <div class="header-container">
             <a href="#" class="logo" id="logo-btn">
-                <img src="assets/logo.svg" alt="GREATNESS Logo" class="logo-img">
+                <img src="assets/logo.svg?v=1.1" alt="GREATNESS Logo" class="logo-img">
                 <span class="logo-text"><span class="logo-accent">GREAT</span>NESS LOGISTICS</span>
             </a>
             
@@ -30,13 +30,12 @@
                 <a href="#home" class="nav-link active" data-tab="home"><i class="fa-solid fa-house"></i> Головна</a>
                 <a href="#family" class="nav-link" data-tab="family"><i class="fa-solid fa-truck"></i> Про нас</a>
                 <a href="#jobs" class="nav-link" data-tab="jobs"><i class="fa-solid fa-briefcase"></i> Роботи</a>
-                <a href="#fleet" class="nav-link" data-tab="fleet"><i class="fa-solid fa-car"></i> Автопарк</a>
+                <a href="#fleet" class="nav-link" data-tab="fleet"><i class="fa-solid fa-truck-moving"></i> Автопарк</a>
                 <a href="#prices" class="nav-link" data-tab="prices"><i class="fa-solid fa-scale-balanced"></i> Скупники</a>
                 <a href="#gallery" class="nav-link" data-tab="gallery"><i class="fa-solid fa-images"></i> Галерея</a>
             </nav>
 
             <div class="header-actions">
-                <a href="https://discord.gg/ukraine-gta" target="_blank" class="btn btn-join"><i class="fa-brands fa-discord"></i> Вступити</a>
                 <button class="burger-menu" id="burger-menu" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
@@ -67,7 +66,7 @@
                             <span class="stat-lbl">Бонус до ЗП</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-val">6</span>
+                            <span class="stat-val text-accent-blue">7</span>
                             <span class="stat-lbl">Вантажівок</span>
                         </div>
                         <div class="stat-item">
@@ -75,17 +74,11 @@
                             <span class="stat-lbl">UAH / Годину</span>
                         </div>
                     </div>
-
-                    <div class="contact-buttons">
-                        <a href="https://t.me/greatness_gta5" target="_blank" class="btn btn-telegram"><i class="fa-brands fa-telegram"></i> Telegram</a>
-                        <a href="https://discord.gg/greatness" target="_blank" class="btn btn-discord"><i class="fa-brands fa-discord"></i> Discord</a>
-                        <a href="https://forum.ukraine-gta.com.ua/" target="_blank" class="btn btn-forum"><i class="fa-solid fa-comments"></i> Форум</a>
-                    </div>
                 </div>
 
                 <div class="hero-image-wrapper">
-                    <div class="card-glowing-border">
-                        <img src="assets/family.png" alt="Сім'я GREATNESS в GTA5" class="hero-image">
+                    <div class="card-glowing-border" style="width: 100%; height: 100%;">
+                        <img src="assets/fleet_tk.jpg" alt="Вантажний флот GREATNESS LOGISTICS" class="hero-image" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%;">
                     </div>
                 </div>
             </div>
@@ -133,36 +126,36 @@
                         <div class="home-fleet-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; flex-grow: 1;">
                             <!-- Card 1 -->
                             <div class="home-car-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; height: 100%;">
-                                <div style="height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%;">
-                                    <img src="assets/truck_st680_clean.png" alt="Ceterpilort ST680" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">
+                                <div class="home-car-img-wrapper" style="height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%; background: rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden; padding: 5px;">
+                                    <img src="assets/truck_st680_clean.png" alt="Ceterpilort ST680" style="max-height: 95%; max-width: 95%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); transition: transform 0.3s ease;">
                                 </div>
                                 <div>
                                     <p style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 4px 0;">Ceterpilort</p>
-                                    <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">ST680</h4>
+                                    <h4 style="font-size: 15px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">ST680</h4>
                                     <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: rgba(0, 119, 255, 0.1); border: 1px solid rgba(0, 119, 255, 0.2); color: var(--accent-blue);">4 од.</span>
                                 </div>
                             </div>
 
                             <!-- Card 2 -->
                             <div class="home-car-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; height: 100%;">
-                                <div style="height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%;">
-                                    <img src="assets/truck_n2_clean.png" alt="Fraitliner N2" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">
+                                <div class="home-car-img-wrapper" style="height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%; background: rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden; padding: 5px;">
+                                    <img src="assets/truck_n2_clean.png" alt="Fraitliner N2" style="max-height: 95%; max-width: 95%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); transition: transform 0.3s ease;">
                                 </div>
                                 <div>
                                     <p style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 4px 0;">Fraitliner</p>
-                                    <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">N2</h4>
+                                    <h4 style="font-size: 15px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">N2</h4>
                                     <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: rgba(0, 119, 255, 0.1); border: 1px solid rgba(0, 119, 255, 0.2); color: var(--accent-blue);">1 од.</span>
                                 </div>
                             </div>
 
                             <!-- Card 3 -->
                             <div class="home-car-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; height: 100%;">
-                                <div style="height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%;">
-                                    <img src="assets/truck_389_clean.png" alt="Steelbilt 389" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">
+                                <div class="home-car-img-wrapper" style="height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%; background: rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden; padding: 5px;">
+                                    <img src="assets/truck_389_clean.png" alt="Steelbilt 389" style="max-height: 95%; max-width: 95%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); transition: transform 0.3s ease;">
                                 </div>
                                 <div>
                                     <p style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 4px 0;">Steelbilt</p>
-                                    <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">389</h4>
+                                    <h4 style="font-size: 15px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">389</h4>
                                     <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: rgba(0, 119, 255, 0.1); border: 1px solid rgba(0, 119, 255, 0.2); color: var(--accent-blue);">2 од.</span>
                                 </div>
                             </div>
@@ -301,81 +294,17 @@
         <section id="fleet" class="tab-content">
             <div class="section-title">
                 <h2>АВТОПАРК <span class="logo-accent">GREATNESS LOGISTICS</span></h2>
-                <p>Список вантажного транспорту організації</p>
+                <p>Розділ знаходиться на стадії налаштування та оновлення даних</p>
             </div>
 
-            <div class="fleet-grid-list">
-                <!-- Card 1 -->
-                <div class="card glass-card car-card">
-                    <div class="car-image-container">
-                        <span class="rank-req" style="color: #10b981; border-color: rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.05);">Доступно</span>
-                        <img src="assets/fleet_tk.jpg" alt="Ceterpilort ST680" style="width: 100%; height: 100%; object-fit: cover; object-position: 15% 33%;">
-                    </div>
-                    <div class="car-info">
-                        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Ceterpilort</p>
-                        <h4 style="font-size: 18px; margin: 0; font-weight: 600;">ST680</h4>
-                    </div>
+            <div class="glass-card" style="max-width: 600px; margin: 40px auto; padding: 40px; text-align: center; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);">
+                <div style="font-size: 64px; color: var(--accent-yellow); margin-bottom: 20px;">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="card glass-card car-card">
-                    <div class="car-image-container">
-                        <span class="rank-req" style="color: #10b981; border-color: rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.05);">Доступно</span>
-                        <img src="assets/fleet_tk.jpg" alt="Ceterpilort ST680" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 33%;">
-                    </div>
-                    <div class="car-info">
-                        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Ceterpilort</p>
-                        <h4 style="font-size: 18px; margin: 0; font-weight: 600;">ST680</h4>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="card glass-card car-card">
-                    <div class="car-image-container">
-                        <span class="rank-req" style="color: #10b981; border-color: rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.05);">Доступно</span>
-                        <img src="assets/fleet_tk.jpg" alt="Fraitliner N2" style="width: 100%; height: 100%; object-fit: cover; object-position: 83% 33%;">
-                    </div>
-                    <div class="car-info">
-                        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Fraitliner</p>
-                        <h4 style="font-size: 18px; margin: 0; font-weight: 600;">N2</h4>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="card glass-card car-card">
-                    <div class="car-image-container">
-                        <span class="rank-req" style="color: #10b981; border-color: rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.05);">Доступно</span>
-                        <img src="assets/fleet_tk.jpg" alt="Ceterpilort ST680" style="width: 100%; height: 100%; object-fit: cover; object-position: 15% 70%;">
-                    </div>
-                    <div class="car-info">
-                        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Ceterpilort</p>
-                        <h4 style="font-size: 18px; margin: 0; font-weight: 600;">ST680</h4>
-                    </div>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="card glass-card car-card">
-                    <div class="car-image-container">
-                        <span class="rank-req" style="color: #10b981; border-color: rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.05);">Доступно</span>
-                        <img src="assets/fleet_tk.jpg" alt="Steelbilt 389" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 70%;">
-                    </div>
-                    <div class="car-info">
-                        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Steelbilt</p>
-                        <h4 style="font-size: 18px; margin: 0; font-weight: 600;">389</h4>
-                    </div>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="card glass-card car-card">
-                    <div class="car-image-container">
-                        <span class="rank-req" style="color: #10b981; border-color: rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.05);">Доступно</span>
-                        <img src="assets/fleet_tk.jpg" alt="Steelbilt 389" style="width: 100%; height: 100%; object-fit: cover; object-position: 83% 70%;">
-                    </div>
-                    <div class="car-info">
-                        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Steelbilt</p>
-                        <h4 style="font-size: 18px; margin: 0; font-weight: 600;">389</h4>
-                    </div>
-                </div>
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: #fff;">Розділ у розробці</h3>
+                <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 0;">
+                    Ми оновлюємо технічні характеристики, ціни та детальні фотографії нашої техніки. Найближчим часом тут з'явиться повний каталог з усіма легковими та вантажними автомобілями організації.
+                </p>
             </div>
         </section>
         <!-- SECTION 5: PRICES (СКУПНИКИ) -->
@@ -553,8 +482,6 @@
             <p class="footer-desc">Офіційний інформаційний ресурс транспортної компанії GREATNESS LOGISTICS у грі Ukraine GTA 5. Усі права належать гравцям та творцям контенту.</p>
             <div class="footer-links">
                 <a href="https://ukraine-gta5.com.ua/" target="_blank">Сайт Ukraine GTA5</a>
-                <a href="https://forum.ukraine-gta.com.ua/" target="_blank">Форум гри</a>
-                <a href="https://discord.gg/ukraine-gta" target="_blank">Офіційний Discord</a>
             </div>
             <div class="footer-copy">
                 &copy; 2026 GREATNESS LOGISTICS. Powered by Antigravity.

@@ -232,6 +232,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const jobDetailsPanel = document.getElementById('job-details');
 
     function renderJobDetails(jobKey) {
+        if (jobKey !== 'trucker') {
+            jobDetailsPanel.innerHTML = `
+                <div class="job-detail-content" style="text-align: center; padding: 60px 20px;">
+                    <div class="dev-icon" style="font-size: 56px; color: var(--accent-yellow); margin-bottom: 24px;">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3 style="font-size: 26px; margin-bottom: 16px;">Розділ в розробці</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6; max-width: 440px; margin: 0 auto;">
+                        Детальний опис цієї вакансії, корисні поради та інтеграція з калькулятором наразі знаходяться в розробці.
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
         const job = jobsData[jobKey];
         if (!job) return;
 
@@ -270,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h4>Опис роботи:</h4>
                     <p>${job.desc}</p>
                     
-                    <h4>Поради від сім'ї:</h4>
+                    <h4>Поради від компанії:</h4>
                     <ul class="tips-list">
                         ${tipsHtml}
                     </ul>

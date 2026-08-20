@@ -492,7 +492,7 @@ a {
 
 .tc-grid {
     display: grid;
-    grid-template-columns: 1fr 1.1fr;
+    grid-template-columns: 1fr 1.8fr;
     gap: 30px;
 }
 

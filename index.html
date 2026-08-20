@@ -125,38 +125,75 @@
                         <h3><i class="fa-solid fa-truck"></i> Наш автопарк ТК</h3>
                         <div class="home-fleet-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; flex-grow: 1;">
                             <!-- Card 1 -->
-                            <div class="home-car-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; height: 100%;">
-                                <div class="home-car-img-wrapper" style="height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%; background: rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden; padding: 5px;">
-                                    <img src="assets/truck_st680_clean.png" alt="Ceterpilort ST680" style="max-height: 95%; max-width: 95%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); transition: transform 0.3s ease;">
+                            <div class="home-car-card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; align-items: stretch; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
+                                <div class="home-car-img-wrapper" style="height: 170px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; width: 100%; border-radius: 12px; overflow: hidden; position: relative;">
+                                    <img src="assets/truck_st680_clean.png" alt="ST680" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
                                 </div>
-                                <div>
-                                    <p style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 4px 0;">Ceterpilort</p>
-                                    <h4 style="font-size: 15px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">ST680</h4>
-                                    <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: rgba(0, 119, 255, 0.1); border: 1px solid rgba(0, 119, 255, 0.2); color: var(--accent-blue);">4 од.</span>
+                                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; flex-grow: 1;">
+                                    <h4 style="font-size: 20px; font-weight: 800; font-family: var(--font-display); margin: 0; color: #fff; letter-spacing: 0.5px;">ST680</h4>
+                                    
+                                    <!-- Badges Container -->
+                                    <div style="width: 100%; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 204, 0, 0.06); border: 1px solid rgba(255, 204, 0, 0.15); border-radius: 8px; padding: 8px 12px; color: var(--accent-yellow); font-size: 13px; font-weight: 600;">
+                                            <span style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-droplet"></i> Бензин</span>
+                                            <span>10 т</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Quantity -->
+                                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: var(--text-secondary); font-size: 13px; font-weight: 600; margin-top: auto;">
+                                        <i class="fa-solid fa-truck" style="font-size: 11px; opacity: 0.7;"></i> 4 од.
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Card 2 -->
-                            <div class="home-car-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; height: 100%;">
-                                <div class="home-car-img-wrapper" style="height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%; background: rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden; padding: 5px;">
-                                    <img src="assets/truck_n2_clean.png" alt="Fraitliner N2" style="max-height: 95%; max-width: 95%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); transition: transform 0.3s ease;">
+                            <div class="home-car-card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; align-items: stretch; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
+                                <div class="home-car-img-wrapper" style="height: 170px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; width: 100%; border-radius: 12px; overflow: hidden; position: relative;">
+                                    <img src="assets/truck_n2_clean.png" alt="N2" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
                                 </div>
-                                <div>
-                                    <p style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 4px 0;">Fraitliner</p>
-                                    <h4 style="font-size: 15px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">N2</h4>
-                                    <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: rgba(0, 119, 255, 0.1); border: 1px solid rgba(0, 119, 255, 0.2); color: var(--accent-blue);">1 од.</span>
+                                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; flex-grow: 1;">
+                                    <h4 style="font-size: 20px; font-weight: 800; font-family: var(--font-display); margin: 0; color: #fff; letter-spacing: 0.5px;">N2</h4>
+                                    
+                                    <!-- Badges Container -->
+                                    <div style="width: 100%; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0, 119, 255, 0.06); border: 1px solid rgba(0, 119, 255, 0.15); border-radius: 8px; padding: 8px 12px; color: var(--accent-blue); font-size: 13px; font-weight: 600;">
+                                            <span style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-box"></i> Вантаж</span>
+                                            <span>5 т</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Quantity -->
+                                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: var(--text-secondary); font-size: 13px; font-weight: 600; margin-top: auto;">
+                                        <i class="fa-solid fa-truck" style="font-size: 11px; opacity: 0.7;"></i> 1 од.
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Card 3 -->
-                            <div class="home-car-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; height: 100%;">
-                                <div class="home-car-img-wrapper" style="height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%; background: rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden; padding: 5px;">
-                                    <img src="assets/truck_389_clean.png" alt="Steelbilt 389" style="max-height: 95%; max-width: 95%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); transition: transform 0.3s ease;">
+                            <div class="home-car-card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; align-items: stretch; justify-content: space-between; height: 100%; transition: all 0.3s ease;">
+                                <div class="home-car-img-wrapper" style="height: 170px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; width: 100%; border-radius: 12px; overflow: hidden; position: relative;">
+                                    <img src="assets/truck_389_clean.png" alt="389" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
                                 </div>
-                                <div>
-                                    <p style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 4px 0;">Steelbilt</p>
-                                    <h4 style="font-size: 15px; font-weight: 600; margin: 0 0 8px 0; color: #fff;">389</h4>
-                                    <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: rgba(0, 119, 255, 0.1); border: 1px solid rgba(0, 119, 255, 0.2); color: var(--accent-blue);">2 од.</span>
+                                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; flex-grow: 1;">
+                                    <h4 style="font-size: 20px; font-weight: 800; font-family: var(--font-display); margin: 0; color: #fff; letter-spacing: 0.5px;">389</h4>
+                                    
+                                    <!-- Badges Container -->
+                                    <div style="width: 100%; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0, 119, 255, 0.06); border: 1px solid rgba(0, 119, 255, 0.15); border-radius: 8px; padding: 8px 12px; color: var(--accent-blue); font-size: 13px; font-weight: 600;">
+                                            <span style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-box"></i> Вантаж</span>
+                                            <span>10 т</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 204, 0, 0.06); border: 1px solid rgba(255, 204, 0, 0.15); border-radius: 8px; padding: 8px 12px; color: var(--accent-yellow); font-size: 13px; font-weight: 600;">
+                                            <span style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-droplet"></i> Бензин</span>
+                                            <span>5 т</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Quantity -->
+                                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: var(--text-secondary); font-size: 13px; font-weight: 600; margin-top: auto;">
+                                        <i class="fa-solid fa-truck" style="font-size: 11px; opacity: 0.7;"></i> 2 од.
+                                    </div>
                                 </div>
                             </div>
                         </div>

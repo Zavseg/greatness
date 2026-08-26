@@ -1,52 +1,65 @@
-import urllib.request
+"""Lightweight smoke test for the static GREATNESS portal.
+
+The test intentionally verifies stable structural contracts rather than volatile
+business content such as roster names, vehicle counts, or prices.
+"""
+from pathlib import Path
 import sys
+import urllib.request
 
-try:
-    url = "http://localhost:8000/index.html"
-    print(f"Loading {url}...")
-    with urllib.request.urlopen(url, timeout=5) as response:
-        html = response.read().decode('utf-8')
-        
-        # Verify essential updated content elements
-        verifications = {
-            "Kate Greatness": "Kate Greatness in roster",
-            "Kirill Greatness": "Kirill Greatness in roster",
-            "Antonio Banderras": "Antonio Banderras in roster",
-            "14/15": "Cars count (14/15)",
-            "47/50": "Members count (47/50)",
-            "LVL 14": "Family level 14",
-            "7 Рівень": "TC Level 7",
-            "Steelbilt 389 (JH68 / SQ74)": "Steelbilt in TC fleet",
-            "Ceterpilort ST680 (88AT / UN77 / 99VD)": "Ceterpilort in TC fleet",
-            "Fraitliner N2 (33UF)": "Fraitliner in TC fleet",
-            "Ubermacht X7": "Ubermacht X7 in family fleet",
-            "Benefactor AWG H63 6x6": "AWG 6x6 in family fleet",
-            "Chawrole Carvotte ZR1": "ZR1 in family fleet",
-            "Vapid GS Superia": "GS Superia in family fleet",
-            "Buntley Convidenal GT": "Buntley in family fleet",
-            "Pfister Teycan": "Pfister Taycan in family fleet",
-            "вік 30+ років": "Requirement Age 30+",
-            "рівень: 10+ LVL": "Requirement Level 10+",
-            "дотримання правил сім'ї": "Requirement Follow rules",
-            "assets/logo.svg": "SVG Logo inclusion"
-        }
-        
-        failures = []
-        for term, desc in verifications.items():
-            if term.lower() in html.lower():
-                print(f"[PASS] {desc}")
-            else:
-                failures.append(f"[FAIL] {desc} (Expected text: '{term}')")
-                
-        if failures:
-            print("\nVerification failures found:")
-            for f in failures:
-                print(f)
-            sys.exit(1)
+BASE_URL = "http://localhost:8000"
+
+
+def fetch(path: str) -> str:
+    with urllib.request.urlopen(f"{BASE_URL}/{path}", timeout=5) as response:
+        return response.read().decode("utf-8")
+
+
+def main() -> int:
+    html = fetch("index.html")
+
+    required_html = {
+        'id="nav-menu"': "main navigation",
+        'id="home"': "home section",
+        'id="jobs"': "jobs section",
+        'id="fleet"': "fleet section",
+        'id="prices"': "prices section",
+        'id="contracts"': "contracts section",
+        'id="gallery"': "gallery section",
+        'href="css/main.css"': "modular stylesheet entry point",
+        'src="js/app.js"': "JavaScript bootstrap",
+    }
+
+    failures = []
+    for token, description in required_html.items():
+        if token in html:
+            print(f"[PASS] {description}")
         else:
-            print("\nAll HTML verifications passed successfully!")
-            sys.exit(0)
+            failures.append(f"[FAIL] Missing {description}: {token}")
 
-except Exception as e:
-    print(f"Error loading website: {e}")
-    sys.exit(1)
+    required_files = [
+        "css/main.css",
+        "css/base.css",
+        "css/sections/contracts.css",
+        "js/app.js",
+        "js/modules/navigation.js",
+        "js/modules/contracts.js",
+    ]
+
+    for relative_path in required_files:
+        if Path(relative_path).is_file():
+            print(f"[PASS] {relative_path}")
+        else:
+            failures.append(f"[FAIL] Missing file: {relative_path}")
+
+    if failures:
+        print("\nSmoke test failures:")
+        print("\n".join(failures))
+        return 1
+
+    print("\nStatic structure smoke test passed.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

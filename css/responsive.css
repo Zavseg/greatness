@@ -1,0 +1,235 @@
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .hero-section {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+    
+    .rating-badge {
+        margin: 0 auto 20px;
+    }
+
+    .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .quick-stats {
+        justify-content: center;
+    }
+
+    .contact-buttons {
+        justify-content: center;
+    }
+
+    .hero-image-wrapper {
+        max-width: 650px;
+        margin: 0 auto;
+    }
+
+    .tc-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .jobs-container {
+        grid-template-columns: 1fr;
+    }
+
+    .jobs-sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        scroll-snap-type: x mandatory;
+    }
+
+    .job-menu-btn {
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        min-width: 200px;
+    }
+
+    .prices-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 70px;
+    }
+
+    .header-container {
+        padding: 0 16px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    /* Burger Menu Show */
+    .burger-menu {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: var(--header-height);
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - var(--header-height));
+        background: var(--bg-primary);
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 40px 24px;
+        gap: 20px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: var(--glass-blur);
+        border-top: 1px solid var(--border-color);
+        overflow-y: auto;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-link {
+        font-size: 18px;
+        width: 100%;
+        padding: 12px 16px;
+    }
+
+    /* Burger Menu Active Animation */
+    .burger-menu.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .burger-menu.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .burger-menu.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .hero-title {
+        font-size: 38px;
+    }
+
+    .tc-section {
+        padding: 24px;
+    }
+
+    .tc-header h2 {
+        font-size: 28px;
+    }
+
+    .family-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .prices-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-wrapper input {
+        width: 100%;
+    }
+
+    .search-wrapper input:focus {
+        width: 100%;
+    }
+
+    .lightbox-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .lightbox-nav.prev { left: 10px; }
+    .lightbox-nav.next { right: 10px; }
+    
+    .lightbox-close {
+        top: 15px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 32px;
+    }
+
+    .quick-stats {
+        gap: 15px;
+    }
+
+    .stat-val {
+        font-size: 24px;
+    }
+
+    .contact-buttons .btn {
+        width: 100%;
+    }
+
+    .tc-perks {
+        justify-content: center;
+    }
+
+    .perk-tag {
+        font-size: 12px;
+    }
+
+    .roster-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .roster-avatar {
+        margin: 0 auto;
+    }
+
+    .rank-badge {
+        margin: 0 auto 6px;
+    }
+
+    .fleet-filters {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .filter-btn {
+        flex: 1 1 45%;
+        font-size: 12px;
+        padding: 8px 12px;
+        text-align: center;
+    }
+}
+
+/* Home Page Fleet Cards styling */
+.home-car-card {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-car-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-blue) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 10px 25px rgba(0, 119, 255, 0.15);
+}
+
+.home-car-card:hover .home-car-img-wrapper img {
+    transform: scale(1.08);
+}
+
+@media (max-width: 768px) {
+    .home-fleet-grid {
+        grid-template-columns: 1fr !important;
+    }
+}

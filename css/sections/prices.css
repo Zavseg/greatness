@@ -1,0 +1,250 @@
+/* ==========================================================================
+   SECTION 5: PRICES
+   ========================================================================== */
+
+.prices-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 30px;
+    align-items: start;
+}
+
+.prices-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.category-selectors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.cat-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all var(--transition-speed);
+}
+
+.cat-btn:hover, .cat-btn.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.cat-btn.active {
+    background: rgba(255, 204, 0, 0.1);
+    border-color: var(--accent-yellow);
+    color: var(--accent-yellow);
+}
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-wrapper i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.search-wrapper input {
+    background: rgba(7, 10, 19, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 15px 10px 36px;
+    color: #fff;
+    outline: none;
+    font-size: 14px;
+    width: 240px;
+    transition: all var(--transition-speed);
+}
+
+.search-wrapper input:focus {
+    border-color: var(--accent-yellow);
+    width: 280px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.prices-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.prices-table th, .prices-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.prices-table th {
+    font-family: var(--font-display);
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.prices-table td {
+    font-size: 14px;
+}
+
+.prices-table tbody tr {
+    transition: background-color var(--transition-speed);
+}
+
+.prices-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.btn-calc-add {
+    background: transparent;
+    border: 1px solid var(--accent-yellow);
+    color: var(--accent-yellow);
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-weight: 600;
+    transition: all var(--transition-speed);
+}
+
+.btn-calc-add:hover {
+    background: var(--accent-yellow);
+    color: var(--bg-primary);
+}
+
+/* Calculator Style */
+.calculator-card h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.calc-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.form-control {
+    background: rgba(7, 10, 19, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #fff;
+    font-family: var(--font-sans);
+    outline: none;
+    font-size: 14px;
+    width: 100%;
+}
+
+.form-control:focus {
+    border-color: var(--accent-yellow);
+}
+
+.form-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.checkbox-group input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--accent-yellow);
+}
+
+.checkbox-group label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.calc-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 10px 0;
+}
+
+.calc-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.result-row span:last-child {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.result-row.total {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
+    margin-top: 4px;
+}
+
+.result-row.total span:last-child {
+    font-size: 22px;
+    color: var(--accent-yellow);
+}
+
+.text-glow-yellow {
+    text-shadow: 0 0 12px rgba(255, 204, 0, 0.3);
+}

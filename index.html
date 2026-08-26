@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/main.css?v=1.9.32">
 </head>
 <body>
     <!-- Background Glow Elements -->
@@ -32,6 +32,7 @@
                 <a href="#jobs" class="nav-link" data-tab="jobs"><i class="fa-solid fa-briefcase"></i> Роботи</a>
                 <a href="#fleet" class="nav-link" data-tab="fleet"><i class="fa-solid fa-truck-moving"></i> Автопарк</a>
                 <a href="#prices" class="nav-link" data-tab="prices"><i class="fa-solid fa-scale-balanced"></i> Скупники</a>
+                <a href="#contracts" class="nav-link" data-tab="contracts"><i class="fa-solid fa-file-contract"></i> Звіти контрактів</a>
                 <a href="#gallery" class="nav-link" data-tab="gallery"><i class="fa-solid fa-images"></i> Галерея</a>
             </nav>
 
@@ -48,7 +49,7 @@
     <!-- Main Content Area -->
     <main class="main-content">
         
-        <!-- SECTION 1: HOME (ГОЛОВНА) -->
+        <!-- SECTION 1: HOME -->
         <section id="home" class="tab-content active">
             <!-- Hero Grid -->
             <div class="hero-section">
@@ -205,7 +206,7 @@
             </div>
         </section>
 
-        <!-- SECTION 2: FAMILY (СІМ'Я) -->
+        <!-- SECTION 2: FAMILY -->
         <section id="family" class="tab-content">
             <div class="section-title">
                 <h2>ПРО КОМПАНІЮ <span class="logo-accent">GREATNESS</span></h2>
@@ -233,7 +234,7 @@
                 </div>
             </div>
         </section>
-        <!-- SECTION 3: JOBS (РОБОТИ) -->
+        <!-- SECTION 3: JOBS -->
         <section id="jobs" class="tab-content">
             <div class="section-title">
                 <h2>КАТАЛОГ РОБІТ <span class="logo-accent">UKRAINE GTA5</span></h2>
@@ -327,7 +328,7 @@
             </div>
         </section>
 
-        <!-- SECTION 4: FLEET (АВТОПАРК) -->
+        <!-- SECTION 4: FLEET -->
         <section id="fleet" class="tab-content">
             <div class="section-title">
                 <h2>АВТОПАРК <span class="logo-accent">GREATNESS LOGISTICS</span></h2>
@@ -344,7 +345,7 @@
                 </p>
             </div>
         </section>
-        <!-- SECTION 5: PRICES (СКУПНИКИ) -->
+        <!-- SECTION 5: PRICES -->
         <section id="prices" class="tab-content">
             <div class="section-title">
                 <h2>БАЗА ЦІН СКУПНИКІВ <span class="logo-accent">UKRAINE GTA5</span></h2>
@@ -377,7 +378,7 @@
                                     <th>Назва товару</th>
                                     <th>Ціна скупника</th>
                                     <th>Одиниця виміру</th>
-                                    <th>Дія</th>
+                                    <th data-sort-disabled="true">Дія</th>
                                 </tr>
                             </thead>
                             <tbody id="prices-tbody">
@@ -439,7 +440,333 @@
             </div>
         </section>
 
-        <!-- SECTION 6: GALLERY (ГАЛЕРЕЯ) -->
+        <!-- SECTION 6: CONTRACTS REPORTING -->
+        <section id="contracts" class="tab-content">
+            <div class="section-title">
+                <h2>ОБЛІК КОНТРАКТІВ ТА ПРЕМІЙ <span class="logo-accent">GREATNESS</span></h2>
+                <p>Завантаження скріншотів виконаних контрактів, авто-розпізнавання, розрахунок премій та аналітика</p>
+            </div>
+
+            <!-- Client-side access gate. This is a convenience lock, not real server-side security. -->
+            <div class="contracts-access-gate glass-card" id="contracts-access-gate">
+                <div class="access-gate-icon"><i class="fa-solid fa-lock"></i></div>
+                <div class="access-gate-copy">
+                    <h3>Доступ до звітів контрактів</h3>
+                    <p>Введіть пароль, щоб відкрити обробку скріншотів та журнал виплат.</p>
+                </div>
+                <div class="access-gate-form">
+                    <input type="password" id="contracts-password-input" class="form-control" placeholder="Пароль" inputmode="numeric" autocomplete="off">
+                    <button type="button" class="btn btn-accent" id="btn-unlock-contracts">
+                        <i class="fa-solid fa-unlock-keyhole"></i> Відкрити
+                    </button>
+                </div>
+                <span class="access-gate-error" id="contracts-password-error"></span>
+            </div>
+
+            <div id="contracts-protected-content" class="contracts-protected-content" hidden>
+
+            <!-- Sub-tab Navigation -->
+            <div class="contracts-subnav">
+                <button class="subtab-btn active" data-subtab="contracts-sub-upload">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Завантаження й обробка
+                </button>
+                <button class="subtab-btn" data-subtab="contracts-sub-journal">
+                    <i class="fa-solid fa-chart-line"></i> Журнал та Звіти
+                </button>
+            </div>
+
+            <!-- SUB-TAB 1: UPLOAD & PROCESS -->
+            <div id="contracts-sub-upload" class="contracts-subtab-content active">
+
+                <!-- Uploaded Screenshots Cards List -->
+                <div class="cards-header" id="cards-header" style="display: none;">
+                    <h3><i class="fa-solid fa-images"></i> Завантажені скріншоти (<span id="upload-count">0</span>)</h3>
+                    <button class="btn btn-danger-sm" id="btn-clear-uploaded">
+                        <i class="fa-solid fa-trash-can"></i> Очистити список
+                    </button>
+                </div>
+
+                <div id="contract-cards-container" class="contract-cards-grid">
+                    <!-- Dynamic screenshot cards populated by JS -->
+                </div>
+
+                <!-- Batch Actions Toolbar -->
+                <div class="batch-bar glass-card" id="contract-batch-bar">
+                    <div class="batch-title">
+                        <i class="fa-solid fa-wand-magic-sparkles text-accent-yellow"></i>
+                        <span>Групові дії з файлами</span>
+                    </div>
+
+                    <div class="batch-controls">
+                        <!-- Roster Select -->
+                        <div class="batch-group">
+                            <label for="global-nickname-select"><i class="fa-solid fa-users"></i> Обрати ники:</label>
+                            <div class="multi-select-wrap">
+                                <select id="global-nickname-select" class="form-control">
+                                    <option value="">-- Виберіть участника --</option>
+                                    <!-- Populated dynamically by JS -->
+                                </select>
+                                <button type="button" class="btn btn-secondary" id="btn-add-global-nick" title="Додати обраний ник до глобального списку для застосування">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Add custom nickname -->
+                        <div class="batch-group">
+                            <label for="new-custom-nickname"><i class="fa-solid fa-user-plus"></i> Новий ник:</label>
+                            <div class="input-with-btn">
+                                <input type="text" id="new-custom-nickname" placeholder="Нікнейм гравця..." class="form-control">
+                                <button type="button" class="btn btn-secondary" id="btn-create-custom-nick">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Selected Batch Nicknames Tags Preview -->
+                        <div class="batch-tags-container" id="global-selected-tags">
+                            <!-- Selected nicknames will appear here as removable tags -->
+                        </div>
+
+                        <!-- Batch Action Buttons -->
+                        <div class="batch-actions">
+                            <button type="button" class="btn btn-accent" id="btn-apply-nicks-to-all">
+                                <i class="fa-solid fa-user-check"></i> 1 Клік: Застосувати ники до всіх скріншотів
+                            </button>
+                            <button type="button" class="btn btn-primary" id="btn-process-all-ocr">
+                                <i class="fa-solid fa-microchip"></i> Обробити всі (OCR)
+                            </button>
+                            <button type="button" class="btn btn-success" id="btn-save-all-to-journal">
+                                <i class="fa-solid fa-floppy-disk"></i> Зберегти всі та відкрити журнал
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload controls intentionally stay at the bottom of the processing flow. -->
+<!-- Dropzone Area -->
+                <div class="dropzone glass-card" id="contract-dropzone">
+                    <input type="file" id="contract-file-input" multiple accept="image/*" class="dropzone-file-input">
+                    <div class="dropzone-content">
+                        <div class="dropzone-icon">
+                            <i class="fa-solid fa-file-image"></i>
+                        </div>
+                        <h3>Перетягніть скріншоти контрактів сюди</h3>
+                        <p>або <span class="dropzone-browse">натисніть для вибору файлів</span> (підтримується декілька зображень)</p>
+                        <div class="dropzone-paste-row">
+                            <button type="button" class="btn btn-secondary" id="btn-paste-contract-image">
+                                <i class="fa-solid fa-paste"></i> Вставити з буфера
+                            </button>
+                            <span>Також можна натиснути Ctrl+V, коли відкрито цей розділ.</span>
+                        </div>
+                        <span class="dropzone-hint">Підтримуються формати PNG, JPG, JPEG, WEBP з гри Ukraine GTA 5</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SUB-TAB 2: JOURNAL & ANALYTICS -->
+            <div id="contracts-sub-journal" class="contracts-subtab-content">
+                
+                <!-- Filter Bar -->
+                <div class="journal-filter-bar glass-card" id="journal-filter-bar">
+                    <div class="filter-period-buttons" id="journal-period-buttons">
+                        <button type="button" class="period-btn active" data-period="current-week"><i class="fa-solid fa-calendar-week"></i> Поточний тиждень</button>
+                        <button type="button" class="period-btn" data-period="previous-week"><i class="fa-solid fa-calendar-minus"></i> Минулий тиждень</button>
+                        <button type="button" class="period-btn" data-period="today"><i class="fa-solid fa-calendar-day"></i> Сьогодні</button>
+                        <button type="button" class="period-btn" data-period="current-month"><i class="fa-solid fa-calendar-days"></i> Поточний місяць</button>
+                        <button type="button" class="period-btn" data-period="previous-month"><i class="fa-solid fa-calendar-minus"></i> Минулий місяць</button>
+                        <button type="button" class="period-btn" data-period="custom"><i class="fa-solid fa-sliders"></i> Період з / по</button>
+                    </div>
+                    <div class="journal-period-summary">
+                        <span>Обраний період:</span>
+                        <strong id="journal-active-period-label">Поточний тиждень</strong>
+                        <button type="button" class="btn btn-undo btn-compact" id="btn-undo-journal" disabled><i class="fa-solid fa-arrow-rotate-left"></i> <span class="undo-label">UNDO</span></button>
+                        <button type="button" class="btn btn-secondary btn-compact" id="btn-reset-journal-filter"><i class="fa-solid fa-rotate-left"></i> Скинути пошук</button>
+                    </div>
+
+                    <!-- Custom Range Selector (Hidden by default) -->
+                    <div class="custom-range-selector" id="custom-range-selector" style="display: none;">
+                        <div class="range-field">
+                            <label for="range-start-date">З:</label>
+                            <div class="date-picker-control">
+                                <input type="date" id="range-start-date" class="form-control">
+                                <button type="button" class="date-picker-btn" id="btn-open-range-start" aria-label="Відкрити календар для початкової дати"><i class="fa-solid fa-calendar-days"></i></button>
+                            </div>
+                        </div>
+                        <div class="range-field">
+                            <label for="range-end-date">По:</label>
+                            <div class="date-picker-control">
+                                <input type="date" id="range-end-date" class="form-control">
+                                <button type="button" class="date-picker-btn" id="btn-open-range-end" aria-label="Відкрити календар для кінцевої дати"><i class="fa-solid fa-calendar-days"></i></button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="btn-apply-custom-range">
+                            <i class="fa-solid fa-filter"></i> Застосувати
+                        </button>
+                    </div>
+
+                    <!-- Search Filter -->
+                    <div class="journal-search-wrap">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="journal-search-input" placeholder="Пошук за ніком чи контрактом..." class="form-control" list="journal-search-suggestions" autocomplete="off">
+                        <datalist id="journal-search-suggestions"></datalist>
+                    </div>
+                </div>
+
+                <!-- Stat Cards -->
+                <div class="journal-stats-grid">
+                    <div class="journal-stat-card glass-card"><div class="stat-icon icon-green"><i class="fa-solid fa-circle-check"></i></div><div class="stat-info"><span class="stat-label">Вже виплачено</span><span class="stat-value highlight-green" id="stat-paid-payouts">$ 0</span></div></div>
+                    <div class="journal-stat-card glass-card"><div class="stat-icon icon-purple"><i class="fa-solid fa-wallet"></i></div><div class="stat-info"><span class="stat-label">Залишилось виплатити</span><span class="stat-value payout-due" id="stat-due-payouts">$ 0</span></div></div>
+                    <div class="journal-stat-card glass-card"><div class="stat-icon icon-blue"><i class="fa-solid fa-list-check"></i></div><div class="stat-info"><span class="stat-label">Виконано контрактів</span><span class="stat-value" id="stat-total-contracts">0 шт</span></div></div>
+                </div>
+
+                <!-- Export & Action Bar -->
+                <div class="export-bar glass-card">
+                    <div class="export-title">
+                        <i class="fa-solid fa-file-export text-accent-blue"></i>
+                        <span>Експорт та копіювання звітів</span>
+                    </div>
+
+                    <div class="export-buttons">
+                        <button type="button" class="btn btn-accent" id="btn-copy-gdocs">
+                            <i class="fa-solid fa-copy"></i> Скопіювати для Google Docs / Discord
+                        </button>
+                        <button type="button" class="btn btn-primary" id="btn-export-csv">
+                            <i class="fa-solid fa-file-csv"></i> Завантажити CSV (Google Sheets)
+                        </button>
+                        <button type="button" class="btn btn-success" id="btn-refresh-google-sheet">
+                            <i class="fa-solid fa-rotate"></i> Оновити з Google Sheets
+                        </button>
+                        <label class="mark-all-paid-control">
+                            <input type="checkbox" id="mark-all-paid-checkbox">
+                            <span><i class="fa-solid fa-check-double"></i> Позначити все виплаченим за період</span>
+                        </label>
+                        <button type="button" class="btn btn-danger-sm" id="btn-clear-journal">
+                            <i class="fa-solid fa-trash-can"></i> Очистити журнал
+                        </button>
+                    </div>
+                    <div class="sheet-sync-settings shared-sheet-status-panel">
+                        <div class="shared-sheet-status-row">
+                            <span id="google-sheet-status" class="google-sheet-status" data-state="syncing">
+                                <i class="fa-solid fa-arrows-rotate fa-spin"></i> Підключення до Google Sheets...
+                            </span>
+                            <button type="button" class="btn btn-secondary btn-compact" id="btn-migrate-local-to-google">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Перенести локальні дані
+                            </button>
+                        </div>
+                        <small>Спільна Google Sheet є основною базою. Локальне сховище використовується лише як тимчасовий кеш.</small>
+                    </div>
+                </div>
+
+                <!-- Dynamic contract matrix -->
+                <div class="journal-table-block glass-card">
+                    <div class="table-block-header">
+                        <h3><i class="fa-solid fa-table-cells"></i> Матриця виконаних контрактів</h3>
+                        <span class="table-subtitle">Рядок = гравець, колонка = тип контракту. Один контракт = 1, удвох = 0.5, утрьох = 0.33.</span><span class="table-period-label" data-period-label></span>
+                    </div>
+                    <div class="table-container matrix-table-container">
+                        <table class="journal-table contract-matrix-table sortable-table" id="contract-matrix-table">
+                            <thead id="contract-matrix-head"><tr><th>Нікнейм</th><th>Всього</th></tr></thead>
+                            <tbody id="contract-matrix-body"><tr><td colspan="2" class="text-center text-muted">Немає даних.</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Member Payouts Summary Table -->
+                <div class="journal-table-block glass-card">
+                    <div class="table-block-header">
+                        <h3><i class="fa-solid fa-users-viewfinder"></i> Виплати гравцям за обраний період</h3>
+                        <span class="table-subtitle">Підсумок по кожному гравцю за обраний період.</span><span class="table-period-label" data-period-label></span>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-inline-actions"><button type="button" class="btn btn-success btn-compact" id="btn-mark-visible-players-paid"><i class="fa-solid fa-check-double"></i> Позначити всіх</button></div>
+                        <table class="journal-table sortable-table" id="summary-payouts-table">
+                            <thead>
+                                <tr>
+                                    <th>Нікнейм</th>
+                                    <th>Контрактів</th>
+                                    <th>До виплати ($)</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody id="summary-payouts-tbody">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">За обраний період даних немає.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Weekly payout handoff report -->
+                <div class="journal-table-block glass-card" id="payout-handoff-report">
+                    <div class="table-block-header">
+                        <h3><i class="fa-solid fa-money-bill-transfer"></i> Звіт для видачі премій</h3>
+                        <span class="table-subtitle">Готовий список для людини, яка фізично видає премії. Сортування - від більшої суми до меншої.</span>
+                        <span class="table-period-label" data-period-label></span>
+                    </div>
+                    <div class="table-container">
+                        <table class="journal-table sortable-table" id="payout-handoff-table">
+                            <thead><tr><th>Нікнейм</th><th>До виплати ($)</th></tr></thead>
+                            <tbody id="payout-handoff-tbody"><tr><td colspan="2" class="text-center text-muted">Немає невиплачених премій.</td></tr></tbody>
+                            <tfoot><tr><th>Всього до виплати</th><th id="payout-handoff-total">$ 0</th></tr></tfoot>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-accent" id="btn-copy-payout-report"><i class="fa-solid fa-copy"></i> Скопіювати звіт</button>
+                </div>
+
+                <!-- Full Log Table -->
+                <div class="journal-table-block glass-card">
+                    <div class="table-block-header">
+                        <h3><i class="fa-solid fa-clock-rotate-left"></i> Повний журнал збережених контрактів</h3>
+                        <span class="table-subtitle">Список записів за активним фільтром із можливістю видалення окремих записів</span><span class="table-period-label" data-period-label></span>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="journal-table sortable-table" id="history-contracts-table">
+                            <thead>
+                                <tr>
+                                    <th>Дата й час</th>
+                                    <th>Назва контракту</th>
+                                    <th>Учасники (ники)</th>
+                                    <th>Частка контракту</th>
+                                    <th>Премія на 1 люд. ($)</th>
+                                    <th>Виплата</th>
+                                    <th>Дія</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-contracts-tbody">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">Журнал порожній.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Contract values are populated only from real uploaded screenshots. -->
+                <div class="journal-table-block glass-card" id="contract-values-block">
+                    <div class="table-block-header">
+                        <h3><i class="fa-solid fa-coins"></i> Контракти та їх цінність</h3>
+                        <span class="table-subtitle">Дані формуються тільки зі збережених скріншотів. Значення не додаються вручну.</span>
+                        <span class="table-period-label" data-period-label></span>
+                    </div>
+                    <div class="table-container">
+                        <table class="journal-table sortable-table" id="contract-values-table">
+                            <thead><tr><th>Контракт</th><th>Грошова компенсація ($)</th><th>Записів</th></tr></thead>
+                            <tbody id="contract-values-tbody"><tr><td colspan="3" class="text-center text-muted">Дані з'являться після додавання реальних контрактів зі скріншотів.</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            </div><!-- /#contracts-protected-content -->
+        </section>
+
+        <!-- SECTION 7: GALLERY -->
         <section id="gallery" class="tab-content">
             <div class="section-title">
                 <h2>ГАЛЕРЕЯ ТК <span class="logo-accent">GREATNESS</span></h2>
@@ -527,6 +854,16 @@
     </footer>
 
     <!-- JS Files -->
-    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <!-- Feature scripts are split by responsibility; defer preserves load order. -->
+    <script defer src="js/modules/navigation.js"></script>
+    <script defer src="js/modules/fleet-slider.js"></script>
+    <script defer src="js/modules/jobs.js"></script>
+    <script defer src="js/modules/fleet-filter.js"></script>
+    <script defer src="js/modules/prices.js"></script>
+    <script defer src="js/modules/gallery.js"></script>
+    <script defer src="js/modules/roster.js"></script>
+    <script defer src="js/modules/contracts.js?v=1.9.32"></script>
+    <script defer src="js/app.js?v=1.9.4"></script>
 </body>
 </html>

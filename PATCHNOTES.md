@@ -1,3 +1,10 @@
+# v1.9.33 - Safety: remove full journal clear
+
+- Removed the **Очистити журнал** button from the journal UI.
+- Removed the frontend handler that could replace the full journal with an empty set.
+- Per-record deletion remains available.
+- OCR, Save All, Gemini fallback, matrix, payouts, and Google Sheets sync logic were not changed.
+
 ## v1.9.32 - Contract card action UX
 - Two primary actions are shown side by side with equal width.
 - Delete action is moved to a separate full-width row.

@@ -6,7 +6,7 @@
  * unrelated functionality.
  */
 window.GreatnessApp = window.GreatnessApp || {};
-console.info("GREATNESS Contracts build 1.9.32 loaded");
+console.info("GREATNESS Contracts build 1.9.33 loaded");
 
 window.GreatnessApp.initContracts = function initContracts() {
     // Prevent a transient duplicate badge flash while Save All is verifying rows that were just written.
@@ -3051,17 +3051,6 @@ window.GreatnessApp.initContracts = function initContracts() {
 
     if (btnSeedDemo) btnSeedDemo.addEventListener('click', () => { seedDemoEntries(true); showContractToast('Додано 20 тестових контрактів'); });
     // Demo rows are now explicit only. Never auto-seed a shared Google Sheet.
-
-    // Clear whole journal
-    const btnClearJournal = document.getElementById('btn-clear-journal');
-    if (btnClearJournal) {
-        btnClearJournal.addEventListener('click', () => {
-            if (confirm('Ви впевнені, що хочете повністю очистити весь журнал контрактів? Дію можна скасувати кнопкою UNDO.')) {
-                saveJournalEntries([], { label: 'Очищення журналу' });
-                renderJournalAnalytics();
-            }
-        });
-    }
 
     // --- EXPORT TO GOOGLE DOCS / DISCORD TEXT COPY ---
     const btnCopyGdocs = document.getElementById('btn-copy-gdocs');

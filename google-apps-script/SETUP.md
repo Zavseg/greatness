@@ -10,3 +10,22 @@
 8. Run run_local.bat.
 
 The endpoint is public at the Google transport layer, but Vision requests require the proxy token bundled in this local build. The Gemini API key is never sent to the browser.
+
+## Security setup - v1.9.34
+
+Before deploying this version, open Apps Script -> Project Settings -> Script Properties and add:
+
+- `CONTRACTS_ACCESS_PASSWORD` - the password users will enter on the Contracts page. Do not put this value in GitHub.
+- `VISION_PROXY_TOKEN` - a long random secret used only by the local Vision proxy. Do not put this value in GitHub.
+
+`CONTRACTS_AUTH_SECRET` is created automatically by Code.gs the first time a login token is issued. You do not need to create it manually.
+
+Then create a NEW Apps Script deployment/version with the updated Code.gs. The web app can remain accessible to Anyone because protected contract endpoints now require a server-signed 12-hour token.
+
+Important: v1.9.34 removes the `replaceAll` API action. `delete` accepts exactly one Entry ID per request, and mutations are written to the `Contract Audit Log` sheet.
+
+For local `server.py`, set the same Vision proxy token in the environment before launch (PowerShell example):
+
+`$env:VISION_PROXY_TOKEN="YOUR_LONG_RANDOM_TOKEN"`
+
+Then run the server normally. Never commit the real token.

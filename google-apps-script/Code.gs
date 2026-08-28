@@ -52,7 +52,20 @@ function doGet(e) {
     const action = String((e && e.parameter && e.parameter.action) || 'health');
 
     if (action === 'health') {
-      return apiResponse({ ok: true, service: 'GREATNESS Contracts API', version: '1.7.11' }, e);
+      return apiResponse({ ok: true, service: 'GREATNESS Contracts API', version: '1.9.34' }, e);
+    }
+
+    if (action === 'login') {
+      const password = String((e && e.parameter && e.parameter.password) || '');
+      if (!verifyContractsPassword(password)) {
+        Utilities.sleep(350);
+        return apiResponse({ ok: false, error: 'Unauthorized' }, e);
+      }
+      return apiResponse({ ok: true, token: createAuthToken() }, e);
+    }
+
+    if (!isAuthorizedRequest(e)) {
+      return apiResponse({ ok: false, error: 'Unauthorized' }, e);
     }
 
     if (action === 'list') {
@@ -63,19 +76,19 @@ function doGet(e) {
       return apiResponse({ ok: true, catalog: readContractCatalog() }, e);
     }
 
-    // JSONP write endpoints are intentionally supported because the static GitHub Pages
-    // frontend cannot read cross-origin Apps Script POST responses. Every mutation is
-    // acknowledged before the browser refreshes the shared journal.
+    // JSONP is used by the static GitHub Pages frontend. All protected actions
+    // require a short-lived server-signed token issued by action=login.
     if (action === 'upsert') {
       const entries = parseJsonParameter(e, 'entries', []);
-      if (!Array.isArray(entries) || !entries.length) {
-        return apiResponse({ ok: false, error: 'No entries provided' }, e);
+      if (!Array.isArray(entries) || !entries.length || entries.length > 1) {
+        return apiResponse({ ok: false, error: 'Exactly one entry is required' }, e);
       }
       const lock = LockService.getScriptLock();
       try {
         lock.waitLock(20000);
         const result = upsertEntries(entries);
         learnCatalogFromEntries(entries);
+        auditMutation('upsert', entries.map(x => String(x.id || '')));
         return apiResponse({ ok: true, ...result }, e);
       } finally {
         try { lock.releaseLock(); } catch (_) {}
@@ -84,13 +97,14 @@ function doGet(e) {
 
     if (action === 'delete') {
       const ids = parseJsonParameter(e, 'ids', []);
-      if (!Array.isArray(ids) || !ids.length) {
-        return apiResponse({ ok: false, error: 'No ids provided' }, e);
+      if (!Array.isArray(ids) || ids.length !== 1) {
+        return apiResponse({ ok: false, error: 'Exactly one id is required' }, e);
       }
       const lock = LockService.getScriptLock();
       try {
         lock.waitLock(20000);
         const deleted = deleteEntries(ids.map(String));
+        auditMutation('delete', ids.map(String));
         return apiResponse({ ok: true, deleted }, e);
       } finally {
         try { lock.releaseLock(); } catch (_) {}
@@ -104,50 +118,109 @@ function doGet(e) {
 }
 
 function doPost(e) {
-  // Vision requests return an HTML bridge so a static GitHub Pages site can receive
-  // the result through window.postMessage without exposing the Gemini API key.
+  // Vision remains a separate server-to-server path. Its proxy token is stored
+  // in Script Properties instead of source control.
   if (e && e.parameter && String(e.parameter.action || '') === 'vision') {
     return handleVisionRequest(e);
   }
 
-  const lock = LockService.getScriptLock();
-
   try {
-    lock.waitLock(20000);
-
     const payload = JSON.parse((e && e.postData && e.postData.contents) || '{}');
-    const action = String(payload.action || 'upsert');
-
-    if (action === 'upsert') {
-      const entries = Array.isArray(payload.entries) ? payload.entries : [];
-      if (!entries.length) return jsonResponse({ ok: false, error: 'No entries provided' });
-
-      const result = upsertEntries(entries);
-      learnCatalogFromEntries(entries);
-      return jsonResponse({ ok: true, ...result });
+    if (!isAuthorizedToken(String(payload.token || ''))) {
+      return jsonResponse({ ok: false, error: 'Unauthorized' });
     }
 
-    if (action === 'delete') {
-      const ids = Array.isArray(payload.ids) ? payload.ids.map(String) : [];
-      if (!ids.length) return jsonResponse({ ok: false, error: 'No ids provided' });
+    const action = String(payload.action || '');
+    const lock = LockService.getScriptLock();
+    try {
+      lock.waitLock(20000);
 
-      const deleted = deleteEntries(ids);
-      return jsonResponse({ ok: true, deleted });
+      if (action === 'upsert') {
+        const entries = Array.isArray(payload.entries) ? payload.entries : [];
+        if (entries.length !== 1) return jsonResponse({ ok: false, error: 'Exactly one entry is required' });
+        const result = upsertEntries(entries);
+        learnCatalogFromEntries(entries);
+        auditMutation('upsert', entries.map(x => String(x.id || '')));
+        return jsonResponse({ ok: true, ...result });
+      }
+
+      if (action === 'delete') {
+        const ids = Array.isArray(payload.ids) ? payload.ids.map(String) : [];
+        if (ids.length !== 1) return jsonResponse({ ok: false, error: 'Exactly one id is required' });
+        const deleted = deleteEntries(ids);
+        auditMutation('delete', ids);
+        return jsonResponse({ ok: true, deleted });
+      }
+
+      // Intentionally no replaceAll endpoint. Bulk destructive replacement is forbidden.
+      return jsonResponse({ ok: false, error: 'Unknown POST action' });
+    } finally {
+      try { lock.releaseLock(); } catch (_) {}
     }
-
-    if (action === 'replaceAll') {
-      const entries = Array.isArray(payload.entries) ? payload.entries : [];
-      replaceAllEntries(entries);
-      learnCatalogFromEntries(entries);
-      return jsonResponse({ ok: true, count: entries.length });
-    }
-
-    return jsonResponse({ ok: false, error: 'Unknown POST action' });
   } catch (error) {
     return jsonResponse({ ok: false, error: String(error) });
-  } finally {
-    try { lock.releaseLock(); } catch (_) {}
   }
+}
+
+function verifyContractsPassword(password) {
+  const expected = PropertiesService.getScriptProperties().getProperty('CONTRACTS_ACCESS_PASSWORD') || '';
+  return Boolean(expected) && String(password) === expected;
+}
+
+function createAuthToken() {
+  const secret = getAuthSigningSecret();
+  const expiresAt = Date.now() + (12 * 60 * 60 * 1000);
+  const nonce = Utilities.getUuid();
+  const payload = `${expiresAt}.${nonce}`;
+  const signature = Utilities.base64EncodeWebSafe(Utilities.computeHmacSha256Signature(payload, secret)).replace(/=+$/g, '');
+  return `${payload}.${signature}`;
+}
+
+function isAuthorizedRequest(e) {
+  return isAuthorizedToken(String((e && e.parameter && e.parameter.token) || ''));
+}
+
+function isAuthorizedToken(token) {
+  try {
+    const parts = String(token || '').split('.');
+    if (parts.length !== 3) return false;
+    const expiresAt = Number(parts[0]);
+    if (!Number.isFinite(expiresAt) || expiresAt < Date.now()) return false;
+    const payload = `${parts[0]}.${parts[1]}`;
+    const expected = Utilities.base64EncodeWebSafe(Utilities.computeHmacSha256Signature(payload, getAuthSigningSecret())).replace(/=+$/g, '');
+    return constantTimeEquals(parts[2], expected);
+  } catch (_) {
+    return false;
+  }
+}
+
+function getAuthSigningSecret() {
+  const props = PropertiesService.getScriptProperties();
+  let secret = props.getProperty('CONTRACTS_AUTH_SECRET');
+  if (!secret) {
+    secret = `${Utilities.getUuid()}${Utilities.getUuid()}`;
+    props.setProperty('CONTRACTS_AUTH_SECRET', secret);
+  }
+  return secret;
+}
+
+function constantTimeEquals(a, b) {
+  a = String(a || ''); b = String(b || '');
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+function auditMutation(action, ids) {
+  const ss = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
+  let sheet = ss.getSheetByName('Contract Audit Log');
+  if (!sheet) {
+    sheet = ss.insertSheet('Contract Audit Log');
+    sheet.appendRow(['Timestamp', 'Action', 'Entry IDs']);
+    sheet.setFrozenRows(1);
+  }
+  sheet.appendRow([new Date(), String(action), (ids || []).join(', ')]);
 }
 
 function getContractsSheet() {
@@ -356,20 +429,6 @@ function deleteEntries(ids) {
   return deleted;
 }
 
-function replaceAllEntries(entries) {
-  const sheet = getContractsSheet();
-  const lastRow = sheet.getLastRow();
-  if (lastRow > 1) {
-    sheet.getRange(2, 1, lastRow - 1, HEADERS.length).clearContent();
-  }
-
-  if (!entries.length) return;
-
-  const now = new Date();
-  const rows = entries.map(entry => entryToRow(entry, now, now));
-  sheet.getRange(2, 1, rows.length, HEADERS.length).setValues(rows);
-}
-
 function readIndex(sheet) {
   const map = new Map();
   const lastRow = sheet.getLastRow();
@@ -489,7 +548,7 @@ function jsonResponse(payload) {
 function handleVisionRequest(e) {
   const requestId = String((e.parameter && e.parameter.requestId) || '');
   const proxyMode = String((e.parameter && e.parameter.proxyMode) || '');
-  const expectedProxyToken = 'pJLFPtmR5sSx8PqHcAYUSxF0rPmTG8fV';
+  const expectedProxyToken = PropertiesService.getScriptProperties().getProperty('VISION_PROXY_TOKEN') || '';
   try {
     if (proxyMode === 'json' && String((e.parameter && e.parameter.proxyToken) || '') !== expectedProxyToken) {
       return jsonResponse({ ok: false, requestId: requestId, error: 'Unauthorized Vision proxy' });

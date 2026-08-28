@@ -1,0 +1,17 @@
+# Local development only
+run_local.bat
+server.py
+.env.local
+.env
+
+# Python/cache/test files
+__pycache__/
+*.py[cod]
+scratch/
+.pytest_cache/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

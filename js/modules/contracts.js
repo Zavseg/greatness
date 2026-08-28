@@ -6,7 +6,7 @@
  * unrelated functionality.
  */
 window.GreatnessApp = window.GreatnessApp || {};
-console.info("GREATNESS Contracts build 1.9.33 loaded");
+console.info("GREATNESS Contracts build 1.9.36 loaded");
 
 window.GreatnessApp.initContracts = function initContracts() {
     // Prevent a transient duplicate badge flash while Save All is verifying rows that were just written.
@@ -56,8 +56,8 @@ window.GreatnessApp.initContracts = function initContracts() {
     const LOCAL_STORAGE_KEY = 'greatness_contracts_journal';
     const ROSTER_STORAGE_KEY = 'greatness_family_roster';
     const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxMPU6k6jUcO6Qs_A59eyDKOTagyArV_Gxqvma0PBrCVwH_0DA6ADV5OvYIFz9jA2Tgyw/exec';
-    const CONTRACTS_ACCESS_SESSION_KEY = 'greatness_contracts_unlocked';
-    const CONTRACTS_ACCESS_PASSWORD = '777';
+    const CONTRACTS_ACCESS_SESSION_KEY = 'greatness_contracts_auth_token';
+    let contractsAuthToken = sessionStorage.getItem(CONTRACTS_ACCESS_SESSION_KEY) || '';
     const DEMO_SEED_STORAGE_KEY = 'greatness_contracts_demo_seed_v135';
 
     // Google Sheets is the source of truth. localStorage is only an offline cache so
@@ -93,39 +93,69 @@ window.GreatnessApp.initContracts = function initContracts() {
     function setContractsUnlocked(isUnlocked) {
         if (accessGate) accessGate.hidden = isUnlocked;
         if (protectedContent) protectedContent.hidden = !isUnlocked;
-        if (isUnlocked) sessionStorage.setItem(CONTRACTS_ACCESS_SESSION_KEY, '1');
+        if (!isUnlocked) {
+            contractsAuthToken = '';
+            sessionStorage.removeItem(CONTRACTS_ACCESS_SESSION_KEY);
+        }
     }
 
-    function tryUnlockContracts() {
+    function jsonpRequest(params, timeoutMs = 12000) {
+        return new Promise((resolve, reject) => {
+            const callbackName = `greatnessAuthCallback_${Date.now()}_${++googleSheetRequestId}`;
+            const script = document.createElement('script');
+            const timeout = window.setTimeout(() => finish(new Error('Request timed out')), timeoutMs);
+            function cleanup() { window.clearTimeout(timeout); delete window[callbackName]; script.remove(); }
+            function finish(error, payload) { cleanup(); error ? reject(error) : resolve(payload); }
+            window[callbackName] = payload => finish(null, payload);
+            script.onerror = () => finish(new Error('Request failed'));
+            const query = new URLSearchParams({ ...params, callback: callbackName, _: String(Date.now()) });
+            script.src = `${GOOGLE_SHEETS_API_URL}?${query.toString()}`;
+            document.head.appendChild(script);
+        });
+    }
+
+    async function tryUnlockContracts() {
         const value = passwordInput ? passwordInput.value.trim() : '';
-        if (value === CONTRACTS_ACCESS_PASSWORD) {
+        if (!value) return;
+        if (unlockButton) unlockButton.disabled = true;
+        if (passwordError) passwordError.textContent = 'Перевірка...';
+        try {
+            const payload = await jsonpRequest({ action: 'login', password: value });
+            if (!payload?.ok || !payload?.token) throw new Error('Unauthorized');
+            contractsAuthToken = payload.token;
+            sessionStorage.setItem(CONTRACTS_ACCESS_SESSION_KEY, contractsAuthToken);
+            if (passwordInput) passwordInput.value = '';
             if (passwordError) passwordError.textContent = '';
             setContractsUnlocked(true);
-            return;
+            setSheetStatus('syncing', 'Підключення до Google Sheets...');
+            await Promise.allSettled([loadContractCatalogFromGoogleSheet(), loadJournalFromGoogleSheet()]);
+        } catch (_) {
+            setContractsUnlocked(false);
+            if (passwordError) passwordError.textContent = 'Невірний пароль або сесія недоступна.';
+        } finally {
+            if (unlockButton) unlockButton.disabled = false;
         }
-        if (passwordError) passwordError.textContent = 'Невірний пароль.';
     }
 
     if (unlockButton) unlockButton.addEventListener('click', tryUnlockContracts);
     if (passwordInput) {
+        let autoLoginTimer = null;
         passwordInput.addEventListener('keydown', event => {
-            if (event.key === 'Enter') tryUnlockContracts();
-        });
-
-        // Auto-submit the temporary PIN as soon as the complete valid value is entered.
-        // This removes an unnecessary extra tap on mobile keyboards.
-        passwordInput.addEventListener('input', () => {
-            const value = passwordInput.value.trim();
-            if (value === CONTRACTS_ACCESS_PASSWORD) {
+            if (event.key === 'Enter') {
+                window.clearTimeout(autoLoginTimer);
                 tryUnlockContracts();
-            } else if (value.length >= CONTRACTS_ACCESS_PASSWORD.length && passwordError) {
-                passwordError.textContent = 'Невірний пароль.';
-            } else if (passwordError) {
-                passwordError.textContent = '';
             }
         });
+        // Server-side auth means the browser no longer knows the real password length.
+        // Submit automatically after the user stops typing, preserving the old no-Enter UX.
+        passwordInput.addEventListener('input', () => {
+            window.clearTimeout(autoLoginTimer);
+            if (passwordError) passwordError.textContent = '';
+            if (!passwordInput.value.trim()) return;
+            autoLoginTimer = window.setTimeout(tryUnlockContracts, 450);
+        });
     }
-    setContractsUnlocked(sessionStorage.getItem(CONTRACTS_ACCESS_SESSION_KEY) === '1');
+    setContractsUnlocked(Boolean(contractsAuthToken));
 
     // Load saved custom roster if present
     const savedRoster = localStorage.getItem(ROSTER_STORAGE_KEY);
@@ -2351,7 +2381,8 @@ window.GreatnessApp.initContracts = function initContracts() {
                 finish(null, payload);
             };
             script.onerror = () => finish(new Error('Contract catalog request failed'));
-            script.src = `${GOOGLE_SHEETS_API_URL}?action=catalog&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
+            if (!contractsAuthToken) return finish(new Error('Unauthorized'));
+            script.src = `${GOOGLE_SHEETS_API_URL}?action=catalog&token=${encodeURIComponent(contractsAuthToken)}&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
             document.head.appendChild(script);
         });
     }
@@ -2393,7 +2424,8 @@ window.GreatnessApp.initContracts = function initContracts() {
             };
 
             script.onerror = () => finish(new Error('Google Sheets request failed'));
-            script.src = `${GOOGLE_SHEETS_API_URL}?action=list&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
+            if (!contractsAuthToken) return finish(new Error('Unauthorized'));
+            script.src = `${GOOGLE_SHEETS_API_URL}?action=list&token=${encodeURIComponent(contractsAuthToken)}&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
             document.head.appendChild(script);
         });
     }
@@ -2421,8 +2453,10 @@ window.GreatnessApp.initContracts = function initContracts() {
             window[callbackName] = response => finish(null, response);
             script.onerror = () => finish(new Error('Google Sheets write request failed'));
 
+            if (!contractsAuthToken) return finish(new Error('Unauthorized'));
             const params = new URLSearchParams({
                 action,
+                token: contractsAuthToken,
                 callback: callbackName,
                 _: String(Date.now())
             });
@@ -2452,8 +2486,8 @@ window.GreatnessApp.initContracts = function initContracts() {
             });
 
             if (removedIds.length) {
-                for (let i = 0; i < removedIds.length; i += 20) {
-                    await googleSheetJsonpWrite('delete', { ids: removedIds.slice(i, i + 20) });
+                for (let i = 0; i < removedIds.length; i += 1) {
+                    await googleSheetJsonpWrite('delete', { ids: [removedIds[i]] });
                 }
             }
 
@@ -3181,19 +3215,21 @@ window.GreatnessApp.initContracts = function initContracts() {
     // Render the cache immediately, then replace it with the authoritative
     // Google Sheet data as soon as the network response arrives.
     renderJournalAnalytics();
-    setSheetStatus('syncing', 'Підключення до Google Sheets...');
-    Promise.allSettled([
-        loadContractCatalogFromGoogleSheet(),
-        loadJournalFromGoogleSheet()
-    ]).then(results => {
-        if (results[0].status === 'rejected') {
-            console.warn('Contract catalog initial load failed:', results[0].reason);
-        }
-        if (results[1].status === 'rejected') {
-            console.error('Google Sheets initial load failed:', results[1].reason);
-            renderJournalAnalytics();
-        }
-    });
+    if (contractsAuthToken) {
+        setSheetStatus('syncing', 'Підключення до Google Sheets...');
+        Promise.allSettled([
+            loadContractCatalogFromGoogleSheet(),
+            loadJournalFromGoogleSheet()
+        ]).then(results => {
+            if (results[0].status === 'rejected' || results[1].status === 'rejected') {
+                // Expired/invalid tokens are cleared so the user must authenticate again.
+                setContractsUnlocked(false);
+                if (passwordError) passwordError.textContent = 'Сесія завершилась. Введіть пароль ще раз.';
+            }
+        });
+    } else {
+        setSheetStatus('offline', 'Потрібна авторизація');
+    }
 
 
 

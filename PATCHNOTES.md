@@ -1,3 +1,17 @@
+# v1.9.36 - Security/local Vision hotfix
+
+- Fixed `.env.local` variable mismatch: local proxy now accepts `VISION_PROXY_TOKEN` (and legacy `GREATNESS_VISION_PROXY_TOKEN`).
+- Updated build markers to v1.9.36 so the actually loaded frontend/server version is visible in diagnostics.
+- Preserved v1.9.35 security hardening and existing project behavior.
+
+## v1.9.35 - Security UX / local Vision fix
+
+- Added `.gitignore` so local server/batch files, secrets, caches and scratch files are not published to GitHub.
+- Restored automatic password submission: no Enter/click required after typing stops.
+- Local Vision proxy now reads `GREATNESS_VISION_PROXY_TOKEN` from ignored `.env.local` as well as the environment.
+- Added safe `.env.local.example` template without a real secret.
+- No OCR recognition, matrix, payout, Save All or journal business logic changed.
+
 # v1.9.33 - Safety: remove full journal clear
 
 - Removed the **Очистити журнал** button from the journal UI.
@@ -765,3 +779,11 @@
 - The OCR button now reserves a dedicated icon column and a wider text area, preventing the icon from escaping left and `Сканування` from being clipped.
 - `Додати в журнал` keeps its readable two-line label; `Видалити` stays on one line.
 - No OCR, journal, Save All, duplicate, matrix, payout, or Google Sheets logic was changed.
+
+## v1.9.34 - Security hardening
+- Moved Contracts password validation from browser JavaScript to Apps Script.
+- Added 12-hour signed auth tokens for list/catalog/upsert/delete.
+- Removed destructive replaceAll API endpoint.
+- Limited delete and upsert mutations to one record per request.
+- Added Contract Audit Log for server-side mutation history.
+- Removed hardcoded Vision proxy token from Code.gs and server.py; it now comes from secret configuration.

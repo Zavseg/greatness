@@ -86,7 +86,7 @@ class handler(BaseHTTPRequestHandler):
                 method='POST',
                 headers={'Content-Type': 'application/x-www-form-urlencoded'}
             )
-            with urllib.request.urlopen(request, timeout=55) as response:
+            with urllib.request.urlopen(request, timeout=240) as response:
                 raw = response.read().decode('utf-8', errors='replace')
 
             try:

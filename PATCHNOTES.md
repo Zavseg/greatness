@@ -1,3 +1,10 @@
+# v1.9.39 - Vision proxy timeout fix
+
+- Increased Vercel Vision function max duration from 60s to 300s.
+- Increased the proxy wait for Google Apps Script/Gemini from 55s to 240s.
+- Fixes public OCR failing with `502 Bad Gateway` / `The read operation timed out` while Apps Script is still processing Gemini fallback models.
+- No secrets are exposed in the frontend.
+
 ## v1.9.38 - Vercel Vision connected
 - Connected GitHub Pages frontend to `https://greatness-two.vercel.app`.
 - No API keys or proxy tokens are stored in public frontend config.

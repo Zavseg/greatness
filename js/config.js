@@ -8,5 +8,5 @@
  * Do NOT put VISION_PROXY_TOKEN or GEMINI_API_KEY in this file.
  */
 window.GREATNESS_CONFIG = Object.freeze({
-    visionProxyBaseUrl: 'PASTE_YOUR_VERCEL_URL_HERE'
+    visionProxyBaseUrl: 'https://greatness-two.vercel.app'
 });

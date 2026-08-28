@@ -1,3 +1,7 @@
+## v1.9.38 - Vercel Vision connected
+- Connected GitHub Pages frontend to `https://greatness-two.vercel.app`.
+- No API keys or proxy tokens are stored in public frontend config.
+
 # v1.9.37 - GitHub Pages Vision proxy
 
 - Fixed OCR architecture for GitHub Pages: the browser no longer calls the nonexistent same-origin `/api/vision` endpoint in production.

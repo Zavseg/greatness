@@ -1,3 +1,8 @@
+
+## v1.9.37 GitHub Pages Vision proxy
+
+GitHub Pages cannot execute `/api/vision`. This build adds a protected Vercel serverless proxy (`api/vision.py`) and runtime endpoint config (`js/config.js`). See `VERCEL_VISION_SETUP.md`. Secrets remain server-side.
+
 # GREATNESS Contracts v1.9.18
 
 Stable OCR from v1.9.15 plus batch journal UX, payout matrix visibility, reliable multi-card Sheets saving, and safer I/II/III catalog learning.

@@ -6,7 +6,7 @@
  * unrelated functionality.
  */
 window.GreatnessApp = window.GreatnessApp || {};
-console.info("GREATNESS Contracts build 1.9.36 loaded");
+console.info("GREATNESS Contracts build 1.9.37 loaded");
 
 window.GreatnessApp.initContracts = function initContracts() {
     // Prevent a transient duplicate badge flash while Save All is verifying rows that were just written.
@@ -1758,19 +1758,31 @@ window.GreatnessApp.initContracts = function initContracts() {
         return { contextImage, detailImage };
     }
 
-    /** Send one screenshot to Gemini Vision through the local HTTP proxy.
-     *  This deliberately avoids iframe/postMessage and file:// origin restrictions.
-     *  Run the site with run_local.bat so the page is served from http://127.0.0.1:8765.
+    /** Resolve the Vision proxy without ever exposing its server-side token.
+     *  Local development uses the same-origin Python proxy. GitHub Pages uses
+     *  the public serverless proxy configured in js/config.js.
      */
-    async function analyzeScreenshotWithVision(dataUrl) {
+    function getVisionApiUrl() {
         if (location.protocol === 'file:') {
-            throw new Error('Local Vision requires run_local.bat (http://127.0.0.1:8765), not file://');
+            throw new Error('Vision requires the site to be opened through HTTP/HTTPS, not file://');
         }
+        const isLocal = location.hostname === '127.0.0.1' || location.hostname === 'localhost';
+        if (isLocal) return '/api/vision';
+
+        const configured = String(window.GREATNESS_CONFIG && window.GREATNESS_CONFIG.visionProxyBaseUrl || '').trim();
+        if (!configured || configured.includes('PASTE_') || configured.includes('YOUR_')) {
+            throw new Error('Public Vision proxy is not configured');
+        }
+        return configured.replace(/\/$/, '') + '/api/vision';
+    }
+
+    /** Send one screenshot to Gemini Vision through the protected HTTP proxy. */
+    async function analyzeScreenshotWithVision(dataUrl) {
         const prepared = await prepareVisionImages(dataUrl);
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), 210000);
         try {
-            const response = await fetch('/api/vision', {
+            const response = await fetch(getVisionApiUrl(), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

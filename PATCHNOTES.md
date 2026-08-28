@@ -1,3 +1,12 @@
+# v1.9.37 - GitHub Pages Vision proxy
+
+- Fixed OCR architecture for GitHub Pages: the browser no longer calls the nonexistent same-origin `/api/vision` endpoint in production.
+- Added `api/vision.py` for a Vercel serverless proxy.
+- `VISION_PROXY_TOKEN` and `GEMINI_API_KEY` remain server-side and are never bundled into public JavaScript.
+- Added strict production-origin CORS and a request-size limit on the proxy.
+- Local OCR still uses the existing `server.py` same-origin proxy.
+- Added `js/config.js` for the public proxy URL and `VERCEL_VISION_SETUP.md` with deployment steps.
+
 # v1.9.36 - Security/local Vision hotfix
 
 - Fixed `.env.local` variable mismatch: local proxy now accepts `VISION_PROXY_TOKEN` (and legacy `GREATNESS_VISION_PROXY_TOKEN`).

@@ -158,11 +158,19 @@ def _admin_headers():
     secret = _secret_key()
     if not secret:
         raise RuntimeError('SUPABASE_SECRET_KEY is not configured')
-    return {
+
+    headers = {
         'apikey': secret,
-        'Authorization': f'Bearer {secret}',
         'Content-Type': 'application/json',
     }
+
+    # New Supabase secret keys (sb_secret_...) are API keys, not JWTs.
+    # Sending them as Authorization: Bearer makes Supabase reject the request with 401.
+    # Legacy service_role keys are JWTs and still require the Bearer header.
+    if not secret.startswith('sb_secret_'):
+        headers['Authorization'] = f'Bearer {secret}'
+
+    return headers
 
 
 def _admin_url(path=''):

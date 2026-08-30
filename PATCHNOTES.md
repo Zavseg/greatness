@@ -1,3 +1,10 @@
+# v1.12.3 - SUPABASE ADMIN CLIENT FIX
+
+- Simplified the server-side Supabase admin client to use `create_client(url, secret)` directly.
+- Removed `ClientOptions` from the admin-client bootstrap to avoid an initialization failure before the Admin API request is sent.
+- No secrets or environment values were added to source code.
+
+
 # v1.12.0 - PRODUCTION AUTH SECURITY HARDENING
 
 - Replaced local SQLite role authorization with Supabase `app_metadata.role` for production.

@@ -160,12 +160,7 @@ def _admin_client():
     if not secret or not url:
         raise RuntimeError('SUPABASE_SECRET_KEY is not configured')
     from supabase import create_client
-    from supabase.lib.client_options import ClientOptions
-    return create_client(
-        url,
-        secret,
-        options=ClientOptions(auto_refresh_token=False, persist_session=False, detect_session_in_url=False),
-    )
+    return create_client(url, secret)
 
 
 def _user_to_dict(user):

@@ -51,7 +51,7 @@ function doGet(e) {
   try {
     const action = String((e && e.parameter && e.parameter.action) || 'health');
     if (action === 'health') {
-      return apiResponse({ ok: true, service: 'GREATNESS Contracts API', version: '1.12.1' }, e);
+      return apiResponse({ ok: true, service: 'GREATNESS Contracts API', version: '1.12.9' }, e);
     }
     return apiResponse({ ok: false, error: 'POST required' }, e);
   } catch (error) {
@@ -67,8 +67,13 @@ function doPost(e) {
 
   try {
     const payload = JSON.parse((e && e.postData && e.postData.contents) || '{}');
-    if (!verifyGasServiceToken(String(payload.serviceToken || ''))) {
-      return jsonResponse({ ok: false, error: 'Unauthorized' });
+    const tokenCheck = verifyGasServiceToken(String(payload.serviceToken || ''));
+    if (!tokenCheck.ok) {
+      return jsonResponse({
+        ok: false,
+        error: 'Unauthorized',
+        diagnostic: tokenCheck.diagnostic
+      });
     }
 
     const action = String(payload.action || '');
@@ -111,8 +116,29 @@ function doPost(e) {
 }
 
 function verifyGasServiceToken(token) {
-  const expected = PropertiesService.getScriptProperties().getProperty('GAS_SERVICE_TOKEN') || '';
-  return Boolean(expected) && constantTimeEquals(String(token || ''), expected);
+  const expectedRaw = PropertiesService.getScriptProperties().getProperty('GAS_SERVICE_TOKEN') || '';
+  const receivedRaw = String(token || '');
+  const expected = String(expectedRaw).trim();
+  const received = receivedRaw.trim();
+  const ok = Boolean(expected) && constantTimeEquals(received, expected);
+  return {
+    ok: ok,
+    diagnostic: ok ? undefined : {
+      codeVersion: '1.12.9',
+      expectedLength: expected.length,
+      receivedLength: received.length,
+      expectedFingerprint: tokenFingerprint(expected),
+      receivedFingerprint: tokenFingerprint(received)
+    }
+  };
+}
+
+function tokenFingerprint(value) {
+  const bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(value || ''), Utilities.Charset.UTF_8);
+  return bytes.slice(0, 6).map(function(b) {
+    const n = b < 0 ? b + 256 : b;
+    return ('0' + n.toString(16)).slice(-2);
+  }).join('');
 }
 
 function constantTimeEquals(a, b) {

@@ -1,3 +1,9 @@
+# v1.12.9 - Contracts token diagnostics
+
+- Normalized `GAS_SERVICE_TOKEN` whitespace on the Vercel backend and Apps Script.
+- Added safe token mismatch diagnostics (length + short SHA-256 fingerprint only; secret values are never returned).
+- Bumped Apps Script health version to `1.12.9` so the active Web App deployment can be verified.
+
 # v1.12.4 - Direct Supabase Admin REST fix
 
 - Replaced the server-side `supabase-py` admin client with direct calls to Supabase Auth Admin REST endpoints.
@@ -925,3 +931,9 @@
 - Added safe diagnostics for Supabase Admin API failures.
 - Reports which server env key is selected, key format/length, project ref match metadata, and sanitized upstream error body.
 - Never returns the secret value itself.
+
+
+## v1.12.8 - Family role label
+- Renamed the user-facing `contracts` access role to `Family` in the account/admin UI.
+- Internal role value remains `contracts`, so backend permissions and existing users are unchanged.
+- No Contracts/Google Sheets sync logic changed in this patch.

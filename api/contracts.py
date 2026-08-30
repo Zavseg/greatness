@@ -12,7 +12,7 @@ def _gas_url():
 
 
 def _gas_service_token():
-    token = os.environ.get('GAS_SERVICE_TOKEN') or ''
+    token = (os.environ.get('GAS_SERVICE_TOKEN') or '').strip()
     if not token:
         raise RuntimeError('GAS_SERVICE_TOKEN is not configured')
     return token

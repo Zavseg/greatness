@@ -1,7 +1,7 @@
 import os
 import traceback
 from http.server import BaseHTTPRequestHandler
-from backend.security import ALLOWED_ROLES, admin_key_diagnostic, handle_options, list_auth_users, public_user, read_json, require_user, role_of, send_json, update_auth_user
+from backend.security import ALLOWED_ROLES, handle_options, list_auth_users, public_user, read_json, require_user, role_of, send_json, update_auth_user
 
 class handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -39,24 +39,11 @@ class handler(BaseHTTPRequestHandler):
             stage = 'serialize_users'
             public_users = [public_user(user) for user in users]
             send_json(self, 200, {'ok': True, 'users': public_users})
-        except Exception as exc:
+        except Exception:
             traceback.print_exc()
-            message = str(exc)
-            # Keep diagnostics useful without ever returning credentials or long response bodies.
-            if len(message) > 240:
-                message = message[:240] + '...'
-            diagnostic = {
-                'stage': stage,
-                'type': exc.__class__.__name__,
-                'message': message,
-            }
-            if stage == 'list_auth_users':
-                diagnostic['key'] = admin_key_diagnostic()
-            send_json(self, 500, {
-                'ok': False,
-                'error': 'Admin user list is unavailable',
-                'diagnostic': diagnostic,
-            })
+            # Detailed diagnostics stay in server logs only. Never expose backend
+            # configuration details, upstream responses, or credential metadata.
+            send_json(self, 500, {'ok': False, 'error': 'Admin user list is unavailable'})
 
     def do_POST(self):
         caller = require_user(self, {'admin'})

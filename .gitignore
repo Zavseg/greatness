@@ -76,3 +76,10 @@ desktop.ini
 *.zip
 *.7z
 *.rar
+# Local-only documentation and cleanup helpers
+.local-docs/
+APPLY_CLEANUP.ps1
+SECURITY_AUDIT.txt
+
+# Vercel/local metadata
+.vercel/

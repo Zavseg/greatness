@@ -8,8 +8,6 @@ import urllib.request
 DEFAULT_ALLOWED_ORIGINS = {
     'https://www.greatness-family.fun',
     'https://greatness-family.fun',
-    'https://greatness-two.vercel.app',
-    'https://zavseg.github.io',
 }
 ALLOWED_ROLES = {'member', 'contracts', 'admin'}
 
@@ -116,35 +114,6 @@ def request_json(url, *, method='GET', headers=None, body=None, timeout=20):
         except Exception:
             raw = ''
         raise UpstreamHTTPError(exc.code, exc.reason, raw) from exc
-
-
-def admin_key_diagnostic():
-    url = _supabase_url()
-    secret_new = os.environ.get('SUPABASE_SECRET_KEY') or ''
-    secret_legacy = os.environ.get('SUPABASE_SERVICE_ROLE_KEY') or ''
-    secret = secret_new or secret_legacy
-    source = 'SUPABASE_SECRET_KEY' if secret_new else ('SUPABASE_SERVICE_ROLE_KEY' if secret_legacy else 'none')
-    url_ref = ''
-    try:
-        url_ref = urllib.parse.urlparse(url).hostname.split('.')[0] if url else ''
-    except Exception:
-        pass
-    info = {
-        'source': source,
-        'kind': 'sb_secret' if secret.startswith('sb_secret_') else ('jwt' if secret.count('.') == 2 else 'unknown'),
-        'length': len(secret),
-        'urlRef': url_ref,
-    }
-    if secret.count('.') == 2:
-        try:
-            payload = secret.split('.')[1]
-            payload += '=' * (-len(payload) % 4)
-            claims = json.loads(base64.urlsafe_b64decode(payload.encode('ascii')).decode('utf-8'))
-            info['jwtRole'] = claims.get('role')
-            info['jwtRef'] = claims.get('ref')
-        except Exception:
-            info['jwtDecode'] = 'failed'
-    return info
 
 
 def current_supabase_user(handler):

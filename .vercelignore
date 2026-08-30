@@ -1,0 +1,23 @@
+# Never deploy local or operational files
+.git/
+.gitignore
+.env
+.env.*
+.local-docs/
+*.md
+APPLY_CLEANUP.ps1
+SECURITY_AUDIT.txt
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.db
+*.sqlite
+*.sqlite3
+scratch/
+server.py
+run_local.bat
+*.zip
+*.7z
+*.rar
+google-apps-script/

@@ -915,3 +915,8 @@
 ## v1.12.2 - Production origin hardening
 - Allow same-origin API requests that legitimately omit the Origin header while still rejecting disallowed cross-origin browser requests.
 - Add the Vercel production origin to the default CORS allowlist while retaining the GitHub Pages origin and localhost development origins.
+
+## v1.12.5 - Admin diagnostics
+- Added safe stage-based diagnostics to `/api/admin_users`.
+- Diagnostics expose only the failing stage, exception type, and a truncated message; secrets are never returned.
+- No auth or role behavior changed. This patch is intended only to identify the remaining production 500 error.

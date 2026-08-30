@@ -1,3 +1,4 @@
+import os
 import traceback
 from http.server import BaseHTTPRequestHandler
 from backend.security import ALLOWED_ROLES, handle_options, list_auth_users, public_user, read_json, require_user, role_of, send_json, update_auth_user
@@ -7,15 +8,52 @@ class handler(BaseHTTPRequestHandler):
         handle_options(self, 'GET, POST, OPTIONS')
 
     def do_GET(self):
-        caller = require_user(self, {'admin'})
-        if not caller:
-            return
+        stage = 'require_admin'
         try:
+            caller = require_user(self, {'admin'})
+            if not caller:
+                return
+
+            stage = 'check_server_config'
+            has_url = bool(os.environ.get('SUPABASE_URL'))
+            has_secret = bool(os.environ.get('SUPABASE_SECRET_KEY') or os.environ.get('SUPABASE_SERVICE_ROLE_KEY'))
+            if not has_url or not has_secret:
+                missing = []
+                if not has_url:
+                    missing.append('SUPABASE_URL')
+                if not has_secret:
+                    missing.append('SUPABASE_SECRET_KEY/SUPABASE_SERVICE_ROLE_KEY')
+                return send_json(self, 500, {
+                    'ok': False,
+                    'error': 'Admin user list is unavailable',
+                    'diagnostic': {
+                        'stage': stage,
+                        'type': 'MissingConfiguration',
+                        'message': 'Missing: ' + ', '.join(missing),
+                    },
+                })
+
+            stage = 'list_auth_users'
             users = list_auth_users()
-            send_json(self, 200, {'ok': True, 'users': [public_user(user) for user in users]})
-        except Exception:
+
+            stage = 'serialize_users'
+            public_users = [public_user(user) for user in users]
+            send_json(self, 200, {'ok': True, 'users': public_users})
+        except Exception as exc:
             traceback.print_exc()
-            send_json(self, 500, {'ok': False, 'error': 'Admin user list is unavailable'})
+            message = str(exc)
+            # Keep diagnostics useful without ever returning credentials or long response bodies.
+            if len(message) > 240:
+                message = message[:240] + '...'
+            send_json(self, 500, {
+                'ok': False,
+                'error': 'Admin user list is unavailable',
+                'diagnostic': {
+                    'stage': stage,
+                    'type': exc.__class__.__name__,
+                    'message': message,
+                },
+            })
 
     def do_POST(self):
         caller = require_user(self, {'admin'})

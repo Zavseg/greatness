@@ -76,10 +76,3 @@ desktop.ini
 *.zip
 *.7z
 *.rar
-
-# Internal project documentation
-LOCAL_AUTH_TEST.md
-PRODUCTION_AUTH_SETUP.md
-SECURITY.md
-VERCEL_VISION_SETUP.md
-google-apps-script/SETUP.md

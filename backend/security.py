@@ -6,6 +6,8 @@ import urllib.parse
 import urllib.request
 
 DEFAULT_ALLOWED_ORIGINS = {
+    'https://www.greatness-family.fun',
+    'https://greatness-family.fun',
     'https://greatness-two.vercel.app',
     'https://zavseg.github.io',
 }

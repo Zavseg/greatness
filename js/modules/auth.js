@@ -70,7 +70,7 @@ window.GreatnessApp.initAuth = function initAuth() {
     }
 
     function roleLabel(role) {
-        return ({ member: 'Учасник', contracts: 'Контракти', admin: 'Адмін' })[role] || 'Гість';
+        return ({ member: 'Учасник', contracts: 'Family', admin: 'Адмін' })[role] || 'Гість';
     }
 
     function providerLabel(provider) {
@@ -276,7 +276,7 @@ window.GreatnessApp.initAuth = function initAuth() {
         const contractsText = document.getElementById('auth-contracts-access-text');
         if (contractsText) contractsText.textContent = contractsGranted ? 'Доступ активний: журнал, OCR та звіти' : 'Доступ видає адміністратор';
         if (accessStatus) {
-            accessStatus.textContent = adminGranted ? 'Повний доступ' : contractsGranted ? 'Контракти відкриті' : 'Базовий доступ';
+            accessStatus.textContent = adminGranted ? 'Повний доступ' : contractsGranted ? 'Family доступ' : 'Базовий доступ';
             accessStatus.className = `auth-access-status ${adminGranted ? 'is-admin' : contractsGranted ? 'is-contracts' : ''}`;
         }
         adminPanel.hidden = !adminGranted;
@@ -288,14 +288,14 @@ window.GreatnessApp.initAuth = function initAuth() {
         const visible = adminUsersCache.filter(user => !q || `${user.displayName || ''} ${user.email || ''} ${providerLabel(user.provider)} ${roleLabel(user.role)}`.toLowerCase().includes(q));
         if (adminStats) {
             const counts = adminUsersCache.reduce((acc, user) => { acc.total += 1; acc[user.role] = (acc[user.role] || 0) + 1; return acc; }, { total: 0, member: 0, contracts: 0, admin: 0 });
-            adminStats.innerHTML = `<span><b>${counts.total}</b><small>Всього</small></span><span><b>${counts.member}</b><small>Учасники</small></span><span><b>${counts.contracts}</b><small>Контракти</small></span><span><b>${counts.admin}</b><small>Адміни</small></span>`;
+            adminStats.innerHTML = `<span><b>${counts.total}</b><small>Всього</small></span><span><b>${counts.member}</b><small>Учасники</small></span><span><b>${counts.contracts}</b><small>Family</small></span><span><b>${counts.admin}</b><small>Адміни</small></span>`;
         }
         usersList.innerHTML = visible.map(user => `
             <div class="auth-user-row" data-user-id="${user.id}">
                 <div class="auth-user-identity">${avatarMarkup(user, true)}<span><strong>${escapeHtml(user.displayName || user.email)}</strong><small>${escapeHtml(user.email)} · ${escapeHtml(providerLabel(user.provider))}</small></span></div>
                 <div class="auth-user-role-control"><span class="auth-current-role role-${escapeHtml(user.role)}">${escapeHtml(roleLabel(user.role))}</span><select class="auth-role-select" aria-label="Роль ${escapeHtml(user.email)}">
                     <option value="member" ${user.role === 'member' ? 'selected' : ''}>Учасник</option>
-                    <option value="contracts" ${user.role === 'contracts' ? 'selected' : ''}>Контракти</option>
+                    <option value="contracts" ${user.role === 'contracts' ? 'selected' : ''}>Family</option>
                     <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Адмін</option>
                 </select></div>
             </div>`).join('') || `<div class="auth-empty-state"><i class="fa-solid fa-user-slash"></i><span>${q ? 'Нічого не знайдено' : 'Користувачів ще немає'}</span></div>`;

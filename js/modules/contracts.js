@@ -93,7 +93,6 @@ window.GreatnessApp.initContracts = function initContracts() {
     async function secureContractsApi(action, payload = {}) {
         const base = String(window.GREATNESS_CONFIG?.apiBaseUrl || '').replace(/\/$/, '');
         const token = await window.GreatnessAuth?.getAccessToken?.();
-        if (!base) throw new Error('Contracts API is not configured');
         if (!token) throw new Error('Authentication required');
         const response = await fetch(`${base}/api/contracts`, {
             method: 'POST',
@@ -1742,7 +1741,7 @@ window.GreatnessApp.initContracts = function initContracts() {
             throw new Error('Vision requires the site to be opened through HTTP/HTTPS, not file://');
         }
         const configured = String(window.GREATNESS_CONFIG && window.GREATNESS_CONFIG.visionProxyBaseUrl || '').trim();
-        if (!configured || configured.includes('PASTE_') || configured.includes('YOUR_')) {
+        if (configured.includes('PASTE_') || configured.includes('YOUR_')) {
             throw new Error('Public Vision proxy is not configured');
         }
         return configured.replace(/\/$/, '') + '/api/vision';

@@ -7,8 +7,8 @@
  *   GAS_SERVICE_TOKEN, VISION_PROXY_TOKEN, or GEMINI_API_KEY here.
  */
 window.GREATNESS_CONFIG = Object.freeze({
-    apiBaseUrl: 'https://greatness-two.vercel.app',
-    visionProxyBaseUrl: 'https://greatness-two.vercel.app',
+    apiBaseUrl: '',
+    visionProxyBaseUrl: '',
     supabaseUrl: 'https://fvyqblekphbmbbboitzq.supabase.co',
     supabaseAnonKey: 'sb_publishable_BJYImiTLoVqazWjuF16DSw_T1AORwMA'
 });

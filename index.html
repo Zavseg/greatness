@@ -32,11 +32,12 @@
                 <a href="#jobs" class="nav-link" data-tab="jobs"><i class="fa-solid fa-briefcase"></i> Роботи</a>
                 <a href="#fleet" class="nav-link" data-tab="fleet"><i class="fa-solid fa-truck-moving"></i> Автопарк</a>
                 <a href="#prices" class="nav-link" data-tab="prices"><i class="fa-solid fa-scale-balanced"></i> Скупники</a>
-                <a href="#contracts" class="nav-link" data-tab="contracts"><i class="fa-solid fa-file-contract"></i> Звіти контрактів</a>
+                <a href="#contracts" class="nav-link" data-tab="contracts" hidden><i class="fa-solid fa-file-contract"></i> Звіти контрактів</a>
                 <a href="#gallery" class="nav-link" data-tab="gallery"><i class="fa-solid fa-images"></i> Галерея</a>
             </nav>
 
             <div class="header-actions">
+                <button class="auth-trigger" id="auth-trigger" type="button" aria-label="Акаунт"><i class="fa-solid fa-user-shield"></i><span class="auth-trigger-copy"><span class="auth-trigger-name">Увійти</span><span class="auth-trigger-role">Акаунт</span></span></button>
                 <button class="burger-menu" id="burger-menu" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
@@ -447,20 +448,11 @@
                 <p>Завантаження скріншотів виконаних контрактів, авто-розпізнавання, розрахунок премій та аналітика</p>
             </div>
 
-            <!-- Client-side access gate. This is a convenience lock, not real server-side security. -->
-            <div class="contracts-access-gate glass-card" id="contracts-access-gate">
-                <div class="access-gate-icon"><i class="fa-solid fa-lock"></i></div>
-                <div class="access-gate-copy">
-                    <h3>Доступ до звітів контрактів</h3>
-                    <p>Введіть пароль, щоб відкрити обробку скріншотів та журнал виплат.</p>
-                </div>
-                <div class="access-gate-form">
-                    <input type="password" id="contracts-password-input" class="form-control" placeholder="Пароль" inputmode="numeric" autocomplete="off">
-                    <button type="button" class="btn btn-accent" id="btn-unlock-contracts">
-                        <i class="fa-solid fa-unlock-keyhole"></i> Відкрити
-                    </button>
-                </div>
-                <span class="access-gate-error" id="contracts-password-error"></span>
+            <div class="contracts-role-gate glass-card" id="contracts-access-gate">
+                <div class="access-gate-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Закритий розділ GREATNESS</h3>
+                <p id="contracts-access-copy">Контракти доступні лише користувачам з відповідним рівнем доступу.</p>
+                <button type="button" class="auth-primary" id="contracts-login-button"><i class="fa-solid fa-right-to-bracket"></i>&nbsp; Увійти в акаунт</button>
             </div>
 
             <div id="contracts-protected-content" class="contracts-protected-content" hidden>
@@ -825,6 +817,115 @@
 
     </main>
 
+
+    <!-- Authentication Modal -->
+    <div class="auth-modal" id="auth-modal" hidden>
+        <div class="auth-modal-backdrop" data-auth-close></div>
+        <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+            <div class="auth-dialog-header">
+                <div><div class="auth-eyebrow">GREATNESS ACCESS</div><h2 id="auth-title">Особистий кабінет</h2><p class="auth-dialog-subtitle">Один акаунт для закритих можливостей сім'ї.</p></div>
+                <button class="auth-close" type="button" data-auth-close aria-label="Закрити"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" type="button" data-auth-tab="login">Вхід</button>
+                <button class="auth-tab" type="button" data-auth-tab="register">Реєстрація</button>
+            </div>
+            <div class="auth-panel" id="auth-login-panel">
+                <div class="auth-social-stack" data-social-auth-block>
+                    <button class="auth-social auth-social-google" type="button" data-auth-provider="google">
+                        <span class="auth-social-icon"><i class="fa-brands fa-google"></i></span>
+                        <span>Продовжити з Google</span>
+                        <i class="fa-solid fa-arrow-right auth-social-arrow"></i>
+                    </button>
+                    <button class="auth-social auth-social-discord" type="button" data-auth-provider="discord">
+                        <span class="auth-social-icon"><i class="fa-brands fa-discord"></i></span>
+                        <span>Продовжити з Discord</span>
+                        <i class="fa-solid fa-arrow-right auth-social-arrow"></i>
+                    </button>
+                </div>
+                <div class="auth-social-note" data-social-auth-note hidden>Соціальний вхід ще не підключений у локальному середовищі.</div>
+                <div class="auth-divider"><span>або через email</span></div>
+                <form class="auth-form" id="auth-login-form">
+                    <div class="auth-field"><label for="auth-login-email">Email</label><div class="auth-input-wrap"><i class="fa-regular fa-envelope"></i><input class="auth-input" id="auth-login-email" type="email" autocomplete="email" required placeholder="name@example.com"></div></div>
+                    <div class="auth-field"><label for="auth-login-password">Пароль</label><div class="auth-input-wrap"><i class="fa-solid fa-lock"></i><input class="auth-input" id="auth-login-password" type="password" autocomplete="current-password" required placeholder="Ваш пароль"><button class="auth-password-toggle" type="button" data-target="auth-login-password" aria-label="Показати пароль"><i class="fa-solid fa-eye"></i></button></div></div>
+                    <button class="auth-primary" type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; Увійти</button>
+                </form>
+            </div>
+            <div class="auth-panel" id="auth-register-panel" hidden>
+                <div class="auth-social-stack" data-social-auth-block>
+                    <button class="auth-social auth-social-google" type="button" data-auth-provider="google">
+                        <span class="auth-social-icon"><i class="fa-brands fa-google"></i></span>
+                        <span>Зареєструватися через Google</span>
+                        <i class="fa-solid fa-arrow-right auth-social-arrow"></i>
+                    </button>
+                    <button class="auth-social auth-social-discord" type="button" data-auth-provider="discord">
+                        <span class="auth-social-icon"><i class="fa-brands fa-discord"></i></span>
+                        <span>Зареєструватися через Discord</span>
+                        <i class="fa-solid fa-arrow-right auth-social-arrow"></i>
+                    </button>
+                </div>
+                <div class="auth-social-note" data-social-auth-note hidden>Соціальний вхід ще не підключений у локальному середовищі.</div>
+                <div class="auth-divider"><span>або створити акаунт через email</span></div>
+                <form class="auth-form" id="auth-register-form">
+                    <div class="auth-field"><label for="auth-register-name">Ім'я / нікнейм</label><div class="auth-input-wrap"><i class="fa-regular fa-user"></i><input class="auth-input" id="auth-register-name" type="text" minlength="2" maxlength="40" autocomplete="nickname" required placeholder="Oleksii Otaman"></div></div>
+                    <div class="auth-field"><label for="auth-register-email">Email</label><div class="auth-input-wrap"><i class="fa-regular fa-envelope"></i><input class="auth-input" id="auth-register-email" type="email" autocomplete="email" required placeholder="name@example.com"></div></div>
+                    <div class="auth-field"><label for="auth-register-password">Пароль</label><div class="auth-input-wrap"><i class="fa-solid fa-lock"></i><input class="auth-input" id="auth-register-password" type="password" minlength="10" autocomplete="new-password" required placeholder="Мінімум 10 символів"><button class="auth-password-toggle" type="button" data-target="auth-register-password" aria-label="Показати пароль"><i class="fa-solid fa-eye"></i></button></div></div>
+                    <div class="auth-field"><label for="auth-register-confirm">Повторіть пароль</label><div class="auth-input-wrap"><i class="fa-solid fa-shield"></i><input class="auth-input" id="auth-register-confirm" type="password" minlength="10" autocomplete="new-password" required placeholder="Повторіть пароль"></div></div>
+                    <div class="auth-hint"><i class="fa-solid fa-circle-info"></i> Реєстрація відкрита для всіх. Email потрібно підтвердити. Новий акаунт отримує роль <b>Учасник</b>, а доступ до контрактів видає адміністратор.</div>
+                    <button class="auth-primary" type="submit"><i class="fa-solid fa-user-plus"></i>&nbsp; Створити акаунт</button>
+                </form>
+            </div>
+            <div class="auth-account" id="auth-account-panel" hidden>
+                <div class="auth-profile-card">
+                    <span class="auth-avatar"><i class="fa-solid fa-user"></i></span>
+                    <div class="auth-profile-meta">
+                        <strong id="auth-account-name"></strong>
+                        <span id="auth-account-email"></span>
+                        <span class="auth-role-chip" id="auth-account-role"></span>
+                    </div>
+                </div>
+
+                <div class="auth-access-summary">
+                    <div class="auth-access-head">
+                        <div><span class="auth-section-kicker">ДОСТУП</span><h3>Можливості акаунта</h3></div>
+                        <span class="auth-access-status" id="auth-access-status"></span>
+                    </div>
+                    <div class="auth-access-grid">
+                        <div class="auth-access-item is-granted" data-access="site"><span class="auth-access-icon"><i class="fa-solid fa-globe"></i></span><div><strong>Сайт GREATNESS</strong><small>Публічні розділи та особистий кабінет</small></div><i class="fa-solid fa-circle-check auth-access-check"></i></div>
+                        <div class="auth-access-item" id="auth-contracts-access-card" data-access="contracts"><span class="auth-access-icon"><i class="fa-solid fa-file-contract"></i></span><div><strong>Контракти</strong><small id="auth-contracts-access-text">Закритий журнал, OCR та звіти</small></div><i class="fa-solid fa-lock auth-access-check"></i></div>
+                        <div class="auth-access-item" id="auth-admin-access-card" data-access="admin"><span class="auth-access-icon"><i class="fa-solid fa-users-gear"></i></span><div><strong>Адміністрування</strong><small>Керування ролями та доступом</small></div><i class="fa-solid fa-lock auth-access-check"></i></div>
+                    </div>
+                </div>
+
+                <div class="auth-admin-panel" id="auth-admin-panel" hidden>
+                    <div class="auth-admin-head">
+                        <div><span class="auth-section-kicker">ADMIN</span><h3><i class="fa-solid fa-users-gear"></i> Керування доступом</h3></div>
+                        <button class="auth-icon-button" id="auth-refresh-users" type="button" title="Оновити"><i class="fa-solid fa-rotate"></i></button>
+                    </div>
+                    <div class="auth-admin-stats" id="auth-admin-stats"></div>
+                    <div class="auth-user-tools"><div class="auth-user-search"><i class="fa-solid fa-magnifying-glass"></i><input id="auth-user-search" type="search" placeholder="Знайти користувача..."></div></div>
+                    <div class="auth-role-legend"><span><b>Учасник</b> - без контрактів</span><span><b>Контракти</b> - доступ до закритого розділу</span><span><b>Адмін</b> - повний доступ</span></div>
+                    <div class="auth-user-list" id="auth-user-list"></div>
+                </div>
+                <div class="auth-account-actions"><button class="auth-danger" id="auth-logout" type="button"><i class="fa-solid fa-arrow-right-from-bracket"></i> Вийти</button></div>
+            </div>
+            <div class="auth-panel" style="padding-top:0"><div class="auth-message" id="auth-message"></div></div>
+        </div>
+    </div>
+
+
+    <div class="auth-callback" id="auth-callback" hidden>
+        <div class="auth-callback-backdrop"></div>
+        <div class="auth-callback-card" role="status" aria-live="polite">
+            <div class="auth-callback-icon" id="auth-callback-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="auth-eyebrow">GREATNESS ACCESS</div>
+            <h2 id="auth-callback-title">Email підтверджено</h2>
+            <p id="auth-callback-text">Акаунт активовано. Тепер можна користуватися сайтом.</p>
+            <button class="auth-primary" id="auth-callback-continue" type="button">Перейти на сайт</button>
+            <div class="auth-callback-countdown" id="auth-callback-countdown"></div>
+        </div>
+    </div>
+
     <!-- Lightbox Modal for Gallery -->
     <div class="lightbox" id="lightbox">
         <span class="lightbox-close" id="lightbox-close">&times;</span>
@@ -852,8 +953,10 @@
 
     <!-- JS Files -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Feature scripts are split by responsibility; defer preserves load order. -->
-    <script src="js/config.js?v=1.9.37"></script>
+    <script src="js/config.js?v=1.12.0"></script>
+    <script defer src="js/modules/auth.js?v=1.12.0"></script>
     <script defer src="js/modules/navigation.js"></script>
     <script defer src="js/modules/fleet-slider.js"></script>
     <script defer src="js/modules/jobs.js"></script>
@@ -861,7 +964,7 @@
     <script defer src="js/modules/prices.js"></script>
     <script defer src="js/modules/gallery.js"></script>
     <script defer src="js/modules/roster.js"></script>
-    <script defer src="js/modules/contracts.js?v=1.9.37"></script>
-    <script defer src="js/app.js?v=1.9.4"></script>
+    <script defer src="js/modules/contracts.js?v=1.12.0"></script>
+    <script defer src="js/app.js?v=1.12.0"></script>
 </body>
 </html>

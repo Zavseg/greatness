@@ -16,3 +16,13 @@
 @import url('./footer.css');
 @import url('./responsive.css');
 @import url('./sections/contracts.css?v=1.9.29');
+
+@import url('./sections/auth.css?v=1.10.0');
+
+/* v1.10.2 auth avatar/provider polish */
+.auth-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; }
+.auth-avatar-letter { font-weight: 800; line-height: 1; }
+.auth-avatar-large { width: 52px; height: 52px; font-size: 20px; flex: 0 0 52px; }
+.auth-user-identity { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.auth-user-identity > span { display: flex; flex-direction: column; min-width: 0; }
+.auth-user-identity small { opacity: .68; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 330px; }

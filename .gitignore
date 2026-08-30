@@ -1,17 +1,85 @@
-# Local development only
+# ------------------------------------------------------------
+# GREATNESS - files that must NEVER be committed
+# ------------------------------------------------------------
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+!.env.local.example
+*.env
+*.secret
+*.secrets
+secrets/
+private/
+
+# Credentials / certificates / downloaded OAuth files
+client_secret*.json
+credentials*.json
+service-account*.json
+service_account*.json
+*service-role*.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+
+# Local-only server and launch helpers
 run_local.bat
 server.py
-.env.local
-.env
 
-# Python/cache/test files
+# Local databases / state
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+local_auth.db*
+
+# Logs / dumps / temporary exports
+*.log
+logs/
+*.dump
+*.bak
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Python caches / tests
 __pycache__/
 *.py[cod]
-scratch/
 .pytest_cache/
+.coverage
+htmlcov/
+scratch/
 
-# OS/editor junk
+# JS tooling/build output if introduced later
+node_modules/
+dist/
+build/
+.next/
+.vercel/
+coverage/
+
+# Editor / OS junk
 .DS_Store
 Thumbs.db
+desktop.ini
 .vscode/
 .idea/
+*.code-workspace
+
+# Archives generated for handoff/deploy
+*.zip
+*.7z
+*.rar
+
+# Internal project documentation
+LOCAL_AUTH_TEST.md
+PRODUCTION_AUTH_SETUP.md
+SECURITY.md
+VERCEL_VISION_SETUP.md
+google-apps-script/SETUP.md

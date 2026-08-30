@@ -6,7 +6,7 @@
  * unrelated functionality.
  */
 window.GreatnessApp = window.GreatnessApp || {};
-console.info("GREATNESS Contracts build 1.9.37 loaded");
+console.info("GREATNESS Contracts build 1.12.0 loaded");
 
 window.GreatnessApp.initContracts = function initContracts() {
     // Prevent a transient duplicate badge flash while Save All is verifying rows that were just written.
@@ -55,9 +55,6 @@ window.GreatnessApp.initContracts = function initContracts() {
 
     const LOCAL_STORAGE_KEY = 'greatness_contracts_journal';
     const ROSTER_STORAGE_KEY = 'greatness_family_roster';
-    const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxMPU6k6jUcO6Qs_A59eyDKOTagyArV_Gxqvma0PBrCVwH_0DA6ADV5OvYIFz9jA2Tgyw/exec';
-    const CONTRACTS_ACCESS_SESSION_KEY = 'greatness_contracts_auth_token';
-    let contractsAuthToken = sessionStorage.getItem(CONTRACTS_ACCESS_SESSION_KEY) || '';
     const DEMO_SEED_STORAGE_KEY = 'greatness_contracts_demo_seed_v135';
 
     // Google Sheets is the source of truth. localStorage is only an offline cache so
@@ -82,80 +79,58 @@ window.GreatnessApp.initContracts = function initContracts() {
         { contractName: 'Доставка OG Kush I', baseName: 'Доставка OG Kush', level: 'I', compensation: 170000, confirmedCount: 1, source: 'verified-screenshot' }
     ];
 
-    // NOTE: This password gate is intentionally client-side only. It prevents casual
-    // access in the UI, but it is not secure against someone inspecting the source.
+    // Contracts are role-gated server-side by the Vercel API. The browser never receives
+    // the Google Apps Script password or its signed token.
     const accessGate = document.getElementById('contracts-access-gate');
     const protectedContent = document.getElementById('contracts-protected-content');
-    const passwordInput = document.getElementById('contracts-password-input');
-    const passwordError = document.getElementById('contracts-password-error');
-    const unlockButton = document.getElementById('btn-unlock-contracts');
+    const accessCopy = document.getElementById('contracts-access-copy');
+    const accessButton = document.getElementById('contracts-login-button');
 
-    function setContractsUnlocked(isUnlocked) {
-        if (accessGate) accessGate.hidden = isUnlocked;
-        if (protectedContent) protectedContent.hidden = !isUnlocked;
-        if (!isUnlocked) {
-            contractsAuthToken = '';
-            sessionStorage.removeItem(CONTRACTS_ACCESS_SESSION_KEY);
+    function canAccessContracts() {
+        return Boolean(window.GreatnessAuth?.canAccessContracts?.());
+    }
+
+    async function secureContractsApi(action, payload = {}) {
+        const base = String(window.GREATNESS_CONFIG?.apiBaseUrl || '').replace(/\/$/, '');
+        const token = await window.GreatnessAuth?.getAccessToken?.();
+        if (!base) throw new Error('Contracts API is not configured');
+        if (!token) throw new Error('Authentication required');
+        const response = await fetch(`${base}/api/contracts`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ action, ...payload })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data?.ok) throw new Error(data?.error || `Contracts HTTP ${response.status}`);
+        return data;
+    }
+
+    function renderContractsAccess() {
+        const user = window.GreatnessAuth?.user || null;
+        const allowed = canAccessContracts();
+        if (accessGate) accessGate.hidden = allowed;
+        if (protectedContent) protectedContent.hidden = !allowed;
+        if (!allowed) {
+            if (accessCopy) accessCopy.textContent = user
+                ? `Ви увійшли як ${user.displayName || user.email}, але роль «${user.role === 'member' ? 'Учасник' : user.role}» не має доступу до контрактів.`
+                : 'Контракти доступні лише авторизованим користувачам з відповідним рівнем доступу.';
+            if (accessButton) accessButton.innerHTML = user
+                ? '<i class="fa-solid fa-user-shield"></i>&nbsp; Відкрити профіль'
+                : '<i class="fa-solid fa-right-to-bracket"></i>&nbsp; Увійти в акаунт';
         }
     }
 
-    function jsonpRequest(params, timeoutMs = 12000) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `greatnessAuthCallback_${Date.now()}_${++googleSheetRequestId}`;
-            const script = document.createElement('script');
-            const timeout = window.setTimeout(() => finish(new Error('Request timed out')), timeoutMs);
-            function cleanup() { window.clearTimeout(timeout); delete window[callbackName]; script.remove(); }
-            function finish(error, payload) { cleanup(); error ? reject(error) : resolve(payload); }
-            window[callbackName] = payload => finish(null, payload);
-            script.onerror = () => finish(new Error('Request failed'));
-            const query = new URLSearchParams({ ...params, callback: callbackName, _: String(Date.now()) });
-            script.src = `${GOOGLE_SHEETS_API_URL}?${query.toString()}`;
-            document.head.appendChild(script);
-        });
+    async function refreshContractsAccess() {
+        renderContractsAccess();
+        if (!canAccessContracts()) return;
+        if (accessGate) accessGate.hidden = true;
+        if (protectedContent) protectedContent.hidden = false;
+        setSheetStatus('syncing', 'Підключення до захищеного сховища...');
+        await Promise.allSettled([loadContractCatalogFromGoogleSheet(), loadJournalFromGoogleSheet()]);
     }
 
-    async function tryUnlockContracts() {
-        const value = passwordInput ? passwordInput.value.trim() : '';
-        if (!value) return;
-        if (unlockButton) unlockButton.disabled = true;
-        if (passwordError) passwordError.textContent = 'Перевірка...';
-        try {
-            const payload = await jsonpRequest({ action: 'login', password: value });
-            if (!payload?.ok || !payload?.token) throw new Error('Unauthorized');
-            contractsAuthToken = payload.token;
-            sessionStorage.setItem(CONTRACTS_ACCESS_SESSION_KEY, contractsAuthToken);
-            if (passwordInput) passwordInput.value = '';
-            if (passwordError) passwordError.textContent = '';
-            setContractsUnlocked(true);
-            setSheetStatus('syncing', 'Підключення до Google Sheets...');
-            await Promise.allSettled([loadContractCatalogFromGoogleSheet(), loadJournalFromGoogleSheet()]);
-        } catch (_) {
-            setContractsUnlocked(false);
-            if (passwordError) passwordError.textContent = 'Невірний пароль або сесія недоступна.';
-        } finally {
-            if (unlockButton) unlockButton.disabled = false;
-        }
-    }
-
-    if (unlockButton) unlockButton.addEventListener('click', tryUnlockContracts);
-    if (passwordInput) {
-        let autoLoginTimer = null;
-        passwordInput.addEventListener('keydown', event => {
-            if (event.key === 'Enter') {
-                window.clearTimeout(autoLoginTimer);
-                tryUnlockContracts();
-            }
-        });
-        // Server-side auth means the browser no longer knows the real password length.
-        // Submit automatically after the user stops typing, preserving the old no-Enter UX.
-        passwordInput.addEventListener('input', () => {
-            window.clearTimeout(autoLoginTimer);
-            if (passwordError) passwordError.textContent = '';
-            if (!passwordInput.value.trim()) return;
-            autoLoginTimer = window.setTimeout(tryUnlockContracts, 450);
-        });
-    }
-    setContractsUnlocked(Boolean(contractsAuthToken));
+    window.addEventListener('greatness:auth-changed', refreshContractsAccess);
+    renderContractsAccess();
 
     // Load saved custom roster if present
     const savedRoster = localStorage.getItem(ROSTER_STORAGE_KEY);
@@ -1766,9 +1741,6 @@ window.GreatnessApp.initContracts = function initContracts() {
         if (location.protocol === 'file:') {
             throw new Error('Vision requires the site to be opened through HTTP/HTTPS, not file://');
         }
-        const isLocal = location.hostname === '127.0.0.1' || location.hostname === 'localhost';
-        if (isLocal) return '/api/vision';
-
         const configured = String(window.GREATNESS_CONFIG && window.GREATNESS_CONFIG.visionProxyBaseUrl || '').trim();
         if (!configured || configured.includes('PASTE_') || configured.includes('YOUR_')) {
             throw new Error('Public Vision proxy is not configured');
@@ -1782,9 +1754,11 @@ window.GreatnessApp.initContracts = function initContracts() {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), 210000);
         try {
+            const accessToken = await window.GreatnessAuth?.getAccessToken?.();
+            if (!accessToken) throw new Error('Authentication required');
             const response = await fetch(getVisionApiUrl(), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
                 body: JSON.stringify({
                     imageData: prepared.contextImage,
                     detailData: prepared.detailImage
@@ -2356,128 +2330,46 @@ window.GreatnessApp.initContracts = function initContracts() {
     }
 
     /** Load the shared OCR learning catalog from the same Google Sheet backend. */
-    function loadContractCatalogFromGoogleSheet({ silent = true } = {}) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `greatnessCatalogCallback_${Date.now()}_${++googleSheetRequestId}`;
-            const script = document.createElement('script');
-            const timeout = window.setTimeout(() => finish(new Error('Contract catalog request timed out')), 12000);
-
-            function cleanup() {
-                window.clearTimeout(timeout);
-                delete window[callbackName];
-                script.remove();
+    async function loadContractCatalogFromGoogleSheet({ silent = true } = {}) {
+        try {
+            const payload = await secureContractsApi('catalog');
+            const remoteCatalog = Array.isArray(payload?.catalog) ? payload.catalog.filter(item => item?.contractName) : [];
+            if (remoteCatalog.length) {
+                const merged = new Map(contractCatalog.map(item => [item.contractName, item]));
+                remoteCatalog.forEach(item => {
+                    const current = merged.get(item.contractName) || {};
+                    const aliases = [...new Set([...(current.aliases || []), ...(Array.isArray(item.aliases) ? item.aliases : [])].map(String).filter(Boolean))];
+                    merged.set(item.contractName, { ...current, ...item, aliases });
+                });
+                contractCatalog = [...merged.values()];
             }
-
-            function finish(error, payload) {
-                cleanup();
-                if (error) {
-                    if (!silent) console.warn('Contract catalog unavailable:', error);
-                    reject(error);
-                    return;
-                }
-                const remoteCatalog = Array.isArray(payload?.catalog) ? payload.catalog.filter(item => item?.contractName) : [];
-                if (remoteCatalog.length) {
-                    const merged = new Map(contractCatalog.map(item => [item.contractName, item]));
-                    remoteCatalog.forEach(item => {
-                        const current = merged.get(item.contractName) || {};
-                        const aliases = [...new Set([...(current.aliases || []), ...(Array.isArray(item.aliases) ? item.aliases : [])].map(String).filter(Boolean))];
-                        merged.set(item.contractName, { ...current, ...item, aliases });
-                    });
-                    contractCatalog = [...merged.values()];
-                }
-                resolve(contractCatalog);
-            }
-
-            window[callbackName] = payload => {
-                if (!payload?.ok) return finish(new Error(payload?.error || 'Catalog returned an error'));
-                finish(null, payload);
-            };
-            script.onerror = () => finish(new Error('Contract catalog request failed'));
-            if (!contractsAuthToken) return finish(new Error('Unauthorized'));
-            script.src = `${GOOGLE_SHEETS_API_URL}?action=catalog&token=${encodeURIComponent(contractsAuthToken)}&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
-            document.head.appendChild(script);
-        });
+            return contractCatalog;
+        } catch (error) {
+            if (!silent) console.warn('Contract catalog unavailable:', error);
+            throw error;
+        }
     }
 
-    /** Read the shared journal through JSONP so GitHub Pages is not blocked by CORS. */
-    function loadJournalFromGoogleSheet({ silent = false } = {}) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `greatnessSheetCallback_${Date.now()}_${++googleSheetRequestId}`;
-            const script = document.createElement('script');
-            const timeout = window.setTimeout(() => finish(new Error('Google Sheets request timed out')), 12000);
-
-            function cleanup() {
-                window.clearTimeout(timeout);
-                delete window[callbackName];
-                script.remove();
-            }
-
-            function finish(error, payload) {
-                cleanup();
-                if (error) {
-                    if (!silent) setSheetStatus('offline', 'Google Sheets недоступний - показано локальний кеш');
-                    reject(error);
-                    return;
-                }
-                const entries = normalizeJournalEntries(payload?.entries || []);
-                journalEntries = entries;
-                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(entries));
-                googleSheetReady = true;
-                setSheetStatus('online', `Google Sheets підключено · ${entries.length} записів`);
-                populateRosterDropdown();
-                if (uploadedCards.length) renderAllUploadedCards();
-                renderJournalAnalytics();
-                resolve(entries);
-            }
-
-            window[callbackName] = payload => {
-                if (!payload?.ok) return finish(new Error(payload?.error || 'Google Sheets returned an error'));
-                finish(null, payload);
-            };
-
-            script.onerror = () => finish(new Error('Google Sheets request failed'));
-            if (!contractsAuthToken) return finish(new Error('Unauthorized'));
-            script.src = `${GOOGLE_SHEETS_API_URL}?action=list&token=${encodeURIComponent(contractsAuthToken)}&callback=${encodeURIComponent(callbackName)}&_=${Date.now()}`;
-            document.head.appendChild(script);
-        });
+    async function loadJournalFromGoogleSheet({ silent = false } = {}) {
+        try {
+            const payload = await secureContractsApi('list');
+            const entries = normalizeJournalEntries(payload?.entries || []);
+            journalEntries = entries;
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(entries));
+            googleSheetReady = true;
+            setSheetStatus('online', `Захищене сховище підключено · ${entries.length} записів`);
+            populateRosterDropdown();
+            if (uploadedCards.length) renderAllUploadedCards();
+            renderJournalAnalytics();
+            return entries;
+        } catch (error) {
+            if (!silent) setSheetStatus('offline', 'Сховище недоступне - показано локальний кеш');
+            throw error;
+        }
     }
 
-    /** Perform a cross-origin write through JSONP and wait for an explicit backend acknowledgement. */
-    function googleSheetJsonpWrite(action, payload = {}) {
-        return new Promise((resolve, reject) => {
-            const callbackName = `greatnessSheetWrite_${Date.now()}_${++googleSheetRequestId}`;
-            const script = document.createElement('script');
-            const timeout = window.setTimeout(() => finish(new Error('Google Sheets write timed out')), 15000);
-
-            function cleanup() {
-                window.clearTimeout(timeout);
-                delete window[callbackName];
-                script.remove();
-            }
-
-            function finish(error, response) {
-                cleanup();
-                if (error) { reject(error); return; }
-                if (!response?.ok) { reject(new Error(response?.error || 'Google Sheets write failed')); return; }
-                resolve(response);
-            }
-
-            window[callbackName] = response => finish(null, response);
-            script.onerror = () => finish(new Error('Google Sheets write request failed'));
-
-            if (!contractsAuthToken) return finish(new Error('Unauthorized'));
-            const params = new URLSearchParams({
-                action,
-                token: contractsAuthToken,
-                callback: callbackName,
-                _: String(Date.now())
-            });
-            Object.entries(payload).forEach(([key, value]) => {
-                params.set(key, typeof value === 'string' ? value : JSON.stringify(value));
-            });
-            script.src = `${GOOGLE_SHEETS_API_URL}?${params.toString()}`;
-            document.head.appendChild(script);
-        });
+    async function googleSheetJsonpWrite(action, payload = {}) {
+        return secureContractsApi(action, payload);
     }
 
     function entriesEqual(a, b) {
@@ -3224,21 +3116,11 @@ window.GreatnessApp.initContracts = function initContracts() {
         showContractToast(`Надіслано ${cached.length} записів у Google Sheets`);
     });
 
-    // Render the cache immediately, then replace it with the authoritative
-    // Google Sheet data as soon as the network response arrives.
+    // Render cache immediately. Auth change event will load authoritative data
+    // only for users whose server-side role is contracts/admin.
     renderJournalAnalytics();
-    if (contractsAuthToken) {
-        setSheetStatus('syncing', 'Підключення до Google Sheets...');
-        Promise.allSettled([
-            loadContractCatalogFromGoogleSheet(),
-            loadJournalFromGoogleSheet()
-        ]).then(results => {
-            if (results[0].status === 'rejected' || results[1].status === 'rejected') {
-                // Expired/invalid tokens are cleared so the user must authenticate again.
-                setContractsUnlocked(false);
-                if (passwordError) passwordError.textContent = 'Сесія завершилась. Введіть пароль ще раз.';
-            }
-        });
+    if (canAccessContracts()) {
+        refreshContractsAccess().catch(error => console.warn('Protected contracts init failed:', error));
     } else {
         setSheetStatus('offline', 'Потрібна авторизація');
     }

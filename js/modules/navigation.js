@@ -53,7 +53,8 @@ window.GreatnessApp.initNavigation = function initNavigation() {
 
     // Initial load tab checker (based on hash)
     const initialHash = window.location.hash.substring(1);
-    if (initialHash) {
+    const knownTabs = new Set([...navLinks].map(link => link.getAttribute('data-tab')).filter(Boolean));
+    if (initialHash && knownTabs.has(initialHash)) {
         switchTab(initialHash);
     } else {
         switchTab('home');

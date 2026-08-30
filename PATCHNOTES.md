@@ -1,3 +1,75 @@
+# v1.12.0 - PRODUCTION AUTH SECURITY HARDENING
+
+- Replaced local SQLite role authorization with Supabase `app_metadata.role` for production.
+- Added authenticated Vercel `/api/me` and admin role-management APIs.
+- Contracts data now flows browser -> Vercel -> Apps Script; Apps Script tokens/passwords no longer reach browser storage or URLs.
+- Vision proxy now requires authenticated `contracts`/`admin` access to prevent public quota abuse.
+- Added exact CORS allowlist, no-store/security response headers, and last-admin/self-demotion protections.
+- Expanded `.gitignore` to block environment files, OAuth/service-account downloads, private keys, databases, logs, build caches, and archives.
+- Removed `.env.local` from the handoff archive; only the safe template remains.
+- Added SECURITY.md and PRODUCTION_AUTH_SETUP.md.
+
+
+## v1.11.2 - Contract Navigation Visibility (LOCAL TEST)
+- Contract reports navigation is hidden by default.
+- The tab appears only after auth confirms `contracts` or `admin` access.
+- Member users no longer see a locked Contracts tab in the main navigation.
+- Backend role checks and the protected Contracts gate remain in place for defense in depth.
+
+## v1.11.1 - Auth session exchange fix (LOCAL)
+
+- Fixed email/password login hanging on `Входимо...` after Supabase authentication.
+- De-duplicated simultaneous `/api/auth/social` exchanges triggered by both the direct login flow and Supabase `SIGNED_IN`.
+- Moved backend exchange out of the Supabase auth-state callback to avoid callback deadlocks.
+- Added a retry and longer timeout for local Supabase profile verification.
+- No production deployment changes.
+
+# v1.10.5 - Email confirmation UX
+
+- Fixed blank content after Supabase email confirmation.
+- Unknown OAuth hashes now safely fall back to the Home tab.
+- Added a dedicated confirmation result screen with success/error state.
+- Added 5-second automatic return to the site plus a manual Continue button.
+
+# v1.10.3 - SUPABASE CONNECTED LOCAL TEST
+
+- Added the real Supabase project URL and public publishable key to the local test `.env.local`.
+- Email/password, Google and Discord auth can now be tested against the configured Supabase project.
+- No service-role key, OAuth client secret, database password, or other private Supabase secret is included.
+- Local-only build. Do not push until auth/roles/security testing is complete.
+
+# v1.10.2 - REAL SUPABASE AUTH LOCAL TEST
+
+- Email/password registration and login now use Supabase Auth instead of the temporary local password database.
+- Email confirmation flow is supported.
+- Google and Discord OAuth use the same Supabase session pipeline.
+- Local backend validates the Supabase access token before creating a GREATNESS HttpOnly session and assigning local roles.
+- Google/Discord avatars and auth provider are shown in the account UI/admin list when available.
+- Local server moved to `http://localhost:3000` to match the configured Supabase and Google OAuth localhost URLs.
+- First confirmed Supabase user remains an admin only as a local bootstrap convenience.
+- No production push is intended for this build.
+
+# v1.10.1 - Local Social Auth UI
+
+- Added polished Google and Discord sign-in / registration actions.
+- Added optional Supabase OAuth integration for local testing.
+- Added backend verification of Supabase access tokens before creating a GREATNESS local session.
+- Social users reuse the same Member / Contracts / Admin authorization model.
+- Added graceful disabled state when Supabase is not configured.
+- This build remains local-only and should not be pushed until authentication is approved.
+
+# v1.10.0 - Local authentication & roles prototype
+
+- Added public email/password registration for local testing.
+- Added Login/Register/Account UI matching GREATNESS visual style.
+- Added roles: `member`, `contracts`, `admin`.
+- Contracts navigation and content are available only to `contracts` and `admin`.
+- Added local admin user management for changing roles.
+- Passwords are stored only as salted scrypt hashes in ignored local SQLite.
+- Sessions use HttpOnly + SameSite=Strict cookies and login/register rate limits.
+- Existing Google Sheets contracts password moves server-side via `GAS_SERVICE_TOKEN`; authorized browsers receive only a short-lived GAS token.
+- This build is intentionally LOCAL-TEST ONLY and should not be pushed until approved.
+
 # v1.9.39 - Vision proxy timeout fix
 
 - Increased Vercel Vision function max duration from 60s to 300s.
@@ -807,3 +879,24 @@
 - Limited delete and upsert mutations to one record per request.
 - Added Contract Audit Log for server-side mutation history.
 - Removed hardcoded Vision proxy token from Code.gs and server.py; it now comes from secret configuration.
+
+
+## v1.11.0 - Role Access & Admin Console (LOCAL TEST)
+- Reworked personal cabinet with clear access matrix for Site / Contracts / Admin.
+- Added polished admin console with user search, role counters and provider/avatar display.
+- Role changes are server-validated and now written to a local audit table.
+- Contract navigation remains hidden for users without `contracts` or `admin` role.
+- Direct access to the Contracts hash remains gated; protected content is not shown without permission.
+- Existing authenticated sessions pick up role changes immediately on the backend.
+
+
+## v1.12.1 - Contracts auth cleanup
+- Removed the legacy user-facing `CONTRACTS_ACCESS_PASSWORD` flow completely.
+- Contracts access is now based only on Supabase authentication + `contracts/admin` role.
+- Added `GAS_SERVICE_TOKEN` as a server-to-server credential between Vercel and Apps Script; users never see or enter it.
+- All Vercel -> Apps Script contract operations now use POST, so the service token is not placed in URL query strings.
+
+
+## v1.12.2 - Production origin hardening
+- Allow same-origin API requests that legitimately omit the Origin header while still rejecting disallowed cross-origin browser requests.
+- Add the Vercel production origin to the default CORS allowlist while retaining the GitHub Pages origin and localhost development origins.

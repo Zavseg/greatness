@@ -50,87 +50,36 @@ const HEADERS = [
 function doGet(e) {
   try {
     const action = String((e && e.parameter && e.parameter.action) || 'health');
-
     if (action === 'health') {
-      return apiResponse({ ok: true, service: 'GREATNESS Contracts API', version: '1.9.34' }, e);
+      return apiResponse({ ok: true, service: 'GREATNESS Contracts API', version: '1.12.1' }, e);
     }
-
-    if (action === 'login') {
-      const password = String((e && e.parameter && e.parameter.password) || '');
-      if (!verifyContractsPassword(password)) {
-        Utilities.sleep(350);
-        return apiResponse({ ok: false, error: 'Unauthorized' }, e);
-      }
-      return apiResponse({ ok: true, token: createAuthToken() }, e);
-    }
-
-    if (!isAuthorizedRequest(e)) {
-      return apiResponse({ ok: false, error: 'Unauthorized' }, e);
-    }
-
-    if (action === 'list') {
-      return apiResponse({ ok: true, entries: readAllEntries() }, e);
-    }
-
-    if (action === 'catalog') {
-      return apiResponse({ ok: true, catalog: readContractCatalog() }, e);
-    }
-
-    // JSONP is used by the static GitHub Pages frontend. All protected actions
-    // require a short-lived server-signed token issued by action=login.
-    if (action === 'upsert') {
-      const entries = parseJsonParameter(e, 'entries', []);
-      if (!Array.isArray(entries) || !entries.length || entries.length > 1) {
-        return apiResponse({ ok: false, error: 'Exactly one entry is required' }, e);
-      }
-      const lock = LockService.getScriptLock();
-      try {
-        lock.waitLock(20000);
-        const result = upsertEntries(entries);
-        learnCatalogFromEntries(entries);
-        auditMutation('upsert', entries.map(x => String(x.id || '')));
-        return apiResponse({ ok: true, ...result }, e);
-      } finally {
-        try { lock.releaseLock(); } catch (_) {}
-      }
-    }
-
-    if (action === 'delete') {
-      const ids = parseJsonParameter(e, 'ids', []);
-      if (!Array.isArray(ids) || ids.length !== 1) {
-        return apiResponse({ ok: false, error: 'Exactly one id is required' }, e);
-      }
-      const lock = LockService.getScriptLock();
-      try {
-        lock.waitLock(20000);
-        const deleted = deleteEntries(ids.map(String));
-        auditMutation('delete', ids.map(String));
-        return apiResponse({ ok: true, deleted }, e);
-      } finally {
-        try { lock.releaseLock(); } catch (_) {}
-      }
-    }
-
-    return apiResponse({ ok: false, error: 'Unknown GET action' }, e);
+    return apiResponse({ ok: false, error: 'POST required' }, e);
   } catch (error) {
     return apiResponse({ ok: false, error: String(error) }, e);
   }
 }
 
 function doPost(e) {
-  // Vision remains a separate server-to-server path. Its proxy token is stored
-  // in Script Properties instead of source control.
+  // Vision remains a separate server-to-server path with its own proxy token.
   if (e && e.parameter && String(e.parameter.action || '') === 'vision') {
     return handleVisionRequest(e);
   }
 
   try {
     const payload = JSON.parse((e && e.postData && e.postData.contents) || '{}');
-    if (!isAuthorizedToken(String(payload.token || ''))) {
+    if (!verifyGasServiceToken(String(payload.serviceToken || ''))) {
       return jsonResponse({ ok: false, error: 'Unauthorized' });
     }
 
     const action = String(payload.action || '');
+
+    if (action === 'list') {
+      return jsonResponse({ ok: true, entries: readAllEntries() });
+    }
+    if (action === 'catalog') {
+      return jsonResponse({ ok: true, catalog: readContractCatalog() });
+    }
+
     const lock = LockService.getScriptLock();
     try {
       lock.waitLock(20000);
@@ -152,7 +101,6 @@ function doPost(e) {
         return jsonResponse({ ok: true, deleted });
       }
 
-      // Intentionally no replaceAll endpoint. Bulk destructive replacement is forbidden.
       return jsonResponse({ ok: false, error: 'Unknown POST action' });
     } finally {
       try { lock.releaseLock(); } catch (_) {}
@@ -162,46 +110,9 @@ function doPost(e) {
   }
 }
 
-function verifyContractsPassword(password) {
-  const expected = PropertiesService.getScriptProperties().getProperty('CONTRACTS_ACCESS_PASSWORD') || '';
-  return Boolean(expected) && String(password) === expected;
-}
-
-function createAuthToken() {
-  const secret = getAuthSigningSecret();
-  const expiresAt = Date.now() + (12 * 60 * 60 * 1000);
-  const nonce = Utilities.getUuid();
-  const payload = `${expiresAt}.${nonce}`;
-  const signature = Utilities.base64EncodeWebSafe(Utilities.computeHmacSha256Signature(payload, secret)).replace(/=+$/g, '');
-  return `${payload}.${signature}`;
-}
-
-function isAuthorizedRequest(e) {
-  return isAuthorizedToken(String((e && e.parameter && e.parameter.token) || ''));
-}
-
-function isAuthorizedToken(token) {
-  try {
-    const parts = String(token || '').split('.');
-    if (parts.length !== 3) return false;
-    const expiresAt = Number(parts[0]);
-    if (!Number.isFinite(expiresAt) || expiresAt < Date.now()) return false;
-    const payload = `${parts[0]}.${parts[1]}`;
-    const expected = Utilities.base64EncodeWebSafe(Utilities.computeHmacSha256Signature(payload, getAuthSigningSecret())).replace(/=+$/g, '');
-    return constantTimeEquals(parts[2], expected);
-  } catch (_) {
-    return false;
-  }
-}
-
-function getAuthSigningSecret() {
-  const props = PropertiesService.getScriptProperties();
-  let secret = props.getProperty('CONTRACTS_AUTH_SECRET');
-  if (!secret) {
-    secret = `${Utilities.getUuid()}${Utilities.getUuid()}`;
-    props.setProperty('CONTRACTS_AUTH_SECRET', secret);
-  }
-  return secret;
+function verifyGasServiceToken(token) {
+  const expected = PropertiesService.getScriptProperties().getProperty('GAS_SERVICE_TOKEN') || '';
+  return Boolean(expected) && constantTimeEquals(String(token || ''), expected);
 }
 
 function constantTimeEquals(a, b) {

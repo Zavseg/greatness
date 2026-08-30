@@ -250,6 +250,10 @@ a {
     gap: 30px;
 }
 
+.nav-link[hidden] {
+    display: none !important;
+}
+
 .nav-link {
     font-family: var(--font-display);
     font-size: 15px;

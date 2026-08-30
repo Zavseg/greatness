@@ -1,15 +1,19 @@
 {
   "functions": {
-    "api/vision.py": {
-      "maxDuration": 300
-    }
+    "api/vision.py": { "maxDuration": 300 },
+    "api/contracts.py": { "maxDuration": 60 },
+    "api/admin_users.py": { "maxDuration": 30 },
+    "api/me.py": { "maxDuration": 30 }
   },
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "no-referrer" }
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
       ]
     }
   ]

@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const app = window.GreatnessApp || {};
 
     [
+        app.initAuth,
         app.initNavigation,
         app.initFleetSlider,
         app.initJobsCatalog,

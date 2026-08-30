@@ -154,13 +154,22 @@ def require_user(handler, roles=None):
     return user
 
 
-def _admin_client():
+def _admin_headers():
     secret = _secret_key()
-    url = _supabase_url()
-    if not secret or not url:
+    if not secret:
         raise RuntimeError('SUPABASE_SECRET_KEY is not configured')
-    from supabase import create_client
-    return create_client(url, secret)
+    return {
+        'apikey': secret,
+        'Authorization': f'Bearer {secret}',
+        'Content-Type': 'application/json',
+    }
+
+
+def _admin_url(path=''):
+    url = _supabase_url()
+    if not url:
+        raise RuntimeError('SUPABASE_URL is not configured')
+    return f"{url}/auth/v1/admin{path}"
 
 
 def _user_to_dict(user):
@@ -174,12 +183,27 @@ def _user_to_dict(user):
 
 
 def list_auth_users(per_page=1000):
-    response = _admin_client().auth.admin.list_users(page=1, per_page=int(per_page))
-    users = getattr(response, 'users', response)
-    return [_user_to_dict(user) for user in (users or [])]
+    query = urllib.parse.urlencode({'page': 1, 'per_page': int(per_page)})
+    response = request_json(
+        f"{_admin_url('/users')}?{query}",
+        headers=_admin_headers(),
+        timeout=20,
+    )
+    if isinstance(response, dict):
+        users = response.get('users') or []
+    else:
+        users = response or []
+    return [_user_to_dict(user) for user in users]
 
 
 def update_auth_user(user_id, body):
-    response = _admin_client().auth.admin.update_user_by_id(str(user_id), body)
-    user = getattr(response, 'user', response)
+    user_id = urllib.parse.quote(str(user_id), safe='')
+    response = request_json(
+        _admin_url(f'/users/{user_id}'),
+        method='PUT',
+        headers=_admin_headers(),
+        body=body,
+        timeout=20,
+    )
+    user = response.get('user', response) if isinstance(response, dict) else response
     return _user_to_dict(user)

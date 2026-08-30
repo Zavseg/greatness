@@ -1,3 +1,11 @@
+# v1.12.4 - Direct Supabase Admin REST fix
+
+- Replaced the server-side `supabase-py` admin client with direct calls to Supabase Auth Admin REST endpoints.
+- User listing now calls `/auth/v1/admin/users` with the server-only service-role/secret key.
+- Role updates now call `/auth/v1/admin/users/{id}` directly.
+- Added server-side traceback logging for admin-user failures while keeping browser responses sanitized.
+- Removed the unused `supabase-py` runtime dependency to reduce deployment/runtime incompatibility risk.
+
 # v1.12.3 - SUPABASE ADMIN CLIENT FIX
 
 - Simplified the server-side Supabase admin client to use `create_client(url, secret)` directly.

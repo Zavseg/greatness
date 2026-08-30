@@ -1,3 +1,4 @@
+import traceback
 from http.server import BaseHTTPRequestHandler
 from backend.security import ALLOWED_ROLES, handle_options, list_auth_users, public_user, read_json, require_user, role_of, send_json, update_auth_user
 
@@ -12,7 +13,8 @@ class handler(BaseHTTPRequestHandler):
         try:
             users = list_auth_users()
             send_json(self, 200, {'ok': True, 'users': [public_user(user) for user in users]})
-        except Exception as exc:
+        except Exception:
+            traceback.print_exc()
             send_json(self, 500, {'ok': False, 'error': 'Admin user list is unavailable'})
 
     def do_POST(self):
@@ -41,4 +43,5 @@ class handler(BaseHTTPRequestHandler):
         except ValueError as exc:
             send_json(self, 400, {'ok': False, 'error': str(exc)})
         except Exception:
+            traceback.print_exc()
             send_json(self, 500, {'ok': False, 'error': 'Could not update user role'})

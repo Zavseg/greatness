@@ -921,7 +921,7 @@
 - Diagnostics expose only the failing stage, exception type, and a truncated message; secrets are never returned.
 - No auth or role behavior changed. This patch is intended only to identify the remaining production 500 error.
 
-## v1.12.6 - Supabase Secret Key Auth Fix
-- Fixed Supabase Admin REST authentication for new `sb_secret_...` keys.
-- New secret keys are now sent through the `apikey` header only instead of incorrectly using `Authorization: Bearer`.
-- Legacy JWT-based `service_role` keys remain supported with the Bearer header.
+## v1.12.7 - Admin credential diagnostics
+- Added safe diagnostics for Supabase Admin API failures.
+- Reports which server env key is selected, key format/length, project ref match metadata, and sanitized upstream error body.
+- Never returns the secret value itself.

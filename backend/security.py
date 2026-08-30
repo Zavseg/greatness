@@ -1,3 +1,4 @@
+import base64
 import json
 import os
 import urllib.error
@@ -90,14 +91,58 @@ def _secret_key():
     return os.environ.get('SUPABASE_SECRET_KEY') or os.environ.get('SUPABASE_SERVICE_ROLE_KEY') or ''
 
 
+class UpstreamHTTPError(RuntimeError):
+    def __init__(self, status, reason, body=''):
+        self.status = int(status or 0)
+        self.reason = str(reason or '')
+        self.body = str(body or '')[:500]
+        super().__init__(f'HTTP {self.status}: {self.reason}; body={self.body}')
+
+
 def request_json(url, *, method='GET', headers=None, body=None, timeout=20):
     data = None
     if body is not None:
         data = json.dumps(body, ensure_ascii=False).encode('utf-8')
     req = urllib.request.Request(url, data=data, method=method, headers=headers or {})
-    with urllib.request.urlopen(req, timeout=timeout) as response:
-        raw = response.read().decode('utf-8', errors='replace')
-        return json.loads(raw or '{}')
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as response:
+            raw = response.read().decode('utf-8', errors='replace')
+            return json.loads(raw or '{}')
+    except urllib.error.HTTPError as exc:
+        try:
+            raw = exc.read().decode('utf-8', errors='replace')
+        except Exception:
+            raw = ''
+        raise UpstreamHTTPError(exc.code, exc.reason, raw) from exc
+
+
+def admin_key_diagnostic():
+    url = _supabase_url()
+    secret_new = os.environ.get('SUPABASE_SECRET_KEY') or ''
+    secret_legacy = os.environ.get('SUPABASE_SERVICE_ROLE_KEY') or ''
+    secret = secret_new or secret_legacy
+    source = 'SUPABASE_SECRET_KEY' if secret_new else ('SUPABASE_SERVICE_ROLE_KEY' if secret_legacy else 'none')
+    url_ref = ''
+    try:
+        url_ref = urllib.parse.urlparse(url).hostname.split('.')[0] if url else ''
+    except Exception:
+        pass
+    info = {
+        'source': source,
+        'kind': 'sb_secret' if secret.startswith('sb_secret_') else ('jwt' if secret.count('.') == 2 else 'unknown'),
+        'length': len(secret),
+        'urlRef': url_ref,
+    }
+    if secret.count('.') == 2:
+        try:
+            payload = secret.split('.')[1]
+            payload += '=' * (-len(payload) % 4)
+            claims = json.loads(base64.urlsafe_b64decode(payload.encode('ascii')).decode('utf-8'))
+            info['jwtRole'] = claims.get('role')
+            info['jwtRef'] = claims.get('ref')
+        except Exception:
+            info['jwtDecode'] = 'failed'
+    return info
 
 
 def current_supabase_user(handler):

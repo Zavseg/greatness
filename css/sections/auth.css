@@ -194,3 +194,11 @@
 .auth-nickname-form { display:grid; grid-template-columns:minmax(0,1fr) 128px; gap:8px; align-items:center; }
 .auth-nickname-form .auth-secondary { min-height:44px; }
 @media (max-width:560px){ .auth-nickname-form{grid-template-columns:1fr} }
+
+
+/* Nickname validation feedback - v1.14.3 */
+#auth-nickname-hint.is-error {
+    color: #ff9b9b;
+    border-color: rgba(255, 92, 92, .28);
+    background: rgba(255, 72, 72, .07);
+}

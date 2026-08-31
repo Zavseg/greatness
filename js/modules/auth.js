@@ -267,7 +267,7 @@ window.GreatnessApp.initAuth = function initAuth() {
         if (nicknameInput) nicknameInput.value = user.nickname || '';
         if (nicknameHint) nicknameHint.textContent = user.nickname
             ? 'Цей нік використовується всередині GREATNESS і в розділі контрактів.'
-            : 'Нік потрібен лише для роботи з контрактами. Він не повинен бути схожим на ваше ім’я, прізвище або email.';
+            : 'Нік потрібен лише для роботи з контрактами. Він може збігатися з вашим ім’ям, якщо це ваш ігровий нік, але не повинен бути схожим на прізвище або email.';
 
         const contractsGranted = ['contracts', 'admin'].includes(user.role);
         const adminGranted = user.role === 'admin';
@@ -347,17 +347,30 @@ window.GreatnessApp.initAuth = function initAuth() {
         const button = form.querySelector('button[type="submit"]');
         const input = document.getElementById('auth-nickname-input');
         const nickname = input?.value.trim() || '';
-        if (!nickname) return setMessage('Вкажіть ігровий нік.');
+        const nicknameHint = document.getElementById('auth-nickname-hint');
+        const showNicknameError = text => {
+            if (nicknameHint) {
+                nicknameHint.textContent = text;
+                nicknameHint.classList.add('is-error');
+            }
+            input?.focus();
+        };
+        if (!nickname) return showNicknameError('Вкажіть ігровий нік.');
+        if (!/^[\p{L}\p{N}_-]+$/u.test(nickname)) return showNicknameError('У ніку дозволені лише літери, цифри, _ та -. Пробіли не дозволені.');
+        if (nicknameHint) {
+            nicknameHint.textContent = 'Перевіряємо та зберігаємо нік...';
+            nicknameHint.classList.remove('is-error');
+        }
         button.disabled = true;
-        setMessage('Зберігаємо нік...');
+        setMessage('');
         try {
             const payload = await api('/api/me', { method: 'POST', body: JSON.stringify({ nickname }) });
             auth.user = payload.user || auth.user;
             render();
             renderAccount();
-            setMessage('Нік збережено. Реальне ім’я та email не показуються адміністраторам.', true);
+            setMessage('Нік збережено.', true);
         } catch (err) {
-            setMessage(err.message || 'Не вдалося зберегти нік.');
+            showNicknameError(err.message || 'Не вдалося зберегти нік.');
         } finally { button.disabled = false; }
     });
 

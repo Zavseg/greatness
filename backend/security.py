@@ -154,33 +154,49 @@ def anonymous_user_id(user):
     return hashlib.sha256(raw.encode('utf-8')).hexdigest()[:12].upper()
 
 
-def _identity_tokens(user):
+def _identity_parts(user):
     user = user or {}
     metadata = user.get('user_metadata') or {}
-    values = [
-        user.get('email') or '',
+
+    email = str(user.get('email') or '').strip().casefold()
+    email_local = email.split('@', 1)[0] if '@' in email else email
+
+    given = str(metadata.get('given_name') or '').strip().casefold()
+    family = str(metadata.get('family_name') or '').strip().casefold()
+
+    display_values = [
         metadata.get('display_name') or '',
         metadata.get('full_name') or '',
         metadata.get('name') or '',
-        metadata.get('user_name') or '',
-        metadata.get('preferred_username') or '',
     ]
-    tokens = set()
-    for value in values:
-        text = str(value or '').strip().casefold()
-        if not text:
-            continue
-        if '@' in text:
-            text = text.split('@', 1)[0]
-        for token in re.split(r'[^\w]+', text, flags=re.UNICODE):
-            token = token.strip('_')
-            if len(token) >= 3:
-                tokens.add(token)
-        compact = re.sub(r'[^\w]+', '', text, flags=re.UNICODE).strip('_')
-        if len(compact) >= 3:
-            tokens.add(compact)
-    return tokens
 
+    # Google/Supabase do not always expose given_name/family_name. For the
+    # common "First Last" format, treat the first token as the given name
+    # and the remaining token(s) as family-name data. This lets a player use
+    # their real first name as an intentional game nickname while still
+    # blocking surname/full-identity and email-derived nicknames.
+    if not given or not family:
+        for value in display_values:
+            tokens = [t for t in re.split(r'[^\w]+', str(value or '').strip().casefold(), flags=re.UNICODE) if t]
+            if len(tokens) >= 2:
+                if not given:
+                    given = tokens[0]
+                if not family:
+                    family = ''.join(tokens[1:])
+                break
+
+    full_compacts = set()
+    for value in display_values:
+        compact = re.sub(r'[^\w]+', '', str(value or '').strip().casefold(), flags=re.UNICODE).strip('_')
+        if len(compact) >= 3:
+            full_compacts.add(compact)
+
+    return {
+        'email_local': email_local,
+        'given_name': given,
+        'family_name': family,
+        'full_compacts': full_compacts,
+    }
 
 def _ascii_fold(value):
     # Comparable form for privacy similarity checks. Normalize both Latin and
@@ -210,14 +226,29 @@ def validate_nickname(user, nickname, all_users=None):
     if len(candidate) < 3:
         raise ValueError('Нік надто короткий')
 
-    for token in _identity_tokens(user):
-        identity = _ascii_fold(token)
-        if len(identity) < 3:
-            continue
-        if candidate in identity or identity in candidate:
-            raise ValueError('Оберіть ігровий нік, який не схожий на ваше ім’я, прізвище або email')
-        if SequenceMatcher(None, candidate, identity).ratio() >= 0.62:
-            raise ValueError('Оберіть ігровий нік, який не схожий на ваше ім’я, прізвище або email')
+    identity_parts = _identity_parts(user)
+    given = _ascii_fold(identity_parts.get('given_name'))
+    email_local = _ascii_fold(identity_parts.get('email_local'))
+    family = _ascii_fold(identity_parts.get('family_name'))
+
+    # A player may intentionally use their real first name as their in-game
+    # nickname. Privacy protection targets email, surname and combined real
+    # identity - not the first name by itself.
+    allowed_first_name = bool(given) and candidate == given
+
+    if email_local and (candidate in email_local or email_local in candidate or SequenceMatcher(None, candidate, email_local).ratio() >= 0.72):
+        raise ValueError('Нік не повинен повторювати або бути схожим на ваш email')
+
+    if family and (candidate in family or family in candidate or SequenceMatcher(None, candidate, family).ratio() >= 0.72):
+        raise ValueError('Нік не повинен повторювати або бути схожим на ваше прізвище')
+
+    if not allowed_first_name:
+        for full_name in identity_parts.get('full_compacts') or set():
+            identity = _ascii_fold(full_name)
+            if len(identity) < 3:
+                continue
+            if candidate in identity or identity in candidate or SequenceMatcher(None, candidate, identity).ratio() >= 0.72:
+                raise ValueError('Нік не повинен повторювати ваше повне реальне ім’я')
 
     for other in all_users or []:
         if str(other.get('id') or '') == str(user.get('id') or ''):

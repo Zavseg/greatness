@@ -29,10 +29,11 @@
 .auth-trigger-role { display:block; margin-top:4px; color:var(--text-muted); font-family:var(--font-sans); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; }
 
 .auth-modal[hidden] { display:none !important; }
-.auth-modal { position:fixed; inset:0; z-index:5000; display:grid; place-items:center; padding:22px; }
+.auth-modal { position:fixed; inset:0; z-index:5000; display:grid; place-items:center; padding:22px; overflow:hidden; }
 .auth-modal-backdrop { position:absolute; inset:0; background:rgba(2,5,12,.82); backdrop-filter:blur(9px); }
 .auth-dialog {
-    position:relative; width:min(460px, 100%); overflow:hidden;
+    position:relative; width:min(460px, 100%); max-height:calc(100dvh - 44px); overflow-x:hidden; overflow-y:auto;
+    overscroll-behavior:contain; scrollbar-gutter:stable;
     border:1px solid rgba(255,255,255,.09); border-radius:22px;
     background:linear-gradient(155deg, rgba(18,25,43,.98), rgba(8,12,22,.99));
     box-shadow:0 28px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(255,204,0,.03) inset;
@@ -93,6 +94,8 @@
     .auth-trigger-copy { display:none; }
 }
 @media (max-width: 560px) {
+    .auth-modal { padding:10px; }
+    .auth-dialog { max-height:calc(100dvh - 20px); }
     .auth-dialog-header, .auth-panel, .auth-account { padding-left:20px; padding-right:20px; }
     .auth-tabs { margin-left:20px; margin-right:20px; }
     .auth-user-row { grid-template-columns:1fr; }

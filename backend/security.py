@@ -214,11 +214,11 @@ def _ascii_fold(value):
 
 
 def validate_nickname(user, nickname, all_users=None):
-    nickname = str(nickname or '').strip()
+    nickname = re.sub(r'\s+', ' ', str(nickname or '').strip())
     if not 3 <= len(nickname) <= 24:
         raise ValueError('Нік має містити від 3 до 24 символів')
-    if not re.fullmatch(r'[\w-]+', nickname, flags=re.UNICODE):
-        raise ValueError('У ніку дозволені лише літери, цифри, _ та -')
+    if not re.fullmatch(r'[\w -]+', nickname, flags=re.UNICODE):
+        raise ValueError('У ніку дозволені лише літери, цифри, пробіли, _ та -')
     if '@' in nickname or '.' in nickname:
         raise ValueError('Нік не повинен бути схожим на email')
 

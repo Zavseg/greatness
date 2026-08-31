@@ -346,7 +346,7 @@ window.GreatnessApp.initAuth = function initAuth() {
         const form = event.currentTarget;
         const button = form.querySelector('button[type="submit"]');
         const input = document.getElementById('auth-nickname-input');
-        const nickname = input?.value.trim() || '';
+        const nickname = (input?.value || '').trim().replace(/\s+/g, ' ');
         const nicknameHint = document.getElementById('auth-nickname-hint');
         const showNicknameError = text => {
             if (nicknameHint) {
@@ -356,7 +356,7 @@ window.GreatnessApp.initAuth = function initAuth() {
             input?.focus();
         };
         if (!nickname) return showNicknameError('Вкажіть ігровий нік.');
-        if (!/^[\p{L}\p{N}_-]+$/u.test(nickname)) return showNicknameError('У ніку дозволені лише літери, цифри, _ та -. Пробіли не дозволені.');
+        if (!/^[\p{L}\p{N}_ -]+$/u.test(nickname)) return showNicknameError('У ніку дозволені лише літери, цифри, пробіли, _ та -.');
         if (nicknameHint) {
             nicknameHint.textContent = 'Перевіряємо та зберігаємо нік...';
             nicknameHint.classList.remove('is-error');

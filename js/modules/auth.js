@@ -1,9 +1,9 @@
-/** Supabase authentication + Vercel-enforced role access for GREATNESS v1.12.0. */
+/** Supabase authentication + Vercel-enforced role access for GREATNESS v1.14.0. */
 window.GreatnessApp = window.GreatnessApp || {};
 window.GreatnessAuth = {
     user: null,
     ready: false,
-    canAccessContracts() { return ['contracts', 'admin'].includes(this.user?.role || ''); },
+    canAccessContracts() { return Boolean(this.user?.nickname) && ['contracts', 'admin'].includes(this.user?.role || ''); },
     async getAccessToken() { return ''; }
 };
 
@@ -128,7 +128,7 @@ window.GreatnessApp.initAuth = function initAuth() {
     function avatarMarkup(user, compact = false) {
         const cls = compact ? 'auth-avatar' : 'auth-avatar auth-avatar-large';
         if (user?.avatarUrl) return `<span class="${cls}"><img src="${escapeHtml(user.avatarUrl)}" alt="" referrerpolicy="no-referrer"></span>`;
-        const initial = escapeHtml((user?.displayName || user?.email || 'U').trim().charAt(0).toUpperCase());
+        const initial = escapeHtml((user?.nickname || 'G').trim().charAt(0).toUpperCase());
         return `<span class="${cls}"><span class="auth-avatar-letter">${initial}</span></span>`;
     }
 
@@ -137,7 +137,7 @@ window.GreatnessApp.initAuth = function initAuth() {
         if (!trigger) return;
         if (user) {
             trigger.classList.add('is-authenticated');
-            trigger.innerHTML = `${avatarMarkup(user, true)}<span class="auth-trigger-copy"><span class="auth-trigger-name">${escapeHtml(user.displayName || user.email)}</span><span class="auth-trigger-role">${roleLabel(user.role)}</span></span>`;
+            trigger.innerHTML = `${avatarMarkup(user, true)}<span class="auth-trigger-copy"><span class="auth-trigger-name">${escapeHtml(user.nickname || 'Вкажіть нік')}</span><span class="auth-trigger-role">${roleLabel(user.role)}</span></span>`;
         } else {
             trigger.classList.remove('is-authenticated');
             trigger.innerHTML = '<i class="fa-solid fa-user-shield"></i><span class="auth-trigger-copy"><span class="auth-trigger-name">Увійти</span><span class="auth-trigger-role">Акаунт</span></span>';
@@ -162,6 +162,10 @@ window.GreatnessApp.initAuth = function initAuth() {
         const payload = await api('/api/me', { method: 'GET' });
         auth.user = payload.user || null;
         render();
+        if (auth.user && !auth.user.nickname && !window.__greatnessNicknamePromptShown) {
+            window.__greatnessNicknamePromptShown = true;
+            setTimeout(() => openModal(), 0);
+        }
         return auth.user;
     }
 
@@ -259,9 +263,15 @@ window.GreatnessApp.initAuth = function initAuth() {
         const card = accountPanel.querySelector('.auth-profile-card');
         if (card) card.querySelector('.auth-avatar')?.remove();
         if (card) card.insertAdjacentHTML('afterbegin', avatarMarkup(user));
-        document.getElementById('auth-account-name').textContent = user.displayName || user.email;
-        document.getElementById('auth-account-email').textContent = `${user.email} · ${providerLabel(user.provider)}`;
+        document.getElementById('auth-account-name').textContent = user.nickname || 'Нік не вказано';
+        document.getElementById('auth-account-email').textContent = user.nickname ? `GREATNESS ID #${user.publicId}` : 'Створіть ігровий нік. Реальне ім’я та email іншим користувачам не показуються.';
         document.getElementById('auth-account-role').textContent = roleLabel(user.role);
+        const nicknameInput = document.getElementById('auth-nickname-input');
+        const nicknameHint = document.getElementById('auth-nickname-hint');
+        if (nicknameInput) nicknameInput.value = user.nickname || '';
+        if (nicknameHint) nicknameHint.textContent = user.nickname
+            ? 'Цей нік використовується всередині GREATNESS і в розділі контрактів.'
+            : 'Нік обов’язковий для Family/контрактів і не повинен бути схожим на ваше ім’я, прізвище або email.';
 
         const contractsGranted = ['contracts', 'admin'].includes(user.role);
         const adminGranted = user.role === 'admin';
@@ -285,15 +295,15 @@ window.GreatnessApp.initAuth = function initAuth() {
     function renderAdminUsers(filter = '') {
         if (!usersList) return;
         const q = filter.trim().toLowerCase();
-        const visible = adminUsersCache.filter(user => !q || `${user.displayName || ''} ${user.email || ''} ${providerLabel(user.provider)} ${roleLabel(user.role)}`.toLowerCase().includes(q));
+        const visible = adminUsersCache.filter(user => !q || `${user.nickname || ''} ${user.publicId || ''} ${roleLabel(user.role)}`.toLowerCase().includes(q));
         if (adminStats) {
             const counts = adminUsersCache.reduce((acc, user) => { acc.total += 1; acc[user.role] = (acc[user.role] || 0) + 1; return acc; }, { total: 0, member: 0, contracts: 0, admin: 0 });
             adminStats.innerHTML = `<span><b>${counts.total}</b><small>Всього</small></span><span><b>${counts.member}</b><small>Учасники</small></span><span><b>${counts.contracts}</b><small>Family</small></span><span><b>${counts.admin}</b><small>Адміни</small></span>`;
         }
         usersList.innerHTML = visible.map(user => `
-            <div class="auth-user-row" data-user-id="${user.id}">
-                <div class="auth-user-identity">${avatarMarkup(user, true)}<span><strong>${escapeHtml(user.displayName || user.email)}</strong><small>${escapeHtml(user.email)} · ${escapeHtml(providerLabel(user.provider))}</small></span></div>
-                <div class="auth-user-role-control"><span class="auth-current-role role-${escapeHtml(user.role)}">${escapeHtml(roleLabel(user.role))}</span><select class="auth-role-select" aria-label="Роль ${escapeHtml(user.email)}">
+            <div class="auth-user-row" data-public-id="${escapeHtml(user.publicId)}">
+                <div class="auth-user-identity">${avatarMarkup(user, true)}<span><strong>${escapeHtml(user.nickname || 'Нік не вказано')}</strong><small>GREATNESS ID #${escapeHtml(user.publicId)}</small></span></div>
+                <div class="auth-user-role-control"><span class="auth-current-role role-${escapeHtml(user.role)}">${escapeHtml(roleLabel(user.role))}</span><select class="auth-role-select" aria-label="Роль користувача ${escapeHtml(user.publicId)}">
                     <option value="member" ${user.role === 'member' ? 'selected' : ''}>Учасник</option>
                     <option value="contracts" ${user.role === 'contracts' ? 'selected' : ''}>Family</option>
                     <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Адмін</option>
@@ -302,18 +312,18 @@ window.GreatnessApp.initAuth = function initAuth() {
         usersList.querySelectorAll('.auth-role-select').forEach(select => {
             select.addEventListener('change', async event => {
                 const row = event.target.closest('.auth-user-row');
-                const userId = String(row.dataset.userId || '');
-                const target = adminUsersCache.find(x => String(x.id) === userId);
+                const publicId = String(row.dataset.publicId || '');
+                const target = adminUsersCache.find(x => String(x.publicId) === publicId);
                 const previousRole = target?.role || 'member';
                 const nextRole = event.target.value;
                 if (previousRole === nextRole) return;
                 event.target.disabled = true;
                 row.classList.add('is-saving');
                 try {
-                    const payload = await api('/api/admin_users', { method: 'POST', body: JSON.stringify({ userId, role: nextRole }) });
+                    const payload = await api('/api/admin_users', { method: 'POST', body: JSON.stringify({ publicId, role: nextRole }) });
                     if (target) target.role = payload.user?.role || nextRole;
                     renderAdminUsers(usersSearch?.value || '');
-                    setMessage(`Доступ для ${target?.displayName || target?.email || 'користувача'} змінено: ${roleLabel(nextRole)}.`, true);
+                    setMessage(`Доступ для ${target?.nickname || `#${publicId}`} змінено: ${roleLabel(nextRole)}.`, true);
                 } catch (err) {
                     event.target.value = previousRole;
                     setMessage(err.message);
@@ -333,6 +343,27 @@ window.GreatnessApp.initAuth = function initAuth() {
             renderAdminUsers(usersSearch?.value || '');
         } catch (err) { usersList.innerHTML = `<div class="auth-hint">${escapeHtml(err.message)}</div>`; }
     }
+
+
+    document.getElementById('auth-nickname-form')?.addEventListener('submit', async event => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const button = form.querySelector('button[type="submit"]');
+        const input = document.getElementById('auth-nickname-input');
+        const nickname = input?.value.trim() || '';
+        if (!nickname) return setMessage('Вкажіть ігровий нік.');
+        button.disabled = true;
+        setMessage('Зберігаємо нік...');
+        try {
+            const payload = await api('/api/me', { method: 'POST', body: JSON.stringify({ nickname }) });
+            auth.user = payload.user || auth.user;
+            render();
+            renderAccount();
+            setMessage('Нік збережено. Реальне ім’я та email не показуються адміністраторам.', true);
+        } catch (err) {
+            setMessage(err.message || 'Не вдалося зберегти нік.');
+        } finally { button.disabled = false; }
+    });
 
 
     usersSearch?.addEventListener('input', () => renderAdminUsers(usersSearch.value));
@@ -375,12 +406,11 @@ window.GreatnessApp.initAuth = function initAuth() {
         setMessage('Створюємо акаунт...');
         try {
             const email = document.getElementById('auth-register-email').value.trim();
-            const displayName = document.getElementById('auth-register-name').value.trim();
             const emailRedirectTo = `${location.origin}${location.pathname}`;
             const { data, error } = await supabaseClient.auth.signUp({
                 email,
                 password,
-                options: { data: { display_name: displayName }, emailRedirectTo }
+                options: { emailRedirectTo }
             });
             if (error) throw error;
             if (data.session) {

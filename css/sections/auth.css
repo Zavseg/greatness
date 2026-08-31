@@ -182,3 +182,12 @@
 .auth-empty-state,.auth-loading-state { min-height:90px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--text-muted); font-size:11px; }
 .auth-loading-state i { animation:authSpin .8s linear infinite; }
 @media (max-width:560px){ .auth-admin-stats{grid-template-columns:repeat(2,1fr)} .auth-user-row{grid-template-columns:1fr} .auth-user-role-control{grid-template-columns:1fr 130px;align-items:center} }
+
+
+/* Private GREATNESS nickname identity - v1.14.0 */
+.auth-nickname-card { margin-top:16px; padding:16px; border:1px solid rgba(0,119,255,.16); border-radius:15px; background:rgba(0,119,255,.035); }
+.auth-nickname-card .auth-access-head { margin-bottom:10px; }
+.auth-nickname-card .auth-access-head > i { color:#74b9ff; font-size:18px; }
+.auth-nickname-form { display:grid; grid-template-columns:minmax(0,1fr) 128px; gap:8px; align-items:center; }
+.auth-nickname-form .auth-secondary { min-height:44px; }
+@media (max-width:560px){ .auth-nickname-form{grid-template-columns:1fr} }

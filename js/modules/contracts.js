@@ -6,7 +6,7 @@
  * unrelated functionality.
  */
 window.GreatnessApp = window.GreatnessApp || {};
-console.info("GREATNESS Contracts build 1.12.0 loaded");
+console.info("GREATNESS Contracts build 1.14.0 loaded");
 
 window.GreatnessApp.initContracts = function initContracts() {
     // Prevent a transient duplicate badge flash while Save All is verifying rows that were just written.
@@ -111,7 +111,7 @@ window.GreatnessApp.initContracts = function initContracts() {
         if (protectedContent) protectedContent.hidden = !allowed;
         if (!allowed) {
             if (accessCopy) accessCopy.textContent = user
-                ? `Ви увійшли як ${user.displayName || user.email}, але роль «${user.role === 'member' ? 'Учасник' : user.role}» не має доступу до контрактів.`
+                ? (!user.nickname ? 'Щоб користуватися контрактами, спочатку створіть ігровий нік у профілі.' : `Ви увійшли як ${user.nickname}, але роль «${user.role === 'member' ? 'Учасник' : user.role}» не має доступу до контрактів.`)
                 : 'Контракти доступні лише авторизованим користувачам з відповідним рівнем доступу.';
             if (accessButton) accessButton.innerHTML = user
                 ? '<i class="fa-solid fa-user-shield"></i>&nbsp; Відкрити профіль'
@@ -141,6 +141,17 @@ window.GreatnessApp.initContracts = function initContracts() {
             }
         } catch (e) { console.error('Error loading roster:', e); }
     }
+
+    function syncCurrentNicknameToRoster() {
+        const nick = String(window.GreatnessAuth?.user?.nickname || '').trim();
+        if (!nick) return;
+        if (!familyRoster.some(item => item.toLocaleLowerCase('uk') === nick.toLocaleLowerCase('uk'))) {
+            familyRoster.unshift(nick);
+            localStorage.setItem(ROSTER_STORAGE_KEY, JSON.stringify(familyRoster));
+        }
+    }
+    syncCurrentNicknameToRoster();
+    window.addEventListener('greatness:auth-changed', () => { syncCurrentNicknameToRoster(); populateRosterDropdown(); });
 
     // Sub-tab switching inside #contracts
     const subtabButtons = document.querySelectorAll('.subtab-btn');
@@ -214,7 +225,7 @@ window.GreatnessApp.initContracts = function initContracts() {
         active.filter(nick => !excludedSet.has(nick)).forEach(nick => {
             const opt = document.createElement('option');
             opt.value = nick;
-            opt.textContent = nick;
+            opt.textContent = nick === String(window.GreatnessAuth?.user?.nickname || '') ? `${nick} (ви)` : nick;
             select.appendChild(opt);
         });
         if (active.some(nick => !excludedSet.has(nick)) && inactive.some(nick => !excludedSet.has(nick))) {
@@ -226,7 +237,7 @@ window.GreatnessApp.initContracts = function initContracts() {
         inactive.filter(nick => !excludedSet.has(nick)).forEach(nick => {
             const opt = document.createElement('option');
             opt.value = nick;
-            opt.textContent = nick;
+            opt.textContent = nick === String(window.GreatnessAuth?.user?.nickname || '') ? `${nick} (ви)` : nick;
             select.appendChild(opt);
         });
     }

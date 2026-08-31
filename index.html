@@ -868,11 +868,10 @@
                 <div class="auth-social-note" data-social-auth-note hidden>Соціальний вхід ще не підключений у локальному середовищі.</div>
                 <div class="auth-divider"><span>або створити акаунт через email</span></div>
                 <form class="auth-form" id="auth-register-form">
-                    <div class="auth-field"><label for="auth-register-name">Ім'я / нікнейм</label><div class="auth-input-wrap"><i class="fa-regular fa-user"></i><input class="auth-input" id="auth-register-name" type="text" minlength="2" maxlength="40" autocomplete="nickname" required placeholder="Oleksii Otaman"></div></div>
                     <div class="auth-field"><label for="auth-register-email">Email</label><div class="auth-input-wrap"><i class="fa-regular fa-envelope"></i><input class="auth-input" id="auth-register-email" type="email" autocomplete="email" required placeholder="name@example.com"></div></div>
                     <div class="auth-field"><label for="auth-register-password">Пароль</label><div class="auth-input-wrap"><i class="fa-solid fa-lock"></i><input class="auth-input" id="auth-register-password" type="password" minlength="10" autocomplete="new-password" required placeholder="Мінімум 10 символів"><button class="auth-password-toggle" type="button" data-target="auth-register-password" aria-label="Показати пароль"><i class="fa-solid fa-eye"></i></button></div></div>
                     <div class="auth-field"><label for="auth-register-confirm">Повторіть пароль</label><div class="auth-input-wrap"><i class="fa-solid fa-shield"></i><input class="auth-input" id="auth-register-confirm" type="password" minlength="10" autocomplete="new-password" required placeholder="Повторіть пароль"></div></div>
-                    <div class="auth-hint"><i class="fa-solid fa-circle-info"></i> Реєстрація відкрита для всіх. Email потрібно підтвердити. Новий акаунт отримує роль <b>Учасник</b>, а доступ до контрактів видає адміністратор.</div>
+                    <div class="auth-hint"><i class="fa-solid fa-circle-info"></i> Реєстрація відкрита для всіх. Email використовується тільки для входу і не показується адміністраторам сайту. Після входу створіть окремий ігровий нік.</div>
                     <button class="auth-primary" type="submit"><i class="fa-solid fa-user-plus"></i>&nbsp; Створити акаунт</button>
                 </form>
             </div>
@@ -884,6 +883,18 @@
                         <span id="auth-account-email"></span>
                         <span class="auth-role-chip" id="auth-account-role"></span>
                     </div>
+                </div>
+
+                <div class="auth-nickname-card">
+                    <div class="auth-access-head">
+                        <div><span class="auth-section-kicker">ПРИВАТНІСТЬ</span><h3>Ігровий нік</h3></div>
+                        <i class="fa-solid fa-user-secret"></i>
+                    </div>
+                    <form id="auth-nickname-form" class="auth-nickname-form">
+                        <div class="auth-input-wrap"><i class="fa-solid fa-gamepad"></i><input class="auth-input" id="auth-nickname-input" type="text" minlength="3" maxlength="24" autocomplete="nickname" placeholder="Наприклад: Night_Prince" required></div>
+                        <button class="auth-secondary" type="submit">Зберегти нік</button>
+                    </form>
+                    <div class="auth-hint" id="auth-nickname-hint">Нік не повинен бути схожим на ваше ім’я, прізвище або email.</div>
                 </div>
 
                 <div class="auth-access-summary">
@@ -904,7 +915,7 @@
                         <button class="auth-icon-button" id="auth-refresh-users" type="button" title="Оновити"><i class="fa-solid fa-rotate"></i></button>
                     </div>
                     <div class="auth-admin-stats" id="auth-admin-stats"></div>
-                    <div class="auth-user-tools"><div class="auth-user-search"><i class="fa-solid fa-magnifying-glass"></i><input id="auth-user-search" type="search" placeholder="Знайти користувача..."></div></div>
+                    <div class="auth-user-tools"><div class="auth-user-search"><i class="fa-solid fa-magnifying-glass"></i><input id="auth-user-search" type="search" placeholder="Пошук за ніком або GREATNESS ID..."></div></div>
                     <div class="auth-role-legend"><span><b>Учасник</b> - без контрактів</span><span><b>Family</b> - доступ до закритого розділу</span><span><b>Адмін</b> - повний доступ</span></div>
                     <div class="auth-user-list" id="auth-user-list"></div>
                 </div>

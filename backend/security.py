@@ -1,6 +1,10 @@
 import base64
 import json
 import os
+import re
+import hashlib
+import unicodedata
+from difflib import SequenceMatcher
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -137,23 +141,116 @@ def role_of(user):
     return role if role in ALLOWED_ROLES else 'member'
 
 
-def public_user(user):
+def nickname_of(user):
     user = user or {}
     metadata = user.get('user_metadata') or {}
-    app = user.get('app_metadata') or {}
-    identities = user.get('identities') or []
-    provider = app.get('provider') or (identities[0].get('provider') if identities else '') or 'email'
-    display = metadata.get('display_name') or metadata.get('full_name') or metadata.get('name') or metadata.get('user_name') or (user.get('email') or '').split('@')[0]
-    avatar = metadata.get('avatar_url') or metadata.get('picture') or ''
-    return {
-        'id': user.get('id'),
-        'email': user.get('email') or '',
-        'displayName': display,
-        'role': role_of(user),
-        'provider': provider,
-        'avatarUrl': avatar,
-        'createdAt': user.get('created_at') or '',
+    return str(metadata.get('nickname') or '').strip()
+
+
+def anonymous_user_id(user):
+    raw = str((user or {}).get('id') or '')
+    if not raw:
+        return 'UNKNOWN'
+    return hashlib.sha256(raw.encode('utf-8')).hexdigest()[:12].upper()
+
+
+def _identity_tokens(user):
+    user = user or {}
+    metadata = user.get('user_metadata') or {}
+    values = [
+        user.get('email') or '',
+        metadata.get('display_name') or '',
+        metadata.get('full_name') or '',
+        metadata.get('name') or '',
+        metadata.get('user_name') or '',
+        metadata.get('preferred_username') or '',
+    ]
+    tokens = set()
+    for value in values:
+        text = str(value or '').strip().casefold()
+        if not text:
+            continue
+        if '@' in text:
+            text = text.split('@', 1)[0]
+        for token in re.split(r'[^\w]+', text, flags=re.UNICODE):
+            token = token.strip('_')
+            if len(token) >= 3:
+                tokens.add(token)
+        compact = re.sub(r'[^\w]+', '', text, flags=re.UNICODE).strip('_')
+        if len(compact) >= 3:
+            tokens.add(compact)
+    return tokens
+
+
+def _ascii_fold(value):
+    # Comparable form for privacy similarity checks. Normalize both Latin and
+    # Ukrainian/Russian spellings so variants like Oleksii / Олексій are caught.
+    value = unicodedata.normalize('NFKD', str(value or '').casefold())
+    value = ''.join(ch for ch in value if not unicodedata.combining(ch))
+    translit = {
+        'а':'a','б':'b','в':'v','г':'h','ґ':'g','д':'d','е':'e','є':'ye','ё':'yo','ж':'zh','з':'z',
+        'и':'y','і':'i','ї':'yi','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r',
+        'с':'s','т':'t','у':'u','ф':'f','х':'kh','ц':'ts','ч':'ch','ш':'sh','щ':'shch','ы':'y',
+        'э':'e','ю':'yu','я':'ya','ь':'','ъ':'',
     }
+    value = ''.join(translit.get(ch, ch) for ch in value)
+    return ''.join(ch for ch in value if ch.isalnum())
+
+
+def validate_nickname(user, nickname, all_users=None):
+    nickname = str(nickname or '').strip()
+    if not 3 <= len(nickname) <= 24:
+        raise ValueError('Нік має містити від 3 до 24 символів')
+    if not re.fullmatch(r'[\w-]+', nickname, flags=re.UNICODE):
+        raise ValueError('У ніку дозволені лише літери, цифри, _ та -')
+    if '@' in nickname or '.' in nickname:
+        raise ValueError('Нік не повинен бути схожим на email')
+
+    candidate = _ascii_fold(nickname)
+    if len(candidate) < 3:
+        raise ValueError('Нік надто короткий')
+
+    for token in _identity_tokens(user):
+        identity = _ascii_fold(token)
+        if len(identity) < 3:
+            continue
+        if candidate in identity or identity in candidate:
+            raise ValueError('Оберіть ігровий нік, який не схожий на ваше ім’я, прізвище або email')
+        if SequenceMatcher(None, candidate, identity).ratio() >= 0.62:
+            raise ValueError('Оберіть ігровий нік, який не схожий на ваше ім’я, прізвище або email')
+
+    for other in all_users or []:
+        if str(other.get('id') or '') == str(user.get('id') or ''):
+            continue
+        existing = nickname_of(other)
+        if existing and existing.casefold() == nickname.casefold():
+            raise ValueError('Цей нік уже зайнятий')
+    return nickname
+
+
+def self_user(user):
+    return {
+        'nickname': nickname_of(user),
+        'hasNickname': bool(nickname_of(user)),
+        'role': role_of(user),
+        'publicId': anonymous_user_id(user),
+        'createdAt': (user or {}).get('created_at') or '',
+    }
+
+
+def admin_user(user):
+    return {
+        'publicId': anonymous_user_id(user),
+        'nickname': nickname_of(user),
+        'hasNickname': bool(nickname_of(user)),
+        'role': role_of(user),
+        'createdAt': (user or {}).get('created_at') or '',
+    }
+
+
+# Backward-compatible serializer name for endpoints that only return the current user.
+def public_user(user):
+    return self_user(user)
 
 
 def require_user(handler, roles=None):

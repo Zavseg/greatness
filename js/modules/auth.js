@@ -137,13 +137,13 @@ window.GreatnessApp.initAuth = function initAuth() {
         if (!trigger) return;
         if (user) {
             trigger.classList.add('is-authenticated');
-            trigger.innerHTML = `${avatarMarkup(user, true)}<span class="auth-trigger-copy"><span class="auth-trigger-name">${escapeHtml(user.nickname || 'Вкажіть нік')}</span><span class="auth-trigger-role">${roleLabel(user.role)}</span></span>`;
+            trigger.innerHTML = `${avatarMarkup(user, true)}<span class="auth-trigger-copy"><span class="auth-trigger-name">${escapeHtml(user.nickname || 'Акаунт')}</span><span class="auth-trigger-role">${roleLabel(user.role)}</span></span>`;
         } else {
             trigger.classList.remove('is-authenticated');
             trigger.innerHTML = '<i class="fa-solid fa-user-shield"></i><span class="auth-trigger-copy"><span class="auth-trigger-name">Увійти</span><span class="auth-trigger-role">Акаунт</span></span>';
         }
         const contractsLink = document.querySelector('.nav-link[data-tab="contracts"]');
-        if (contractsLink) contractsLink.hidden = !auth.canAccessContracts();
+        if (contractsLink) contractsLink.hidden = !['contracts', 'admin'].includes(user?.role || '');
         dispatchAuthChanged();
     }
 
@@ -162,10 +162,6 @@ window.GreatnessApp.initAuth = function initAuth() {
         const payload = await api('/api/me', { method: 'GET' });
         auth.user = payload.user || null;
         render();
-        if (auth.user && !auth.user.nickname && !window.__greatnessNicknamePromptShown) {
-            window.__greatnessNicknamePromptShown = true;
-            setTimeout(() => openModal(), 0);
-        }
         return auth.user;
     }
 
@@ -271,7 +267,7 @@ window.GreatnessApp.initAuth = function initAuth() {
         if (nicknameInput) nicknameInput.value = user.nickname || '';
         if (nicknameHint) nicknameHint.textContent = user.nickname
             ? 'Цей нік використовується всередині GREATNESS і в розділі контрактів.'
-            : 'Нік обов’язковий для Family/контрактів і не повинен бути схожим на ваше ім’я, прізвище або email.';
+            : 'Нік потрібен лише для роботи з контрактами. Він не повинен бути схожим на ваше ім’я, прізвище або email.';
 
         const contractsGranted = ['contracts', 'admin'].includes(user.role);
         const adminGranted = user.role === 'admin';

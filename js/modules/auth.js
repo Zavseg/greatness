@@ -368,6 +368,7 @@ window.GreatnessApp.initAuth = function initAuth() {
             auth.user = payload.user || auth.user;
             render();
             renderAccount();
+            if (auth.user?.role === 'admin') await loadUsers();
             setMessage('Нік збережено.', true);
         } catch (err) {
             showNicknameError(err.message || 'Не вдалося зберегти нік.');

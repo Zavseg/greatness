@@ -851,5 +851,744 @@ window.GreatnessBuyerData = [
         "source": "20261002105812_1(1).jpg"
       }
     ]
+  },
+  {
+    "id": "bean",
+    "name": "Квасоля",
+    "buyer": "vegetables",
+    "image": "assets/buyers/bean.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 464,
+        "hot": false,
+        "source": "20261003173457_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 658,
+        "hot": false,
+        "source": "20261004102143_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "squash",
+    "name": "Кабачок",
+    "buyer": "vegetables",
+    "image": "assets/buyers/squash.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 872,
+        "hot": false,
+        "source": "20261003173457_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 509,
+        "hot": false,
+        "source": "20261004102143_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "cucumber",
+    "name": "Огірок",
+    "buyer": "vegetables",
+    "image": "assets/buyers/cucumber.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 1189,
+        "hot": false,
+        "source": "20261003173457_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 1151,
+        "hot": false,
+        "source": "20261004102143_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "peas",
+    "name": "Горох",
+    "buyer": "vegetables",
+    "image": "assets/buyers/peas.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 1238,
+        "hot": false,
+        "source": "20261003173457_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 1191,
+        "hot": false,
+        "source": "20261004102143_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "orange-mushroom",
+    "name": "Помаранчевий гриб",
+    "buyer": "mushrooms",
+    "image": "assets/buyers/orange-mushroom.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 0.1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 152,
+        "hot": false,
+        "source": "20261003173524_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 146,
+        "hot": false,
+        "source": "20261004102201_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "honey-mushroom",
+    "name": "Опеньки",
+    "buyer": "mushrooms",
+    "image": "assets/buyers/honey-mushroom.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 0.1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 195,
+        "hot": false,
+        "source": "20261003173524_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 224,
+        "hot": false,
+        "source": "20261004102201_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "white-mushroom",
+    "name": "Білий гриб",
+    "buyer": "mushrooms",
+    "image": "assets/buyers/white-mushroom.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 0.1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 299,
+        "hot": false,
+        "source": "20261003173524_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 386,
+        "hot": false,
+        "source": "20261004102206_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "aspen-mushroom",
+    "name": "Підосиковик",
+    "buyer": "mushrooms",
+    "image": "assets/buyers/aspen-mushroom.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 0.1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 344,
+        "hot": false,
+        "source": "20261003173524_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 448,
+        "hot": false,
+        "source": "20261004102206_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "stropharia",
+    "name": "Строфарія",
+    "buyer": "mushrooms",
+    "image": "assets/buyers/stropharia.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 0.1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 741,
+        "hot": false,
+        "source": "20261003173528_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 788,
+        "hot": false,
+        "source": "20261004102206_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "gold-mushroom",
+    "name": "Золотий гриб",
+    "buyer": "mushrooms",
+    "image": "assets/buyers/gold-mushroom.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 0.1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 22989,
+        "hot": false,
+        "source": "20261003173528_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 23884,
+        "hot": false,
+        "source": "20261004102206_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "crucian",
+    "name": "Карась",
+    "buyer": "fish",
+    "image": "assets/buyers/crucian.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 177,
+        "hot": false,
+        "source": "20261003173536_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 245,
+        "hot": false,
+        "source": "20261004102215_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "pike",
+    "name": "Щука",
+    "buyer": "fish",
+    "image": "assets/buyers/pike.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 235,
+        "hot": false,
+        "source": "20261003173536_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 278,
+        "hot": false,
+        "source": "20261004102215_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "perch",
+    "name": "Окунь",
+    "buyer": "fish",
+    "image": "assets/buyers/perch.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 473,
+        "hot": false,
+        "source": "20261003173536_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 313,
+        "hot": false,
+        "source": "20261004102218_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "sturgeon",
+    "name": "Осетр",
+    "buyer": "fish",
+    "image": "assets/buyers/sturgeon.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 1105,
+        "hot": false,
+        "source": "20261003173536_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 1058,
+        "hot": false,
+        "source": "20261004102218_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "salmon",
+    "name": "Лосось",
+    "buyer": "fish",
+    "image": "assets/buyers/salmon.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 422,
+        "hot": false,
+        "source": "20261003173544_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 345,
+        "hot": false,
+        "source": "20261004102218_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "goby",
+    "name": "Бичок",
+    "buyer": "fish",
+    "image": "assets/buyers/goby.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 514,
+        "hot": false,
+        "source": "20261003173544_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 358,
+        "hot": false,
+        "source": "20261004102218_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "grass-carp",
+    "name": "Білий амур",
+    "buyer": "fish",
+    "image": "assets/buyers/grass-carp.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 132,
+        "hot": false,
+        "source": "20261003173544_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 179,
+        "hot": false,
+        "source": "20261004102227_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "eel",
+    "name": "Вугор",
+    "buyer": "fish",
+    "image": "assets/buyers/eel.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 503,
+        "hot": false,
+        "source": "20261003173544_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 438,
+        "hot": false,
+        "source": "20261004102227_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "loach",
+    "name": "В’юн",
+    "buyer": "fish",
+    "image": "assets/buyers/loach.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 641,
+        "hot": false,
+        "source": "20261003173551_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 453,
+        "hot": false,
+        "source": "20261004102227_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "ruff",
+    "name": "Йорж",
+    "buyer": "fish",
+    "image": "assets/buyers/ruff.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 784,
+        "hot": false,
+        "source": "20261003173551_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 619,
+        "hot": false,
+        "source": "20261004102227_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "tuna",
+    "name": "Блакитний тунець",
+    "buyer": "fish",
+    "image": "assets/buyers/tuna.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 1135,
+        "hot": false,
+        "source": "20261003173551_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 802,
+        "hot": false,
+        "source": "20261004102230_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "koi",
+    "name": "Короп Коі",
+    "buyer": "fish",
+    "image": "assets/buyers/koi.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 903,
+        "hot": false,
+        "source": "20261003173551_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 991,
+        "hot": false,
+        "source": "20261004102230_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "ray",
+    "name": "Скат",
+    "buyer": "fish",
+    "image": "assets/buyers/ray.png",
+    "truncated": false,
+    "unit": "кг",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 578,
+        "hot": false,
+        "source": "20261003173554_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "small-battery",
+    "name": "Несправна батарейка",
+    "buyer": "metals",
+    "image": "assets/buyers/small-battery.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 698,
+        "hot": false,
+        "source": "20261003173601_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 228,
+        "hot": false,
+        "source": "20261004102239_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "metal-lid",
+    "name": "Металева кришка",
+    "buyer": "metals",
+    "image": "assets/buyers/metal-lid.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 1085,
+        "hot": false,
+        "source": "20261003173601_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 647,
+        "hot": false,
+        "source": "20261004102239_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "coin",
+    "name": "Монета",
+    "buyer": "metals",
+    "image": "assets/buyers/coin.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 1023,
+        "hot": false,
+        "source": "20261003173601_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 798,
+        "hot": false,
+        "source": "20261004102244_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "aluminium-can",
+    "name": "Алюмінієва банка",
+    "buyer": "metals",
+    "image": "assets/buyers/aluminium-can.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 1529,
+        "hot": false,
+        "source": "20261003173601_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 1218,
+        "hot": false,
+        "source": "20261004102244_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "roybon",
+    "name": "Окуляри «RoyBon»",
+    "buyer": "metals",
+    "image": "assets/buyers/roybon.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 2625,
+        "hot": false,
+        "source": "20261003173607_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 3672,
+        "hot": false,
+        "source": "20261004102244_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "phone",
+    "name": "Зламаний телефон",
+    "buyer": "metals",
+    "image": "assets/buyers/phone.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 2707,
+        "hot": false,
+        "source": "20261003173607_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 3815,
+        "hot": false,
+        "source": "20261004102244_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "gold-jewelry",
+    "name": "Золота прикраса",
+    "buyer": "metals",
+    "image": "assets/buyers/gold-jewelry.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 7743,
+        "hot": false,
+        "source": "20261003173607_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 12606,
+        "hot": false,
+        "source": "20261004102247_1.jpg"
+      }
+    ],
+    "market": []
+  },
+  {
+    "id": "medallion",
+    "name": "Медальйон",
+    "buyer": "metals",
+    "image": "assets/buyers/medallion.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "observations": [
+      {
+        "date": "2026-10-03",
+        "price": 51819,
+        "hot": false,
+        "source": "20261003173607_1.jpg"
+      },
+      {
+        "date": "2026-10-04",
+        "price": 66436,
+        "hot": false,
+        "source": "20261004102247_1.jpg"
+      }
+    ],
+    "market": []
   }
 ];
+window.GreatnessBuyerCatalog = {"equipment": {"name": "Brine Volt", "title": "Обладнання та деталі"}, "junk": {"name": "Fedya Uncle", "title": "Хлам та інструменти"}, "vegetables": {"name": "Pit Vegetable", "title": "Овочі"}, "mushrooms": {"name": "Werner Grip", "title": "Гриби"}, "fish": {"name": "Genny Fishing", "title": "Риба"}, "metals": {"name": "Hue Ferum", "title": "Цінні метали"}};

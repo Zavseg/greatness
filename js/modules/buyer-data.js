@@ -16,6 +16,13 @@ window.GreatnessBuyerData = [
         "price": 658,
         "hot": true,
         "source": "20261001104012_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 608,
+        "demand": 170,
+        "hot": false,
+        "source": "20261005181214_1.jpg"
       }
     ],
     "market": [
@@ -79,6 +86,13 @@ window.GreatnessBuyerData = [
         "price": 649,
         "hot": false,
         "source": "20261001104012_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 503,
+        "demand": 126,
+        "hot": false,
+        "source": "20261005181214_1.jpg"
       }
     ],
     "market": [
@@ -142,6 +156,13 @@ window.GreatnessBuyerData = [
         "price": 2606,
         "hot": false,
         "source": "20261001104012_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 2093,
+        "demand": 132,
+        "hot": false,
+        "source": "20261005181214_1.jpg"
       }
     ],
     "market": [
@@ -205,6 +226,13 @@ window.GreatnessBuyerData = [
         "price": 1334,
         "hot": false,
         "source": "20261001104012_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 1451,
+        "demand": 62,
+        "hot": true,
+        "source": "20261005181214_1.jpg"
       }
     ],
     "market": [
@@ -244,6 +272,13 @@ window.GreatnessBuyerData = [
         "price": 1169,
         "hot": true,
         "source": "20261001104012_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 894,
+        "demand": 99,
+        "hot": false,
+        "source": "20261005181214_1.jpg"
       }
     ],
     "market": [
@@ -307,6 +342,13 @@ window.GreatnessBuyerData = [
         "price": 5086,
         "hot": false,
         "source": "20261001104012_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 8091,
+        "demand": 50,
+        "hot": false,
+        "source": "20261005181214_1.jpg"
       }
     ],
     "market": [
@@ -370,6 +412,13 @@ window.GreatnessBuyerData = [
         "price": 23431,
         "hot": false,
         "source": "20261001104015_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 24910,
+        "demand": 50,
+        "hot": true,
+        "source": "20261005181217_1.jpg"
       }
     ],
     "market": [],
@@ -392,6 +441,13 @@ window.GreatnessBuyerData = [
         "price": 29418,
         "hot": true,
         "source": "20261001104015_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 26760,
+        "demand": 50,
+        "hot": false,
+        "source": "20261005181217_1.jpg"
       }
     ],
     "market": [
@@ -455,6 +511,13 @@ window.GreatnessBuyerData = [
         "price": 16767,
         "hot": false,
         "source": "20261001104015_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 10183,
+        "demand": 48,
+        "hot": false,
+        "source": "20261005181217_1.jpg"
       }
     ],
     "market": [
@@ -518,6 +581,13 @@ window.GreatnessBuyerData = [
         "price": 43746,
         "hot": false,
         "source": "20261001104015_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 31980,
+        "demand": 50,
+        "hot": false,
+        "source": "20261005181217_1.jpg"
       }
     ],
     "market": [
@@ -872,6 +942,12 @@ window.GreatnessBuyerData = [
         "price": 658,
         "hot": false,
         "source": "20261004102143_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 412,
+        "hot": false,
+        "source": "20261005185112_1.jpg"
       }
     ],
     "market": []
@@ -896,6 +972,12 @@ window.GreatnessBuyerData = [
         "price": 509,
         "hot": false,
         "source": "20261004102143_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 387,
+        "hot": false,
+        "source": "20261005185112_1.jpg"
       }
     ],
     "market": []
@@ -920,6 +1002,12 @@ window.GreatnessBuyerData = [
         "price": 1151,
         "hot": false,
         "source": "20261004102143_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 1146,
+        "hot": false,
+        "source": "20261005185112_1.jpg"
       }
     ],
     "market": []
@@ -944,6 +1032,12 @@ window.GreatnessBuyerData = [
         "price": 1191,
         "hot": false,
         "source": "20261004102143_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 1499,
+        "hot": false,
+        "source": "20261005185112_1.jpg"
       }
     ],
     "market": []
@@ -968,6 +1062,12 @@ window.GreatnessBuyerData = [
         "price": 146,
         "hot": false,
         "source": "20261004102201_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 147,
+        "hot": false,
+        "source": "20261005185128_1.jpg"
       }
     ],
     "market": []
@@ -992,6 +1092,12 @@ window.GreatnessBuyerData = [
         "price": 224,
         "hot": false,
         "source": "20261004102201_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 265,
+        "hot": false,
+        "source": "20261005185128_1.jpg"
       }
     ],
     "market": []
@@ -1016,6 +1122,12 @@ window.GreatnessBuyerData = [
         "price": 386,
         "hot": false,
         "source": "20261004102206_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 377,
+        "hot": false,
+        "source": "20261005185131_1.jpg"
       }
     ],
     "market": []
@@ -1040,6 +1152,12 @@ window.GreatnessBuyerData = [
         "price": 448,
         "hot": false,
         "source": "20261004102206_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 381,
+        "hot": false,
+        "source": "20261005185131_1.jpg"
       }
     ],
     "market": []
@@ -1064,6 +1182,12 @@ window.GreatnessBuyerData = [
         "price": 788,
         "hot": false,
         "source": "20261004102206_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 687,
+        "hot": false,
+        "source": "20261005185131_1.jpg"
       }
     ],
     "market": []
@@ -1088,6 +1212,12 @@ window.GreatnessBuyerData = [
         "price": 23884,
         "hot": false,
         "source": "20261004102206_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 23364,
+        "hot": false,
+        "source": "20261005185131_1.jpg"
       }
     ],
     "market": []
@@ -1112,6 +1242,12 @@ window.GreatnessBuyerData = [
         "price": 245,
         "hot": false,
         "source": "20261004102215_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 199,
+        "hot": false,
+        "source": "20261005185138_1.jpg"
       }
     ],
     "market": []
@@ -1136,6 +1272,12 @@ window.GreatnessBuyerData = [
         "price": 278,
         "hot": false,
         "source": "20261004102215_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 182,
+        "hot": false,
+        "source": "20261005185138_1.jpg"
       }
     ],
     "market": []
@@ -1160,6 +1302,12 @@ window.GreatnessBuyerData = [
         "price": 313,
         "hot": false,
         "source": "20261004102218_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 452,
+        "hot": false,
+        "source": "20261005185138_1.jpg"
       }
     ],
     "market": []
@@ -1184,6 +1332,12 @@ window.GreatnessBuyerData = [
         "price": 1058,
         "hot": false,
         "source": "20261004102218_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 910,
+        "hot": false,
+        "source": "20261005185138_1.jpg"
       }
     ],
     "market": []
@@ -1208,6 +1362,12 @@ window.GreatnessBuyerData = [
         "price": 345,
         "hot": false,
         "source": "20261004102218_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 537,
+        "hot": false,
+        "source": "20261005185144_1.jpg"
       }
     ],
     "market": []
@@ -1232,6 +1392,12 @@ window.GreatnessBuyerData = [
         "price": 358,
         "hot": false,
         "source": "20261004102218_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 310,
+        "hot": false,
+        "source": "20261005185144_1.jpg"
       }
     ],
     "market": []
@@ -1256,6 +1422,12 @@ window.GreatnessBuyerData = [
         "price": 179,
         "hot": false,
         "source": "20261004102227_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 163,
+        "hot": false,
+        "source": "20261005185144_1.jpg"
       }
     ],
     "market": []
@@ -1280,6 +1452,12 @@ window.GreatnessBuyerData = [
         "price": 438,
         "hot": false,
         "source": "20261004102227_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 377,
+        "hot": false,
+        "source": "20261005185144_1.jpg"
       }
     ],
     "market": []
@@ -1304,6 +1482,12 @@ window.GreatnessBuyerData = [
         "price": 453,
         "hot": false,
         "source": "20261004102227_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 556,
+        "hot": false,
+        "source": "20261005185202_1.jpg"
       }
     ],
     "market": []
@@ -1328,6 +1512,12 @@ window.GreatnessBuyerData = [
         "price": 619,
         "hot": false,
         "source": "20261004102227_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 727,
+        "hot": false,
+        "source": "20261005185202_1.jpg"
       }
     ],
     "market": []
@@ -1352,6 +1542,12 @@ window.GreatnessBuyerData = [
         "price": 802,
         "hot": false,
         "source": "20261004102230_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 1453,
+        "hot": false,
+        "source": "20261005185204_1.jpg"
       }
     ],
     "market": []
@@ -1376,6 +1572,12 @@ window.GreatnessBuyerData = [
         "price": 991,
         "hot": false,
         "source": "20261004102230_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 619,
+        "hot": false,
+        "source": "20261005185204_1.jpg"
       }
     ],
     "market": []
@@ -1394,6 +1596,12 @@ window.GreatnessBuyerData = [
         "price": 578,
         "hot": false,
         "source": "20261003173554_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 691,
+        "hot": false,
+        "source": "20261005185204_1.jpg"
       }
     ],
     "market": []
@@ -1418,6 +1626,12 @@ window.GreatnessBuyerData = [
         "price": 228,
         "hot": false,
         "source": "20261004102239_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 338,
+        "hot": false,
+        "source": "20261005185210_1.jpg"
       }
     ],
     "market": []
@@ -1442,6 +1656,12 @@ window.GreatnessBuyerData = [
         "price": 647,
         "hot": false,
         "source": "20261004102239_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 689,
+        "hot": false,
+        "source": "20261005185210_1.jpg"
       }
     ],
     "market": []
@@ -1466,6 +1686,12 @@ window.GreatnessBuyerData = [
         "price": 798,
         "hot": false,
         "source": "20261004102244_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 1427,
+        "hot": false,
+        "source": "20261005185210_1.jpg"
       }
     ],
     "market": []
@@ -1490,6 +1716,12 @@ window.GreatnessBuyerData = [
         "price": 1218,
         "hot": false,
         "source": "20261004102244_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 1421,
+        "hot": false,
+        "source": "20261005185210_1.jpg"
       }
     ],
     "market": []
@@ -1514,6 +1746,12 @@ window.GreatnessBuyerData = [
         "price": 3672,
         "hot": false,
         "source": "20261004102244_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 2499,
+        "hot": false,
+        "source": "20261005185214_1.jpg"
       }
     ],
     "market": []
@@ -1538,6 +1776,12 @@ window.GreatnessBuyerData = [
         "price": 3815,
         "hot": false,
         "source": "20261004102244_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 2756,
+        "hot": false,
+        "source": "20261005185214_1.jpg"
       }
     ],
     "market": []
@@ -1562,6 +1806,12 @@ window.GreatnessBuyerData = [
         "price": 12606,
         "hot": false,
         "source": "20261004102247_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 11301,
+        "hot": false,
+        "source": "20261005185214_1.jpg"
       }
     ],
     "market": []
@@ -1586,6 +1836,12 @@ window.GreatnessBuyerData = [
         "price": 66436,
         "hot": false,
         "source": "20261004102247_1.jpg"
+      },
+      {
+        "date": "2026-10-05",
+        "price": 61522,
+        "hot": false,
+        "source": "20261005185214_1.jpg"
       }
     ],
     "market": []

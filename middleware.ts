@@ -11,7 +11,7 @@ const json = (status: number, body: object, extra = {}) => new Response(JSON.str
 const encoder = new TextEncoder();
 async function signingKey() {
   const password = process.env.SITE_ACCESS_PASSWORD || '';
-  if (password.length < 16) return null;
+  if (password.length < 8) return null;
   return crypto.subtle.importKey('raw', encoder.encode(password), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
 }
 const hex = (bytes: ArrayBuffer) => Array.from(new Uint8Array(bytes), b => b.toString(16).padStart(2, '0')).join('');
@@ -33,7 +33,7 @@ async function passwordSession(token: string) {
 }
 async function correctPassword(value: unknown) {
   const configured = process.env.SITE_ACCESS_PASSWORD || '';
-  if (configured.length < 16 || typeof value !== 'string' || value.length > 1024) return false;
+  if (configured.length < 8 || typeof value !== 'string' || value.length > 1024) return false;
   const key = await signingKey();
   const signature = await crypto.subtle.sign('HMAC', key!, encoder.encode(configured));
   return crypto.subtle.verify('HMAC', key!, signature, encoder.encode(value));

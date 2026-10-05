@@ -198,7 +198,10 @@ window.GreatnessApp.initAuth = function initAuth() {
                 return;
             }
             if (session && ['SIGNED_IN', 'TOKEN_REFRESHED', 'USER_UPDATED'].includes(event)) {
-                setTimeout(() => refreshRemoteUser().catch(err => console.warn('Role refresh failed:', err)), 0);
+                setTimeout(() => {
+                    fetch('/owner-access', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: session.access_token }) }).catch(() => {});
+                    refreshRemoteUser().catch(err => console.warn('Role refresh failed:', err));
+                }, 0);
             }
         });
     }
@@ -435,7 +438,9 @@ window.GreatnessApp.initAuth = function initAuth() {
     });
 
     document.getElementById('auth-logout')?.addEventListener('click', async () => {
+        try { await fetch('/owner-access', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ logout: true }) }); } catch (_) {}
         try { if (supabaseClient) await supabaseClient.auth.signOut(); } catch (_) {}
+        if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') location.replace('/owner-access');
         auth.user = null;
         render();
         closeModal();

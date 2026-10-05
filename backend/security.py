@@ -292,6 +292,9 @@ def require_user(handler, roles=None):
     if not user:
         send_json(handler, 401, {'ok': False, 'error': 'Authentication required'})
         return None
+    if os.environ.get('SITE_PRIVATE_MODE', '').lower() != 'false' and (str(user.get('email') or '').strip().lower() != 'sichkarenkoalex@gmail.com' or not user.get('email_confirmed_at')):
+        send_json(handler, 403, {'ok': False, 'error': 'Сайт тимчасово закритий'})
+        return None
     if roles and role_of(user) not in set(roles):
         send_json(handler, 403, {'ok': False, 'error': 'Insufficient access'})
         return None

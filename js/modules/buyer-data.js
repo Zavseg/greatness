@@ -948,6 +948,12 @@ window.GreatnessBuyerData = [
         "price": 412,
         "hot": false,
         "source": "20261005185112_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 713,
+        "hot": false,
+        "source": "20261006101224_1.jpg"
       }
     ],
     "market": []
@@ -978,6 +984,12 @@ window.GreatnessBuyerData = [
         "price": 387,
         "hot": false,
         "source": "20261005185112_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 902,
+        "hot": false,
+        "source": "20261006101224_1.jpg"
       }
     ],
     "market": []
@@ -1008,6 +1020,12 @@ window.GreatnessBuyerData = [
         "price": 1146,
         "hot": false,
         "source": "20261005185112_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 1095,
+        "hot": false,
+        "source": "20261006101224_1.jpg"
       }
     ],
     "market": []
@@ -1038,6 +1056,12 @@ window.GreatnessBuyerData = [
         "price": 1499,
         "hot": false,
         "source": "20261005185112_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 1147,
+        "hot": false,
+        "source": "20261006101224_1.jpg"
       }
     ],
     "market": []
@@ -1068,6 +1092,12 @@ window.GreatnessBuyerData = [
         "price": 147,
         "hot": false,
         "source": "20261005185128_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 119,
+        "hot": false,
+        "source": "20261006101233_1.jpg"
       }
     ],
     "market": []
@@ -1098,6 +1128,12 @@ window.GreatnessBuyerData = [
         "price": 265,
         "hot": false,
         "source": "20261005185128_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 199,
+        "hot": false,
+        "source": "20261006101233_1.jpg"
       }
     ],
     "market": []
@@ -1128,6 +1164,12 @@ window.GreatnessBuyerData = [
         "price": 377,
         "hot": false,
         "source": "20261005185131_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 375,
+        "hot": false,
+        "source": "20261006101233_1.jpg"
       }
     ],
     "market": []
@@ -1158,6 +1200,12 @@ window.GreatnessBuyerData = [
         "price": 381,
         "hot": false,
         "source": "20261005185131_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 449,
+        "hot": false,
+        "source": "20261006101233_1.jpg"
       }
     ],
     "market": []
@@ -1188,6 +1236,12 @@ window.GreatnessBuyerData = [
         "price": 687,
         "hot": false,
         "source": "20261005185131_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 660,
+        "hot": false,
+        "source": "20261006101237_1.jpg"
       }
     ],
     "market": []
@@ -1218,6 +1272,12 @@ window.GreatnessBuyerData = [
         "price": 23364,
         "hot": false,
         "source": "20261005185131_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 20773,
+        "hot": false,
+        "source": "20261006101237_1.jpg"
       }
     ],
     "market": []
@@ -1248,6 +1308,12 @@ window.GreatnessBuyerData = [
         "price": 199,
         "hot": false,
         "source": "20261005185138_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 139,
+        "hot": false,
+        "source": "20261006101319_1.jpg"
       }
     ],
     "market": []
@@ -1278,6 +1344,12 @@ window.GreatnessBuyerData = [
         "price": 182,
         "hot": false,
         "source": "20261005185138_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 220,
+        "hot": false,
+        "source": "20261006101319_1.jpg"
       }
     ],
     "market": []
@@ -1308,6 +1380,12 @@ window.GreatnessBuyerData = [
         "price": 452,
         "hot": false,
         "source": "20261005185138_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 488,
+        "hot": false,
+        "source": "20261006101319_1.jpg"
       }
     ],
     "market": []
@@ -1338,6 +1416,12 @@ window.GreatnessBuyerData = [
         "price": 910,
         "hot": false,
         "source": "20261005185138_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 896,
+        "hot": false,
+        "source": "20261006101319_1.jpg"
       }
     ],
     "market": []
@@ -1368,6 +1452,12 @@ window.GreatnessBuyerData = [
         "price": 537,
         "hot": false,
         "source": "20261005185144_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 499,
+        "hot": false,
+        "source": "20261006101327_1.jpg"
       }
     ],
     "market": []
@@ -1398,6 +1488,12 @@ window.GreatnessBuyerData = [
         "price": 310,
         "hot": false,
         "source": "20261005185144_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 328,
+        "hot": false,
+        "source": "20261006101327_1.jpg"
       }
     ],
     "market": []
@@ -1428,6 +1524,12 @@ window.GreatnessBuyerData = [
         "price": 163,
         "hot": false,
         "source": "20261005185144_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 168,
+        "hot": false,
+        "source": "20261006101327_1.jpg"
       }
     ],
     "market": []
@@ -1458,6 +1560,12 @@ window.GreatnessBuyerData = [
         "price": 377,
         "hot": false,
         "source": "20261005185144_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 372,
+        "hot": false,
+        "source": "20261006101327_1.jpg"
       }
     ],
     "market": []
@@ -1488,6 +1596,12 @@ window.GreatnessBuyerData = [
         "price": 556,
         "hot": false,
         "source": "20261005185202_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 468,
+        "hot": false,
+        "source": "20261006101332_1.jpg"
       }
     ],
     "market": []
@@ -1518,6 +1632,12 @@ window.GreatnessBuyerData = [
         "price": 727,
         "hot": false,
         "source": "20261005185202_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 472,
+        "hot": false,
+        "source": "20261006101332_1.jpg"
       }
     ],
     "market": []
@@ -1548,6 +1668,12 @@ window.GreatnessBuyerData = [
         "price": 1453,
         "hot": false,
         "source": "20261005185204_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 1435,
+        "hot": false,
+        "source": "20261006101332_1.jpg"
       }
     ],
     "market": []
@@ -1578,6 +1704,12 @@ window.GreatnessBuyerData = [
         "price": 619,
         "hot": false,
         "source": "20261005185204_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 546,
+        "hot": false,
+        "source": "20261006101332_1.jpg"
       }
     ],
     "market": []
@@ -1602,6 +1734,12 @@ window.GreatnessBuyerData = [
         "price": 691,
         "hot": false,
         "source": "20261005185204_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 956,
+        "hot": false,
+        "source": "20261006101334_1.jpg"
       }
     ],
     "market": []
@@ -1632,6 +1770,12 @@ window.GreatnessBuyerData = [
         "price": 338,
         "hot": false,
         "source": "20261005185210_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 235,
+        "hot": false,
+        "source": "20261006101342_1.jpg"
       }
     ],
     "market": []
@@ -1662,6 +1806,12 @@ window.GreatnessBuyerData = [
         "price": 689,
         "hot": false,
         "source": "20261005185210_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 889,
+        "hot": false,
+        "source": "20261006101342_1.jpg"
       }
     ],
     "market": []
@@ -1692,6 +1842,12 @@ window.GreatnessBuyerData = [
         "price": 1427,
         "hot": false,
         "source": "20261005185210_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 1286,
+        "hot": false,
+        "source": "20261006101342_1.jpg"
       }
     ],
     "market": []
@@ -1722,6 +1878,12 @@ window.GreatnessBuyerData = [
         "price": 1421,
         "hot": false,
         "source": "20261005185210_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 1278,
+        "hot": false,
+        "source": "20261006101342_1.jpg"
       }
     ],
     "market": []
@@ -1752,6 +1914,12 @@ window.GreatnessBuyerData = [
         "price": 2499,
         "hot": false,
         "source": "20261005185214_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 3565,
+        "hot": false,
+        "source": "20261006101346_1.jpg"
       }
     ],
     "market": []
@@ -1782,6 +1950,12 @@ window.GreatnessBuyerData = [
         "price": 2756,
         "hot": false,
         "source": "20261005185214_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 2526,
+        "hot": false,
+        "source": "20261006101346_1.jpg"
       }
     ],
     "market": []
@@ -1812,6 +1986,12 @@ window.GreatnessBuyerData = [
         "price": 11301,
         "hot": false,
         "source": "20261005185214_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 13362,
+        "hot": false,
+        "source": "20261006101346_1.jpg"
       }
     ],
     "market": []
@@ -1842,9 +2022,224 @@ window.GreatnessBuyerData = [
         "price": 61522,
         "hot": false,
         "source": "20261005185214_1.jpg"
+      },
+      {
+        "date": "2026-10-06",
+        "price": 61652,
+        "hot": false,
+        "source": "20261006101346_1.jpg"
       }
     ],
     "market": []
+  },
+  {
+    "id": "coal",
+    "name": "Вугілля",
+    "buyer": "materials",
+    "image": "assets/buyers/coal.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 296,
+        "demand": 600,
+        "hot": false,
+        "source": "20261006104029_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "iron-ore",
+    "name": "Залізна руда",
+    "buyer": "materials",
+    "image": "assets/buyers/iron-ore.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 388,
+        "demand": 600,
+        "hot": true,
+        "source": "20261006104029_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "gold-ore",
+    "name": "Золота руда",
+    "buyer": "materials",
+    "image": "assets/buyers/gold-ore.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 480,
+        "demand": 600,
+        "hot": true,
+        "source": "20261006104029_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "diamond-ore",
+    "name": "Алмазна порода",
+    "buyer": "materials",
+    "image": "assets/buyers/diamond-ore.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 565,
+        "demand": 600,
+        "hot": true,
+        "source": "20261006104029_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "uranium-ore",
+    "name": "Уранова руда",
+    "buyer": "materials",
+    "image": "assets/buyers/uranium-ore.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 1700,
+        "demand": 600,
+        "hot": true,
+        "source": "20261006104029_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "raw-amber",
+    "name": "Бурштин необроб…",
+    "buyer": "materials",
+    "image": "assets/buyers/raw-amber.png",
+    "truncated": true,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 1919,
+        "demand": 600,
+        "hot": true,
+        "source": "20261006104029_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "iron-ingot",
+    "name": "Залізний злиток",
+    "buyer": "materials",
+    "image": "assets/buyers/iron-ingot.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 1217,
+        "demand": 500,
+        "hot": false,
+        "source": "20261006104034_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "gold-ingot",
+    "name": "Золотий злиток",
+    "buyer": "materials",
+    "image": "assets/buyers/gold-ingot.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 1780,
+        "demand": 500,
+        "hot": true,
+        "source": "20261006104034_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "diamond",
+    "name": "Алмаз",
+    "buyer": "materials",
+    "image": "assets/buyers/diamond.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 2713,
+        "demand": 400,
+        "hot": true,
+        "source": "20261006104034_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "enriched-uranium",
+    "name": "Збагачений уран",
+    "buyer": "materials",
+    "image": "assets/buyers/enriched-uranium.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 3223,
+        "demand": 550,
+        "hot": true,
+        "source": "20261006104034_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "amber",
+    "name": "Бурштин",
+    "buyer": "materials",
+    "image": "assets/buyers/amber.png",
+    "truncated": false,
+    "unit": "шт.",
+    "priceAmount": 1,
+    "market": [],
+    "observations": [
+      {
+        "date": "2026-10-06",
+        "price": 4265,
+        "demand": 500,
+        "hot": true,
+        "source": "20261006104034_1.jpg"
+      }
+    ]
   }
 ];
-window.GreatnessBuyerCatalog = {"equipment": {"name": "Brine Volt", "title": "Обладнання та деталі"}, "junk": {"name": "Fedya Uncle", "title": "Хлам та інструменти"}, "vegetables": {"name": "Pit Vegetable", "title": "Овочі"}, "mushrooms": {"name": "Werner Grip", "title": "Гриби"}, "fish": {"name": "Genny Fishing", "title": "Риба"}, "metals": {"name": "Hue Ferum", "title": "Цінні метали"}};
+window.GreatnessBuyerCatalog = {"equipment":{"name":"Brine Volt","title":"Обладнання та деталі"},"junk":{"name":"Fedya Uncle","title":"Хлам та інструменти"},"vegetables":{"name":"Pit Vegetable","title":"Овочі"},"mushrooms":{"name":"Werner Grip","title":"Гриби"},"fish":{"name":"Genny Fishing","title":"Риба"},"metals":{"name":"Hue Ferum","title":"Цінні метали"},"materials":{"name":"Strong Stoner","title":"Дорогоцінні матеріали"}};
